@@ -1,0 +1,4 @@
+1 xa mushroom-plainsv.xa 1 0
+1 xa mushroom-plainsi.xa 1 1
+1 xa bricks-and-liftsv.xa 1 2
+1 xa bricks-and-liftsi.xa 1 3

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Defines the ISO project -->
+<iso_project image_name="funkin.bin" cue_sheet="funkin.cue" no_xa="0">
+	<!-- Data track -->
+	<track type="data">
+		<!-- Identifiers -->
+		<identifiers
+			system        = "PLAYSTATION"
+			application   = "PLAYSTATION"
+			volume        = "PSXFUNKIN"
+			volume_set    = "PSXFUNKIN"
+			publisher     = "CUCKYDEV"
+			copyright     = "NINJAMUFFIN99"
+		/>
+		<license file="licensea.dat"/>
+		
+		<!-- Data directory tree -->
+		<directory_tree>
+			<!-- System -->
+			<file name = "system.cnf" type = "data" source = "iso/system.cnf"/>
+			<file name = "SCUS_000.00" type = "data" source = "funkin.ps-exe"/>
+			
+			<!-- Menu assets -->
+			<dir name = "menu">
+				<file name = "loading.tim" type = "data" source = "iso/menu/loading.tim"/>
+				<file name = "menu.arc" type = "data" source = "iso/menu/menu.arc"/>
+			</dir>
+			
+			<!-- Fonts -->
+			<dir name = "font">
+				<file name = "boldfont.tim" type = "data" source = "iso/font/boldfont.tim"/>
+				<file name = "arial.tim" type = "data" source = "iso/font/arial.tim"/>
+				<file name = "cdr.tim" type = "data" source = "iso/font/cdr.tim"/>
+				<file name = "smb1.tim" type = "data" source = "iso/font/smb1.tim"/>
+			</dir>
+			
+			<!-- Stage assets -->
+			<dir name = "stage">
+				<file name = "hud0.tim" type = "data" source = "iso/stage/hud0.tim"/>
+				<file name = "hud1.tim" type = "data" source = "iso/stage/hud1.tim"/>
+				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0weeb.tim"/>
+				<file name = "hud1weeb.tim" type = "data" source = "iso/stage/hud1weeb.tim"/>
+				<file name = "bg.tim" type = "data" source = "iso/stage/bg.tim"/>
+			</dir>
+			
+			<!-- Week 1 assets -->
+			<dir name = "world1">
+				<!-- Background art -->
+				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+				
+				<!-- Mushroom Plains chart -->
+				<file name = "1.1.cht" type = "data" source = "iso/chart/mushroom-plains.json.cht"/>
+				<!-- Bricks-and-Lifts chart -->
+				<file name = "1.2.cht" type = "data" source = "iso/chart/bricks-and-lifts.json.cht"/>
+				<!-- Lethal Lava Lair chart -->
+				<file name = "1.3.cht" type = "data" source = "iso/chart/lethal-lava-lair.json.cht"/>
+			</dir>
+		
+			<!-- Character assets -->
+			<dir name = "char">
+				<!-- Boyfriend assets -->
+				<file name = "bf.arc" type = "data" source = "iso/characters/bf/main.arc"/>
+				
+				<!-- Mario assets -->
+				<file name = "mario.arc" type = "data" source = "iso/characters/mario/main.arc"/>
+				
+				<!-- Girlfriend assets -->
+				<file name = "gf.arc" type = "data" source = "iso/gf/main.arc"/>
+				<file name = "gftut.arc" type = "data" source = "iso/gf/tut.arc"/>
+			</dir>
+		    
+			<!-- Sound effect -->
+			<dir name = "sounds">
+				<!-- Menu Sounds -->
+				<file name = "scroll.vag" type = "data" source = "iso/sounds/scroll.vag"/>
+				<file name = "confirm.vag" type = "data" source = "iso/sounds/confirm.vag"/>
+				<file name = "cancel.vag" type = "data" source = "iso/sounds/cancel.vag"/>
+				<!-- Stage Sounds -->
+				<file name = "count.vag" type = "data" source = "iso/sounds/countdown.vag"/>
+				<file name = "countend.vag" type = "data" source = "iso/sounds/countdownend.vag"/>
+			</dir>
+			
+			<!-- Music -->
+			<dir name = "music">
+				<file name = "menu.xa" type = "xa" source = "iso/music/menu.xa"/>
+				<dummy sectors="128"/>
+				<file name = "world1a.xa" type = "xa" source = "iso/music/world1a.xa"/>
+				<dummy sectors="128"/>
+				<file name = "world1b.xa" type = "xa" source = "iso/music/world1b.xa"/>
+				<dummy sectors="128"/>
+			</dir>
+			
+			<!-- Dummy sectors -->
+			<dummy sectors="1024"/>
+		</directory_tree>
+	</track>
+</iso_project>

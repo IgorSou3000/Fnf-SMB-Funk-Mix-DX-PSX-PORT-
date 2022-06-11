@@ -1,0 +1,15 @@
+all: \
+  iso/music/menu.xa \
+  iso/music/world1a.xa \
+  iso/music/world1b.xa \
+
+# XA converts
+iso/music/%.xa: iso/music/%.ogg
+	tools/psxavenc/psxavenc -f 37800 -t xa -b 4 -c 2 -F 1 -C 0 $< $@
+iso/music/%.xa:
+	tools/xainterleave/xainterleave $@
+
+# XA interleaves
+iso/music/menu.xa: iso/music/freaky.xa iso/music/gameover.xa
+iso/music/world1a.xa: iso/music/mushroom-plainsi.xa iso/music/mushroom-plainsv.xa iso/music/bricks-and-liftsi.xa iso/music/bricks-and-liftsv.xa
+iso/music/world1b.xa: iso/music/lethal-lava-lairi.xa iso/music/lethal-lava-lairv.xa
