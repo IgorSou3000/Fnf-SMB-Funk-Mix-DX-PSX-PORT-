@@ -1,7 +1,15 @@
 all: \
   iso/music/menu.xa \
-  iso/music/world1a.xa \
-  iso/music/world1b.xa \
+  iso/music/world1/world1a.xa \
+  iso/music/world1/world1b.xa \
+  iso/music/world2/world2a.xa \
+  iso/music/world2/world2b.xa \
+  iso/music/freeplay1/freeplay1a.xa \
+  iso/music/freeplay1/freeplay1b.xa \
+  iso/music/freeplay2/freeplay2a.xa \
+  iso/music/freeplay2/freeplay2b.xa \
+  iso/music/secret/secreta.xa \
+  iso/music/secret/secretb.xa \
 
 # XA converts
 iso/music/%.xa: iso/music/%.ogg
@@ -11,5 +19,18 @@ iso/music/%.xa:
 
 # XA interleaves
 iso/music/menu.xa: iso/music/freaky.xa iso/music/gameover.xa
-iso/music/world1a.xa: iso/music/mushroom-plainsi.xa iso/music/mushroom-plainsv.xa iso/music/bricks-and-liftsi.xa iso/music/bricks-and-liftsv.xa
-iso/music/world1b.xa: iso/music/lethal-lava-lairi.xa iso/music/lethal-lava-lairv.xa
+
+iso/music/world1/world1a.xa: iso/music/world1/mushroom-plainsi.xa iso/music/world1/mushroom-plainsv.xa iso/music/world1/bricks-and-liftsi.xa iso/music/world1/bricks-and-liftsv.xa
+iso/music/world1/world1b.xa: iso/music/world1/lethal-lava-lairi.xa iso/music/world1/lethal-lava-lairv.xa
+
+iso/music/world2/world2a.xa: iso/music/world2/deep-deep-voyagei.xa iso/music/world2/deep-deep-voyagev.xa iso/music/world2/hop-hop-heightsi.xa iso/music/world2/hop-hop-heightsv.xa
+iso/music/world2/world2b.xa: iso/music/world2/koopa-armadai.xa iso/music/world2/koopa-armadav.xa
+
+iso/music/freeplay1/freeplay1a.xa: iso/music/freeplay1/2-player-gamei.xa iso/music/freeplay1/2-player-gamev.xa iso/music/freeplay1/destruction-dancei.xa iso/music/freeplay1/destruction-dancev.xa
+iso/music/freeplay1/freeplay1b.xa: iso/music/freeplay1/portal-poweri.xa iso/music/freeplay1/portal-powerv.xa
+
+iso/music/freeplay2/freeplay2a.xa: iso/music/freeplay2/bullet-timei.xa iso/music/freeplay2/bullet-timev.xa iso/music/freeplay2/boo-blitzi.xa iso/music/freeplay2/boo-blitzv.xa
+iso/music/freeplay2/freeplay2b.xa: iso/music/freeplay2/cross-console-clashi.xa iso/music/freeplay2/cross-console-clashv.xa
+
+iso/music/secret/secreta.xa: iso/music/secret/wrong-warpi.xa iso/music/secret/wrong-warpv.xa iso/music/secret/first-leveli.xa iso/music/secret/first-levelv.xa
+iso/music/secret/secretb.xa: iso/music/secret/green-screeni.xa iso/music/secret/green-screenv.xa iso/music/secret/balls.xa iso/music/secret/balls.xa

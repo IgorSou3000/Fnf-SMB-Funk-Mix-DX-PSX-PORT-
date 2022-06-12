@@ -15,6 +15,14 @@ typedef enum
 	XA_Menu,   //MENU.XA
 	XA_World1A, //WORLD1A.XA
 	XA_World1B, //WORLD1B.XA
+	XA_World2A, //WORLD2A.XA
+	XA_World2B, //WORLD2B.XA
+	XA_Free1A, //FREE1A.XA
+	XA_Free1B, //FREE1B.XA
+	XA_Free2A, //FREE2A.XA
+	XA_Free2B, //FREE2B.XA
+	XA_SecretA, //SECRETA.XA
+	XA_SecretB, //SECRETB.XA
 	
 	XA_Max,
 } XA_File;
@@ -29,6 +37,31 @@ typedef enum
 	XA_Bricks_And_Lifts,   //Bricks And Lifts
 	//WORLD1B.XA
 	XA_Lethal_Lava_Lair, //Lethal Lava Lair
+
+	//WORLD2A.XA
+	XA_Deep_Deep_Voyage, //Deep Deep Voyage
+	XA_Hop_Hop_Heights,   //Hop Hop Heights
+	//WORLD2B.XA
+	XA_Koopa_Armada, //Koopa Armada
+
+	//FREE1A.XA
+	XA_2_Player_Game, //2 Player Game
+	XA_Destruction_Dance,   //Destruction Dance
+	//FREE1B.XA
+	XA_Portal_Power, //Portal Power
+
+	//FREE2A.XA
+	XA_Bullet_Time, //Bullet Time
+	XA_Boo_Blitz,   //Boo Blitz
+	//FREE2B.XA
+	XA_Cross_Console_Clash, //Cross Console Clash
+
+	//SECRETA.XA
+	XA_Wrong_Warp, //Wrong Warp
+	XA_First_Level,   //First Level
+	//SECRETB.XA
+	XA_Green_Screen, //Green Screen
+	XA_Balls, //Balls
 	
 	XA_TrackMax,
 } XA_Track;

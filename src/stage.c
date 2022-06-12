@@ -72,9 +72,9 @@ static u32 Sounds[4];
 
 #include "character/bf.h"
 #include "character/mario.h"
-#include "character/gf.h"
 
-#include "stage/world1.h"
+#include "stage/world1/world1_1.h"
+#include "stage/world1/world1_2.h"
 
 static const StageDef stage_defs[StageId_Max] = {
 	#include "stagedef_disc1.h"
@@ -1080,8 +1080,14 @@ static void Stage_LoadChart(void)
 	char chart_path[64];
 	
 	//Use standard path convention
+	if (stage.stage_id >= StageId_F1_1 && stage.stage_id <= StageId_F2_3)
+	sprintf(chart_path, "\\FREE%d\\%d.%d.CHT;1", stage.stage_def->week, stage.stage_def->week, stage.stage_def->week_song);
+
+	else if (stage.stage_id >= StageId_S_1 && stage.stage_id <= StageId_S_4)
+	sprintf(chart_path, "\\SECRET\\%d.%d.CHT;1", stage.stage_def->week, stage.stage_def->week_song);
+
+	else
 	sprintf(chart_path, "\\WORLD%d\\%d.%d.CHT;1", stage.stage_def->week, stage.stage_def->week, stage.stage_def->week_song);
-	
 	
 	if (stage.chart_data != NULL)
 		Mem_Free(stage.chart_data);
@@ -1694,7 +1700,7 @@ void Stage_Tick(void)
 							break;
 						
 						//Opponent note hits
-						if (playing && (note->type & NOTE_FLAG_OPPONENT) && !(note->type & NOTE_FLAG_HIT))
+						if (playing && (note->type & NOTE_FLAG_OPPONENT) && !(note->type & NOTE_FLAG_HIT) && !(note->type & NOTE_FLAG_MINE))
 						{
 							//Opponent hits note
 							Stage_StartVocal();
@@ -1792,7 +1798,7 @@ void Stage_Tick(void)
 				stage.font_smb1.draw(&stage.font_smb1,
 					this->score_text,
 					(stage.mode == StageMode_2P && i == 0) ? 60 : 10, 
-					(stage.downscroll) ? 5 : 220,
+					(stage.downscroll) ? 5 : 216,
 					FontAlign_Left
 				);
 			}

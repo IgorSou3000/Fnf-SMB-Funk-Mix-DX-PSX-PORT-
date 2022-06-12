@@ -12,8 +12,6 @@ all: \
 	iso/stage/hud1weeb.tim \
 	iso/characters/bf/main.arc \
 	iso/characters/mario/main.arc \
-	iso/gf/main.arc \
-	iso/gf/tut.arc \
 	iso/backgrounds/world1/back.arc \
 
 iso/%.tim: iso/%.png
@@ -30,10 +28,6 @@ iso/characters/bf/main.arc: iso/characters/bf/bf-small.tim iso/characters/bf/bf.
 
 # Mario
 iso/characters/mario/main.arc: iso/characters/mario/mario-s.tim iso/characters/mario/mario.tim iso/characters/mario/mario-f.tim
-
-# GF
-iso/gf/main.arc: iso/gf/gf0.tim iso/gf/gf1.tim iso/gf/gf2.tim
-iso/gf/tut.arc: iso/gf/tut0.tim iso/gf/tut1.tim
 
 # World 1
 iso/backgrounds/world1/back.arc: iso/backgrounds/world1/back0.tim iso/backgrounds/world1/back1.tim

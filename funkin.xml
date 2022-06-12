@@ -44,17 +44,71 @@
 				<file name = "bg.tim" type = "data" source = "iso/stage/bg.tim"/>
 			</dir>
 			
-			<!-- Week 1 assets -->
+			<!-- World 1 assets -->
 			<dir name = "world1">
 				<!-- Background art -->
 				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
 				
 				<!-- Mushroom Plains chart -->
-				<file name = "1.1.cht" type = "data" source = "iso/chart/mushroom-plains.json.cht"/>
+				<file name = "1.1.cht" type = "data" source = "iso/chart/world1/mushroom-plains.json.cht"/>
 				<!-- Bricks-and-Lifts chart -->
-				<file name = "1.2.cht" type = "data" source = "iso/chart/bricks-and-lifts.json.cht"/>
+				<file name = "1.2.cht" type = "data" source = "iso/chart/world1/bricks-and-lifts.json.cht"/>
 				<!-- Lethal Lava Lair chart -->
-				<file name = "1.3.cht" type = "data" source = "iso/chart/lethal-lava-lair.json.cht"/>
+				<file name = "1.3.cht" type = "data" source = "iso/chart/world1/lethal-lava-lair.json.cht"/>
+			</dir>
+
+			<!-- World 2 assets -->
+			<dir name = "world2">
+				<!-- Background art -->
+				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+				
+				<!-- Deep Deep Voyage chart -->
+				<file name = "2.1.cht" type = "data" source = "iso/chart/world2/deep-deep-voyage.json.cht"/>
+				<!-- Hop Hop Heights chart -->
+				<file name = "2.2.cht" type = "data" source = "iso/chart/world2/hop-hop-heights.json.cht"/>
+				<!-- Koopa Armada chart -->
+				<file name = "2.3.cht" type = "data" source = "iso/chart/world2/koopa-armada.json.cht"/>
+			</dir>
+
+			<!-- Freeplay 1 assets -->
+			<dir name = "free1">
+				<!-- Background art -->
+				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+				
+				<!-- 2 Player Game chart -->
+				<file name = "1.1.cht" type = "data" source = "iso/chart/freeplay1/2-player-game.json.cht"/>
+				<!-- Destruction Dance chart -->
+				<file name = "1.2.cht" type = "data" source = "iso/chart/freeplay1/destruction-dance.json.cht"/>
+				<!-- Portal Power chart -->
+				<file name = "1.3.cht" type = "data" source = "iso/chart/freeplay1/portal-power.json.cht"/>
+			</dir>
+
+			<!-- Freeplay 2 assets -->
+			<dir name = "free2">
+				<!-- Background art -->
+				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+				
+				<!-- Bullet Time chart -->
+				<file name = "2.1.cht" type = "data" source = "iso/chart/freeplay2/bullet-time.json.cht"/>
+				<!-- Boo Blitz chart -->
+				<file name = "2.2.cht" type = "data" source = "iso/chart/freeplay2/boo-blitz.json.cht"/>
+				<!-- Cross Console Clash chart -->
+				<file name = "2.3.cht" type = "data" source = "iso/chart/freeplay2/cross-console-clash.json.cht"/>
+			</dir>
+
+			<!--Secret assets -->
+			<dir name = "secret">
+				<!-- Background art -->
+				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+				
+				<!-- Wrong Warp chart -->
+				<file name = "1.1.cht" type = "data" source = "iso/chart/secret/wrong-warp.json.cht"/>
+				<!-- First Level chart -->
+				<file name = "1.2.cht" type = "data" source = "iso/chart/secret/first-level.json.cht"/>
+				<!-- Green Screen chart -->
+				<file name = "1.3.cht" type = "data" source = "iso/chart/secret/green-screen.json.cht"/>
+				<!-- Balls chart -->
+				<file name = "1.4.cht" type = "data" source = "iso/chart/secret/balls.json.cht"/>
 			</dir>
 		
 			<!-- Character assets -->
@@ -64,10 +118,6 @@
 				
 				<!-- Mario assets -->
 				<file name = "mario.arc" type = "data" source = "iso/characters/mario/main.arc"/>
-				
-				<!-- Girlfriend assets -->
-				<file name = "gf.arc" type = "data" source = "iso/gf/main.arc"/>
-				<file name = "gftut.arc" type = "data" source = "iso/gf/tut.arc"/>
 			</dir>
 		    
 			<!-- Sound effect -->
@@ -85,9 +135,25 @@
 			<dir name = "music">
 				<file name = "menu.xa" type = "xa" source = "iso/music/menu.xa"/>
 				<dummy sectors="128"/>
-				<file name = "world1a.xa" type = "xa" source = "iso/music/world1a.xa"/>
+				<file name = "world1a.xa" type = "xa" source = "iso/music/world1/world1a.xa"/>
 				<dummy sectors="128"/>
-				<file name = "world1b.xa" type = "xa" source = "iso/music/world1b.xa"/>
+				<file name = "world1b.xa" type = "xa" source = "iso/music/world1/world1b.xa"/>
+				<dummy sectors="128"/>
+				<file name = "world2a.xa" type = "xa" source = "iso/music/world2/world2a.xa"/>
+				<dummy sectors="128"/>
+				<file name = "world2b.xa" type = "xa" source = "iso/music/world2/world2b.xa"/>
+				<dummy sectors="128"/>
+				<file name = "free1a.xa" type = "xa" source = "iso/music/freeplay1/freeplay1a.xa"/>
+				<dummy sectors="128"/>
+				<file name = "free1b.xa" type = "xa" source = "iso/music/freeplay1/freeplay1b.xa"/>
+				<dummy sectors="128"/>
+				<file name = "free2a.xa" type = "xa" source = "iso/music/freeplay2/freeplay2a.xa"/>
+				<dummy sectors="128"/>
+				<file name = "free2b.xa" type = "xa" source = "iso/music/freeplay2/freeplay2b.xa"/>
+				<dummy sectors="128"/>
+				<file name = "secreta.xa" type = "xa" source = "iso/music/secret/secreta.xa"/>
+				<dummy sectors="128"/>
+				<file name = "secretb.xa" type = "xa" source = "iso/music/secret/secretb.xa"/>
 				<dummy sectors="128"/>
 			</dir>
 			

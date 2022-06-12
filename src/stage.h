@@ -39,14 +39,31 @@
 //Stage enums
 typedef enum
 {
-	StageId_W1_1, //Bopeebo
-	StageId_W1_2, //Fresh
-	StageId_W1_3, //Dadbattle
+	StageId_W1_1, //Mushroom Plains
+	StageId_W1_2, //Bricks And Lifts
+	StageId_W1_3, //Lethal Lava Lair
+
+	StageId_W2_1, //Deep Deep Voyage
+	StageId_W2_2, //Hop Hop Heights
+	StageId_W2_3, //Koopa Armada
+
+	StageId_F1_1, //2 Player Game
+	StageId_F1_2, //Destruction_Dance
+	StageId_F1_3, //Portal Power
+
+	StageId_F2_1, //Bullet Time
+	StageId_F2_2, //Boo Blitz
+	StageId_F2_3, //Cross Console Clash
+
+	StageId_S_1, //Wrong Warp
+	StageId_S_2, //First Level
+	StageId_S_3, //Green Screen
+	StageId_S_4, //Balls
 	
 	StageId_Max
 } StageId;
 
-#define StageId_LastVanilla StageId_W1_3
+#define StageId_LastVanilla StageId_S_2
 
 typedef enum
 {

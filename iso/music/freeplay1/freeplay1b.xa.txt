@@ -1,0 +1,4 @@
+1 xa portal-powerv.xa 1 0
+1 xa portal-poweri.xa 1 1
+1 null
+1 null

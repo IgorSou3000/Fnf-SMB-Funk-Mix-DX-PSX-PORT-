@@ -22,9 +22,6 @@
 #include "loadscr.h"
 
 #include "stage.h"
-#include "character/gf.h"
-
-#include "stdlib.h"
 
 static u32 Sounds[3];
 
@@ -246,8 +243,7 @@ void Menu_Load(MenuPage page)
 	FontData_Load(&menu.font_bold, Font_Bold);
 	FontData_Load(&menu.font_arial, Font_Arial);
 	FontData_Load(&menu.font_smb1, Font_SMB1);
-	
-	menu.gf = Char_GF_New(FIXED_DEC(62,1), FIXED_DEC(-12,1));
+
 	stage.camera.x = stage.camera.y = FIXED_DEC(0,1);
 	stage.camera.bzoom = FIXED_UNIT;
 	stage.gf_speed = 4;
@@ -299,8 +295,6 @@ void Menu_Load(MenuPage page)
 
 void Menu_Unload(void)
 {
-	//Free title Girlfriend
-	Character_Free(menu.gf);
 }
 
 void Menu_ToStage(StageId id, StageDiff diff, boolean story)
@@ -487,9 +481,6 @@ void Menu_Tick(void)
 				RECT press_src = {0, (animf_count & 1) ? 144 : 112, 256, 32};
 				Gfx_BlitTex(&menu.tex_title, &press_src, (SCREEN_WIDTH - 256) / 2, SCREEN_HEIGHT - 48);
 			}
-			
-			//Draw Girlfriend
-			menu.gf->tick(menu.gf);
 			break;
 		}
 		case MenuPage_Main:
@@ -763,9 +754,22 @@ void Menu_Tick(void)
 				u32 col;
 				const char *text;
 			} menu_options[] = {
-				{StageId_W1_1, 0xFF9271FD, "BOPEEBO"},
-				{StageId_W1_2, 0xFF9271FD, "FRESH"},
-				{StageId_W1_3, 0xFF9271FD, "DADBATTLE"},
+				{StageId_W1_1, 0xFF9271FD, "MUSHROOM PLAINS"},
+				{StageId_W1_2, 0xFF9271FD, "BRICKS AND LIFTS"},
+				{StageId_W1_3, 0xFF9271FD, "LETHAL LAVA LAIR"},
+				{StageId_W2_1, 0xFF9271FD, "DEEP DEEP VOYAGE"},
+				{StageId_W2_2, 0xFF9271FD, "HOP-HOP HEIGHTS"},
+				{StageId_W2_3, 0xFF9271FD, "KOOPA ARMADA"},
+				{StageId_F1_1, 0xFF9271FD, "2 PLAYER GAME"},
+				{StageId_F1_2, 0xFF9271FD, "DESTRUCTION DANCE"},
+				{StageId_F1_3, 0xFF9271FD, "PORTAL POWER"},
+				{StageId_F2_1, 0xFF9271FD, "BULLET TIME"},
+				{StageId_F2_2, 0xFF9271FD, "BOO BLITZ"},
+				{StageId_F2_3, 0xFF9271FD, "CROSS CONSOLE CLASH"},
+				{StageId_S_1, 0xFF9271FD, "WRONG WARP"},
+				{StageId_S_2, 0xFF9271FD, "FIRST LEVEL : )"},
+				{StageId_S_3, 0xFF9271FD, "GREEN SCREEN"},
+				{StageId_S_4, 0xFF9271FD, "BALLS"},
 			};
 			
 			//Initialize page
@@ -777,14 +781,6 @@ void Menu_Tick(void)
 				menu.page_state.freeplay.back_g = FIXED_DEC(255,1);
 				menu.page_state.freeplay.back_b = FIXED_DEC(255,1);
 			}
-			
-			//Draw page label
-			menu.font_bold.draw(&menu.font_bold,
-				"FREEPLAY",
-				16,
-				SCREEN_HEIGHT - 32,
-				FontAlign_Left
-			);
 			
 			//Draw difficulty selector
 			Menu_DifficultySelector(SCREEN_WIDTH - 100, SCREEN_HEIGHT2 - 48);
@@ -850,7 +846,7 @@ void Menu_Tick(void)
 				//Draw text
 				menu.font_bold.draw(&menu.font_bold,
 					Menu_LowerIf(menu_options[i].text, menu.select != i),
-					48 + (y >> 2),
+					48,
 					SCREEN_HEIGHT2 + y - 8,
 					FontAlign_Left
 				);

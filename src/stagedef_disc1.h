@@ -5,7 +5,7 @@
 		{NULL},
 		
 		//Stage background
-		Back_World1_New,
+		Back_World1_1_New,
 		
 		//Song info
 		{FIXED_DEC(27,10)},
@@ -21,7 +21,7 @@
 		{NULL},
 		
 		//Stage background
-		Back_World1_New,
+		Back_World1_2_New,
 		
 		//Song info
 		{FIXED_DEC(27,10)},
@@ -37,7 +37,7 @@
 		{NULL},
 		
 		//Stage background
-		Back_World1_New,
+		Back_World1_1_New,
 		
 		//Song info
 		{FIXED_DEC(28,10)},
@@ -45,4 +45,212 @@
 		XA_Lethal_Lava_Lair, 0,
 		
 		StageId_W1_3, 0
+	},
+	{ //StageId_W2_1 (Deep Deep Voyage)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		2, 1,
+		XA_Deep_Deep_Voyage, 0,
+		
+		StageId_W2_2, STAGE_LOAD_FLAG | STAGE_LOAD_STAGE
+	},
+	{ //StageId_W2_2 (Hop Hop Heights)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_2_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		2, 2,
+		XA_Hop_Hop_Heights, 2,
+		
+		StageId_W2_3, STAGE_LOAD_FLAG 
+	},
+	{ //StageId_W2_3 (Koopa Armada)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		2, 3,
+		XA_Koopa_Armada, 0,
+		
+		StageId_W2_3, 0
+	},
+	{ //StageId_F1_1 (2 Player Game)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(295,100)},
+		1, 1,
+		XA_2_Player_Game, 0,
+		
+		StageId_F1_1, 0
+	},
+	{ //StageId_F1_2 (Destruction_Dance)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_2_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		1, 2,
+		XA_Destruction_Dance, 2,
+		
+		StageId_F1_2, 0
+	},
+	{ //StageId_F1_3 (Portal Power)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(3,1)},
+		1, 3,
+		XA_Portal_Power, 0,
+		
+		StageId_F1_3, 0
+	},
+	{ //StageId_F2_1 (Bullet Time)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(3,1)},
+		2, 1,
+		XA_Bullet_Time, 0,
+		
+		StageId_F2_1, 0
+	},
+	{ //StageId_F2_2 (Boo Blitz)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_2_New,
+		
+		//Song info
+		{FIXED_DEC(3,1)},
+		2, 2,
+		XA_Boo_Blitz, 2,
+		
+		StageId_F2_2, 0
+	},
+	{ //StageId_F2_3 (Cross Console Clash)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		2, 3,
+		XA_Cross_Console_Clash, 0,
+		
+		StageId_F2_3, 0
+	},
+	{ //StageId_S_1 (Wrong Warp)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(3,1)},
+		1, 1,
+		XA_Wrong_Warp, 0,
+		
+		StageId_S_1, 0
+	},
+	{ //StageId_S_2 (First Level)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_2_New,
+		
+		//Song info
+		{FIXED_DEC(3,1)},
+		1, 2,
+		XA_First_Level, 2,
+		
+		StageId_S_2, 0
+	},
+	{ //StageId_S_3 (Green Screen)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		1, 3,
+		XA_Green_Screen, 0,
+		
+		StageId_S_3, 0
+	},
+	{ //StageId_S_4 (Balls)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		1, 4,
+		XA_Balls, 2,
+		
+		StageId_S_4, 0
 	},
