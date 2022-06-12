@@ -38,7 +38,7 @@ static const XA_TrackDef xa_tracks[] = {
 	{XA_SecretA, XA_LENGTH(10700)}, //XA_Wrong_Warp
 	{XA_SecretA, XA_LENGTH(10500)}, //XA_First_Level
 	//SECRETB.XA
-	{XA_SecretB, XA_LENGTH(10500)}, //XA_Green_Screen
+	{XA_SecretB, XA_LENGTH(12100)}, //XA_Green_Screen
 	{XA_SecretB, XA_LENGTH(6400)}, //XA_Balls
 };
 

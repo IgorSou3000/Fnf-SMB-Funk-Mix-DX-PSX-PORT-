@@ -216,7 +216,7 @@
 		Back_World1_2_New,
 		
 		//Song info
-		{FIXED_DEC(3,1)},
+		{FIXED_DEC(28,10)},
 		1, 2,
 		XA_First_Level, 2,
 		
@@ -248,7 +248,7 @@
 		Back_World1_1_New,
 		
 		//Song info
-		{FIXED_DEC(28,10)},
+		{FIXED_DEC(25,10)},
 		1, 4,
 		XA_Balls, 2,
 		
