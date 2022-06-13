@@ -1119,7 +1119,10 @@ static void Stage_LoadOpponent2(void)
 {
 	//Load opponent character
 	Character_Free(stage.opponent2);
-	stage.opponent2 = stage.stage_def->o2char.new(stage.stage_def->o2char.x, stage.stage_def->o2char.y);
+	if (stage.stage_def->o2char.new != NULL)
+		stage.opponent2 = stage.stage_def->o2char.new(stage.stage_def->o2char.x, stage.stage_def->o2char.y);
+	else
+		stage.opponent2 = NULL;
 }
 
 static void Stage_LoadGirlfriend(void)
