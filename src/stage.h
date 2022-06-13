@@ -25,6 +25,8 @@
 #define INPUT_UP    (PAD_UP    | PAD_TRIANGLE | PAD_R1)
 #define INPUT_RIGHT (PAD_RIGHT | PAD_CIRCLE | PAD_R2)
 
+#define DEBUG_SWITCH (PAD_SELECT)
+
 #define STAGE_FLAG_JUST_STEP     (1 << 0) //Song just stepped this frame
 #define STAGE_FLAG_VOCAL_ACTIVE  (1 << 1) //Song's vocal track is currently active
 #define STAGE_FLAG_SCORE_REFRESH (1 << 2) //Score text should be refreshed
@@ -33,6 +35,7 @@
 #define STAGE_LOAD_OPPONENT   (1 << 1) //Reload opponent character
 #define STAGE_LOAD_GIRLFRIEND (1 << 2) //Reload girlfriend character
 #define STAGE_LOAD_STAGE      (1 << 3) //Reload stage
+#define STAGE_LOAD_OPPONENT2  (1 << 4) //Reload opponent2 character
 #define STAGE_LOAD_FLAG       (1 << 7)
 
 
@@ -107,7 +110,7 @@ typedef struct
 	{
 		Character* (*new)();
 		fixed_t x, y;
-	} pchar, ochar, gchar;
+	} pchar, ochar, gchar, o2char;
 	
 	//Stage background
 	StageBack* (*back)();
@@ -257,6 +260,8 @@ typedef struct
 	
 	//Object lists
 	ObjectList objlist_splash, objlist_fg, objlist_bg;
+
+	u8 debug;
 } Stage;
 
 extern Stage stage;

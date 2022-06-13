@@ -20,11 +20,14 @@ SRCS = src/main.c \
        src/stage/dummy.c \
        src/stage/world1/world1_1.c \
        src/stage/world1/world1_2.c \
+       src/stage/world2/world2_3.c \
        src/animation.c \
        src/character.c \
        src/character/bf.c \
        src/character/mario.c \
        src/character/gf.c \
+       src/character/bowser.c \
+       src/character/blaster.c \
        src/object.c \
        src/object/combo.c \
        src/object/splash.c \

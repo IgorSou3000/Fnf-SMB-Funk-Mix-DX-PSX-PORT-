@@ -72,9 +72,13 @@ static u32 Sounds[4];
 
 #include "character/bf.h"
 #include "character/mario.h"
+#include "character/bowser.h"
+#include "character/blaster.h"
 
 #include "stage/world1/world1_1.h"
 #include "stage/world1/world1_2.h"
+
+#include "stage/world2/world2_3.h"
 
 static const StageDef stage_defs[StageId_Max] = {
 	#include "stagedef_disc1.h"
@@ -141,6 +145,60 @@ static void Stage_ScrollCamera(void)
 	
 	//Update other camera stuff
 	stage.camera.bzoom = FIXED_MUL(stage.camera.zoom, stage.bump);
+}
+
+//Character movement debug
+static void Stage_MoveChar(void)
+{
+	//move player 1 with second controller's d pad when debug is 2
+	if (stage.debug == 2)
+	{
+		if (pad_state_2.held & INPUT_LEFT)
+		    stage.player->x -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_DOWN)
+		    stage.player->y += FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_UP)
+		    stage.player->y -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_RIGHT)
+		    stage.player->x += FIXED_DEC(1,1);
+	}
+
+    //move player 2 with second controller's d pad when debug is 3
+	if (stage.debug == 3)
+	{
+		if (pad_state_2.held & INPUT_LEFT)
+		    stage.opponent->x -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_DOWN)
+		    stage.opponent->y += FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_UP)
+		    stage.opponent->y -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_RIGHT)
+		    stage.opponent->x += FIXED_DEC(1,1);
+	}
+	//move player 3 with second controller's d pad when debug is 4
+	if (stage.debug == 4)
+	{
+		if (pad_state_2.held & INPUT_LEFT)
+		    stage.gf->x -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_DOWN)
+		    stage.gf->y += FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_UP)
+		    stage.gf->y -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_RIGHT)
+		    stage.gf->x += FIXED_DEC(1,1);
+	}
+	//move player 4 with second controller's d pad when debug is 5
+	if (stage.debug == 5)
+	{
+		if (pad_state_2.held & INPUT_LEFT)
+		    stage.opponent2->x -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_DOWN)
+		    stage.opponent2->y += FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_UP)
+		    stage.opponent2->y -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_RIGHT)
+		    stage.opponent2->x += FIXED_DEC(1,1);
+	}
 }
 
 //Stage section functions
@@ -429,6 +487,14 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 				Stage_NoteCheck(this, 2 | i);
 			if (this->pad_press & INPUT_RIGHT)
 				Stage_NoteCheck(this, 3 | i);
+
+			if (this->pad_press & DEBUG_SWITCH)
+			{
+				if (stage.debug < 5)
+				    stage.debug += 1;
+				else 
+				    stage.debug = 0;
+			}
 		}
 		else
 		{
@@ -1053,7 +1119,7 @@ static void Stage_LoadOpponent2(void)
 {
 	//Load opponent character
 	Character_Free(stage.opponent2);
-	stage.opponent2 = NULL;
+	stage.opponent2 = stage.stage_def->o2char.new(stage.stage_def->o2char.x, stage.stage_def->o2char.y);
 }
 
 static void Stage_LoadGirlfriend(void)
@@ -1516,6 +1582,30 @@ void Stage_Tick(void)
 			//Get song position
 			boolean playing;
 			fixed_t next_scroll;
+
+			//Debug shit, press SELECT to go to different modes
+			switch (stage.debug)
+			{
+				case 1: //step counter
+			        FntPrint("current step is %d\n", stage.song_step);
+					break;
+				case 2: //Player 1 (bf) position
+				    FntPrint("player1 pos X %d Y %d", stage.player->x/1024, stage.player->y/1024);
+					Stage_MoveChar();
+					break;
+				case 3: //Player 2 (dad) position
+				    FntPrint("player2 pos X %d Y %d", stage.opponent->x/1024, stage.opponent->y/1024);
+					Stage_MoveChar();
+					break;
+				case 4: //Player 3 (gf) position
+				    FntPrint("player3 pos X %d Y %d", stage.gf->x/1024, stage.gf->y/1024);
+					Stage_MoveChar();
+					break;
+				case 5: //Player 4 (Blaster Bro and Tails) postion
+					FntPrint("player4 pos X %d Y %d", stage.opponent2->x/1024, stage.opponent2->y/1024);
+					Stage_MoveChar();
+					break;
+			}
 			
 			
 				const fixed_t interp_int = FIXED_UNIT * 8 / 75;
@@ -1857,6 +1947,10 @@ void Stage_Tick(void)
 			//Tick girlfriend
 			if (stage.gf != NULL)
 				stage.gf->tick(stage.gf);
+
+			//Tick opponent2
+			if (stage.opponent2 != NULL)
+				stage.opponent2->tick(stage.opponent2);
 			
 			//Tick background objects
 			ObjectList_Tick(&stage.objlist_bg);

@@ -61,6 +61,8 @@
 			<dir name = "world2">
 				<!-- Background art -->
 				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+
+				<file name = "ship.arc" type = "data" source = "iso/backgrounds/airship/back.arc"/>
 				
 				<!-- Deep Deep Voyage chart -->
 				<file name = "2.1.cht" type = "data" source = "iso/chart/world2/deep-deep-voyage.json.cht"/>
@@ -118,6 +120,12 @@
 				
 				<!-- Mario assets -->
 				<file name = "mario.arc" type = "data" source = "iso/characters/mario/main.arc"/>
+
+				<!-- Bowser assets -->
+				<file name = "koopa.arc" type = "data" source = "iso/characters/bowser/main.arc"/>
+
+				<!-- Blaster Bro assets -->
+				<file name = "blast.arc" type = "data" source = "iso/characters/blaster/main.arc"/>
 			</dir>
 		    
 			<!-- Sound effect -->

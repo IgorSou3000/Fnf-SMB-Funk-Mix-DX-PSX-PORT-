@@ -3,6 +3,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_1_New,
@@ -18,6 +19,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{NULL},
 		{NULL},
 		
 		//Stage background
@@ -35,6 +37,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_1_New,
@@ -50,6 +53,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
 		{NULL},
 		
 		//Stage background
@@ -67,6 +71,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_2_New,
@@ -80,12 +85,13 @@
 	},
 	{ //StageId_W2_3 (Koopa Armada)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{Char_BF_New,    FIXED_DEC(131,1),  FIXED_DEC(66,1)},
+		{Char_Bowser_New, FIXED_DEC(-95,1),  FIXED_DEC(-25,1)},
 		{NULL},
+		{Char_BlasterBro_New, FIXED_DEC(-155,1), FIXED_DEC(-13,1)},
 		
 		//Stage background
-		Back_World1_1_New,
+		Back_World2_3_New,
 		
 		//Song info
 		{FIXED_DEC(28,10)},
@@ -98,6 +104,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
 		{NULL},
 		
 		//Stage background
@@ -115,6 +122,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_2_New,
@@ -130,6 +138,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
 		{NULL},
 		
 		//Stage background
@@ -147,6 +156,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_1_New,
@@ -162,6 +172,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{NULL},
 		{NULL},
 		
 		//Stage background
@@ -179,6 +190,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_1_New,
@@ -194,6 +206,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
 		{NULL},
 		
 		//Stage background
@@ -211,6 +224,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_2_New,
@@ -227,6 +241,7 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
 		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_World1_1_New,
@@ -242,6 +257,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
 		{NULL},
 		
 		//Stage background

@@ -13,6 +13,9 @@ all: \
 	iso/characters/bf/main.arc \
 	iso/characters/mario/main.arc \
 	iso/backgrounds/world1/back.arc \
+	iso/backgrounds/airship/back.arc \
+	iso/characters/blaster/main.arc \
+	iso/characters/bowser/main.arc \
 
 iso/%.tim: iso/%.png
 	tools/funkintimconv/funkintimconv $@ $<
@@ -29,5 +32,12 @@ iso/characters/bf/main.arc: iso/characters/bf/bf-small.tim iso/characters/bf/bf.
 # Mario
 iso/characters/mario/main.arc: iso/characters/mario/mario-s.tim iso/characters/mario/mario.tim iso/characters/mario/mario-f.tim
 
+# Bowser
+iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
+
 # World 1
 iso/backgrounds/world1/back.arc: iso/backgrounds/world1/back0.tim iso/backgrounds/world1/back1.tim
+
+# Airship
+iso/backgrounds/airship/back.arc: iso/backgrounds/airship/ship.tim
+iso/characters/blaster/main.arc: iso/characters/blaster/blaster.tim
