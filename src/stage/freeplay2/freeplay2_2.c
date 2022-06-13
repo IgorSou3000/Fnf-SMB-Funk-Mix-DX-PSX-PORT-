@@ -4,15 +4,15 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-#include "world2_3.h"
+#include "freeplay2_2.h"
 
 #include "../../archive.h"
 #include "../../mem.h"
 #include "../../stage.h"
 
-//Bowser's airship
+//Ghost's house
 
-//Airship background structure
+//Ghost background structure
 typedef struct
 {
 	//Stage background base structure
@@ -20,23 +20,12 @@ typedef struct
 	
 	//Textures
 	Gfx_Tex tex_back0; //The ship itself
-} Back_World2_3;
+} Back_Freeplay2_2;
 
-//World 1 background functions
-void Back_World2_3_DrawBG(StageBack *back) // Mushroom Plain
+//Freeplay2 background functions
+void Back_Freeplay2_2_DrawBG(StageBack *back) //Boo blitz
 {
-	Back_World2_3 *this = (Back_World2_3*)back;
-	
-	fixed_t fx, fy;
-	
-	//Draw background
-	fx = stage.camera.x;
-	fy = stage.camera.y;
-}
-
-void Back_World2_3_DrawFG(StageBack *back) //ship
-{
-	Back_World2_3 *this = (Back_World2_3*)back;
+	Back_Freeplay2_2 *this = (Back_Freeplay2_2*)back;
 
 	fixed_t fx, fy;
 	
@@ -55,33 +44,31 @@ void Back_World2_3_DrawFG(StageBack *back) //ship
 	Stage_DrawTex(&this->tex_back0, &back_src, &back_dst, stage.camera.bzoom);
 }
 
-void Back_World2_3_Free(StageBack *back)
+void Back_Freeplay2_2_Free(StageBack *back)
 {
-	Back_World2_3 *this = (Back_World2_3*)back;
+	Back_Freeplay2_2 *this = (Back_Freeplay2_2*)back;
 	
 	//Free structure
 	Mem_Free(this);
 }
 
-StageBack *Back_World2_3_New(void)
+StageBack *Back_Freeplay2_2_New(void)
 {
 	//Allocate background structure
-	Back_World2_3 *this = (Back_World2_3*)Mem_Alloc(sizeof(Back_World2_3));
+	Back_Freeplay2_2 *this = (Back_Freeplay2_2*)Mem_Alloc(sizeof(Back_Freeplay2_2));
 	if (this == NULL)
 		return NULL;
 	
 	//Set background functions
-	this->back.draw_fg = Back_World2_3_DrawFG;
+	this->back.draw_fg = NULL;
 	this->back.draw_md = NULL;
-	this->back.draw_bg = Back_World2_3_DrawBG;
-	this->back.free = Back_World2_3_Free;
+	this->back.draw_bg = Back_Freeplay2_2_DrawBG;
+	this->back.free = Back_Freeplay2_2_Free;
 	
 	//Load background textures
-	IO_Data arc_back = IO_Read("\\WORLD2\\SHIP.ARC;1");
-	Gfx_LoadTex(&this->tex_back0, Archive_Find(arc_back, "ship.tim"), 0);
+	IO_Data arc_back = IO_Read("\\FREE2\\GHOST.ARC;1");
+	Gfx_LoadTex(&this->tex_back0, Archive_Find(arc_back, "bg.tim"), 0);
 	Mem_Free(arc_back);
-
-	Gfx_SetClear(0, 13, 15);
 	
 	return (StageBack*)this;
 }

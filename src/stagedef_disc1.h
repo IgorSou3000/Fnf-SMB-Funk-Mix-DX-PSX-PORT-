@@ -1,7 +1,7 @@
 	{ //StageId_W1_1 (Mushroom Plains)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(65,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(65,1)},
 		{NULL},
 		{NULL},
 		
@@ -17,8 +17,8 @@
 	},
 	{ //StageId_W1_2 (Bricks And Lifts)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(49,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(49,1)},
 		{NULL},
 		{NULL},
 		
@@ -85,10 +85,10 @@
 	},
 	{ //StageId_W2_3 (Koopa Armada)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(131,1),  FIXED_DEC(66,1)},
+		{Char_BF_New,    FIXED_DEC(131,1),  FIXED_DEC(65,1)},
 		{Char_Bowser_New, FIXED_DEC(-95,1),  FIXED_DEC(-25,1)},
 		{NULL},
-		{Char_BlasterBro_New, FIXED_DEC(-155,1), FIXED_DEC(-13,1)},
+		{Char_BlasterBro_New, FIXED_DEC(-155,1), FIXED_DEC(-12,1)},
 		
 		//Stage background
 		Back_World2_3_New,
@@ -170,13 +170,13 @@
 	},
 	{ //StageId_F2_2 (Boo Blitz)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{Char_BF_New,    FIXED_DEC(92,1),  FIXED_DEC(31,1)},
+		{Char_Boo_New, FIXED_DEC(-160,1),  FIXED_DEC(-55,1)},
 		{NULL},
 		{NULL},
 		
 		//Stage background
-		Back_World1_2_New,
+		Back_Freeplay2_2_New,
 		
 		//Song info
 		{FIXED_DEC(3,1)},

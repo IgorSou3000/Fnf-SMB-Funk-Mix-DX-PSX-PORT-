@@ -12,8 +12,10 @@ all: \
 	iso/stage/hud1weeb.tim \
 	iso/characters/bf/main.arc \
 	iso/characters/mario/main.arc \
+	iso/characters/boo/main.arc \
 	iso/backgrounds/world1/back.arc \
-	iso/backgrounds/airship/back.arc \
+	iso/backgrounds/world2/airship/back.arc \
+	iso/backgrounds/freeplay2/ghost/back.arc \
 	iso/characters/blaster/main.arc \
 	iso/characters/bowser/main.arc \
 
@@ -35,9 +37,19 @@ iso/characters/mario/main.arc: iso/characters/mario/mario-s.tim iso/characters/m
 # Bowser
 iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
 
+# Boo
+iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
+
 # World 1
 iso/backgrounds/world1/back.arc: iso/backgrounds/world1/back0.tim iso/backgrounds/world1/back1.tim
 
+# World 2
+
 # Airship
-iso/backgrounds/airship/back.arc: iso/backgrounds/airship/ship.tim
+iso/backgrounds/world2/airship/back.arc: iso/backgrounds/world2/airship/ship.tim
 iso/characters/blaster/main.arc: iso/characters/blaster/blaster.tim
+
+# Freeplay 2
+
+# Ghost
+iso/backgrounds/freeplay2/ghost/back.arc: iso/backgrounds/freeplay2/ghost/bg.tim

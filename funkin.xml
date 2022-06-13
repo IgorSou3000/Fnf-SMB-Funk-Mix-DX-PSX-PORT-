@@ -59,10 +59,8 @@
 
 			<!-- World 2 assets -->
 			<dir name = "world2">
-				<!-- Background art -->
-				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
-
-				<file name = "ship.arc" type = "data" source = "iso/backgrounds/airship/back.arc"/>
+				<!-- Backgrounds art -->
+				<file name = "ship.arc" type = "data" source = "iso/backgrounds/world2/airship/back.arc"/>
 				
 				<!-- Deep Deep Voyage chart -->
 				<file name = "2.1.cht" type = "data" source = "iso/chart/world2/deep-deep-voyage.json.cht"/>
@@ -87,8 +85,8 @@
 
 			<!-- Freeplay 2 assets -->
 			<dir name = "free2">
-				<!-- Background art -->
-				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+				<!-- Backgrounds art -->
+				<file name = "ghost.arc" type = "data" source = "iso/backgrounds/freeplay2/ghost/back.arc"/>
 				
 				<!-- Bullet Time chart -->
 				<file name = "2.1.cht" type = "data" source = "iso/chart/freeplay2/bullet-time.json.cht"/>
@@ -126,6 +124,9 @@
 
 				<!-- Blaster Bro assets -->
 				<file name = "blast.arc" type = "data" source = "iso/characters/blaster/main.arc"/>
+
+				<!-- Boo assets -->
+				<file name = "boo.arc" type = "data" source = "iso/characters/boo/main.arc"/>
 			</dir>
 		    
 			<!-- Sound effect -->
