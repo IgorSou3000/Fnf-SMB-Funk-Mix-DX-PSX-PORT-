@@ -68,6 +68,7 @@
 				<file name = "2.2.cht" type = "data" source = "iso/chart/world2/hop-hop-heights.json.cht"/>
 				<!-- Koopa Armada chart -->
 				<file name = "2.3.cht" type = "data" source = "iso/chart/world2/koopa-armada.json.cht"/>
+				<file name = "bullets.cht" type = "data" source = "iso/chart/external/bullets.json.cht"/>
 			</dir>
 
 			<!-- Freeplay 1 assets -->

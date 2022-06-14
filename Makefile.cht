@@ -3,3 +3,5 @@ all: \
 
 iso/chart/%.json.cht: iso/chart/%.json
 	tools/funkinchartpak/funkinchartpak $<
+iso/chart/external/bullets.json.cht: iso/chart/external/bullets.json
+	tools/funkinpicopak/funkinpicopak $<

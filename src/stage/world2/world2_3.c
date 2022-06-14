@@ -12,16 +12,6 @@
 
 //Bowser's airship
 
-//Airship background structure
-typedef struct
-{
-	//Stage background base structure
-	StageBack back;
-	
-	//Textures
-	Gfx_Tex tex_back0; //The ship itself
-} Back_World2_3;
-
 //World 1 background functions
 void Back_World2_3_DrawBG(StageBack *back) // Mushroom Plain
 {
@@ -80,6 +70,10 @@ StageBack *Back_World2_3_New(void)
 	IO_Data arc_back = IO_Read("\\WORLD2\\SHIP.ARC;1");
 	Gfx_LoadTex(&this->tex_back0, Archive_Find(arc_back, "ship.tim"), 0);
 	Mem_Free(arc_back);
+
+	//Load Bullets chart
+	this->bullet_chart = (u16*)IO_Read("\\WORLD2\\BULLETS.CHT;1");
+	
 
 	Gfx_SetClear(0, 13, 15);
 	
