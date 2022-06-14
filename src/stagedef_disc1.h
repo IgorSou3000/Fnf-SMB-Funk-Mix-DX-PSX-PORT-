@@ -270,3 +270,20 @@
 		
 		StageId_S_4, 0
 	},
+	{ //StageId_MX (Game Over)
+		//Characters
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{NULL},
+		{NULL},
+		
+		//Stage background
+		Back_World1_1_New,
+		
+		//Song info
+		{FIXED_DEC(28,10)},
+		1, 1,
+		XA_Game_Over, 0,
+		
+		StageId_MX, 0
+	},

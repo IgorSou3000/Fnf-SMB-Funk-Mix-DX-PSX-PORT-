@@ -23,7 +23,8 @@ typedef enum
 	XA_Free2B, //FREE2B.XA
 	XA_SecretA, //SECRETA.XA
 	XA_SecretB, //SECRETB.XA
-	
+	XA_MX, //MX.XA
+
 	XA_Max,
 } XA_File;
 
@@ -62,6 +63,9 @@ typedef enum
 	//SECRETB.XA
 	XA_Green_Screen, //Green Screen
 	XA_Balls, //Balls
+
+	//MX.XA
+	XA_Game_Over, //Game Over
 	
 	XA_TrackMax,
 } XA_Track;

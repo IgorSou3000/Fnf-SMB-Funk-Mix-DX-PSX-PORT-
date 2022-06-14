@@ -294,19 +294,9 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
 	};
 	this->score += score_inc[hit_type];
 
-	this->min_accuracy += 1;
+	this->min_accuracy += 8;
 
-	if (hit_type == 3)
-	this->max_accuracy += 4;
-
-	else if (hit_type == 2)
-	this->max_accuracy += 3;
-
-	else if (hit_type == 1)
-	this->max_accuracy += 2;
-
-	else
-	this->max_accuracy += 1;
+	this->max_accuracy += 8 + hit_type*2;
 	this->refresh_accuracy = true;
 	this->refresh_score = true;
 	
@@ -344,7 +334,7 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
 
 static void Stage_MissNote(PlayerState *this)
 {
-	this->max_accuracy += 1;
+	this->max_accuracy += 10;
 	this->refresh_accuracy = true;
 	this->miss += 1;
 	this->refresh_miss = true;
@@ -1151,14 +1141,36 @@ static void Stage_LoadChart(void)
 	char chart_path[64];
 	
 	//Use standard path convention
-	if (stage.stage_id >= StageId_F1_1 && stage.stage_id <= StageId_F2_3)
+	switch(stage.stage_id)
+	{
+	//freeplay
+	case StageId_F1_1:
+	case StageId_F1_2:
+	case StageId_F1_3:
+	case StageId_F2_1:
+	case StageId_F2_2:
+	case StageId_F2_3:
 	sprintf(chart_path, "\\FREE%d\\%d.%d.CHT;1", stage.stage_def->week, stage.stage_def->week, stage.stage_def->week_song);
+	break;
 
-	else if (stage.stage_id >= StageId_S_1 && stage.stage_id <= StageId_S_4)
+	//secret songs
+	case StageId_S_1:
+	case StageId_S_2:
+	case StageId_S_3:
+	case StageId_S_4:
 	sprintf(chart_path, "\\SECRET\\%d.%d.CHT;1", stage.stage_def->week, stage.stage_def->week_song);
+	break;
 
-	else
+	//MX song
+	case StageId_MX:
+	sprintf(chart_path, "\\MX\\%d.%d.CHT;1", stage.stage_def->week, stage.stage_def->week, stage.stage_def->week_song);
+	break;
+	
+	//story songs
+	default:
 	sprintf(chart_path, "\\WORLD%d\\%d.%d.CHT;1", stage.stage_def->week, stage.stage_def->week, stage.stage_def->week_song);
+	break;
+	}
 	
 	if (stage.chart_data != NULL)
 		Mem_Free(stage.chart_data);

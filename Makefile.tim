@@ -46,7 +46,7 @@ iso/backgrounds/world1/back.arc: iso/backgrounds/world1/back0.tim iso/background
 # World 2
 
 # Airship
-iso/backgrounds/world2/airship/back.arc: iso/backgrounds/world2/airship/ship.tim
+iso/backgrounds/world2/airship/back.arc: iso/backgrounds/world2/airship/ship.tim iso/backgrounds/world2/airship/cloud0.tim iso/backgrounds/world2/airship/cloud1.tim
 iso/characters/blaster/main.arc: iso/characters/blaster/blaster.tim
 
 # Freeplay 2

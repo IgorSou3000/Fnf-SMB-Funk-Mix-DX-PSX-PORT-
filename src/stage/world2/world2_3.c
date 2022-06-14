@@ -12,19 +12,43 @@
 
 //Bowser's airship
 
+//Airship background structure
+typedef struct
+{
+	//Stage background base structure
+	StageBack back;
+	
+	//Textures
+	Gfx_Tex tex_back0; //The ship itself
+	Gfx_Tex tex_cloud0; //cloud 0
+	Gfx_Tex tex_cloud1; //cloud 1
+
+} Back_World2_3;
+
 //World 1 background functions
-void Back_World2_3_DrawBG(StageBack *back) // Mushroom Plain
+void Back_World2_3_DrawBG(StageBack *back)
 {
 	Back_World2_3 *this = (Back_World2_3*)back;
 	
 	fixed_t fx, fy;
 	
-	//Draw background
 	fx = stage.camera.x;
 	fy = stage.camera.y;
+
+	//Draw Clouds
+
+	RECT cloud0_src = {0, 0, 224, 81};
+	RECT_FIXED cloud0_dst = {
+		FIXED_DEC(-160,1) - fx,
+		FIXED_DEC(-65,1) - fy,
+		FIXED_DEC(cloud0_src.w*2,1),
+		FIXED_DEC(cloud0_src.h*2,1)
+	};
+	
+	Stage_DrawTex(&this->tex_cloud0, &cloud0_src, &cloud0_dst, stage.camera.bzoom);
 }
 
-void Back_World2_3_DrawFG(StageBack *back) //ship
+void Back_World2_3_DrawFG(StageBack *back)
 {
 	Back_World2_3 *this = (Back_World2_3*)back;
 
@@ -69,11 +93,9 @@ StageBack *Back_World2_3_New(void)
 	//Load background textures
 	IO_Data arc_back = IO_Read("\\WORLD2\\SHIP.ARC;1");
 	Gfx_LoadTex(&this->tex_back0, Archive_Find(arc_back, "ship.tim"), 0);
+	Gfx_LoadTex(&this->tex_cloud0, Archive_Find(arc_back, "cloud0.tim"), 0);
+	Gfx_LoadTex(&this->tex_cloud1, Archive_Find(arc_back, "cloud1.tim"), 0);
 	Mem_Free(arc_back);
-
-	//Load Bullets chart
-	this->bullet_chart = (u16*)IO_Read("\\WORLD2\\BULLETS.CHT;1");
-	
 
 	Gfx_SetClear(0, 13, 15);
 	

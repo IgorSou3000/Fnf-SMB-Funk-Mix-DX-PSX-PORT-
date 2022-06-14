@@ -9,20 +9,7 @@
 
 #include "../../stage.h"
 
-//Airship background structure
-typedef struct
-{
-	//Stage background base structure
-	StageBack back;
-	
-	//Textures
-	Gfx_Tex tex_back0; //The ship itself
-
-  //Bullets chart
-  u16 *bullet_chart;
-} Back_World2_3;
-
-//World1_1 functions
+//World2_3 functions
 StageBack *Back_World2_3_New();
 
 #endif

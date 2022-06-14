@@ -40,6 +40,8 @@ static const XA_TrackDef xa_tracks[] = {
 	//SECRETB.XA
 	{XA_SecretB, XA_LENGTH(12100)}, //XA_Green_Screen
 	{XA_SecretB, XA_LENGTH(6400)}, //XA_Balls
+
+	{XA_MX, XA_LENGTH(19400)}, //XA_Game_Over
 };
 
 static const char *xa_paths[] = {
@@ -54,6 +56,7 @@ static const char *xa_paths[] = {
 	"\\MUSIC\\FREE2B.XA;1", //XA_Free2B
 	"\\MUSIC\\SECRETA.XA;1", //XA_SecretA
 	"\\MUSIC\\SECRETB.XA;1", //XA_SecretB
+	"\\MUSIC\\MX.XA;1", //XA_MX
 	NULL,
 };
 
@@ -98,6 +101,9 @@ static const XA_Mp3 xa_mp3s[] = {
 	//SECRETB.XA
 	{"green_screen", true}, //XA_Green_Screen
 	{"balls", false}, //XA_Balls
+
+	//MX.XA
+	{"game-over", true}, //XA_Game_Over
 	
 	{NULL, false}
 };

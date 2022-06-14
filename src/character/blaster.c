@@ -11,8 +11,6 @@
 #include "../stage.h"
 #include "../main.h"
 
-#include "../stage/world2/world2_3.h"
-
 //Blaster character structure
 enum
 {
@@ -32,11 +30,10 @@ typedef struct
 	
 	Gfx_Tex tex;
 	u8 frame, tex_id;
+	IO_Data bullet;
+	Note * bullet_notes;
 
-	u16 *bullets;
 } Char_Blaster;
-
-Char_Blaster ass;
 
 //Blaster character definitions
 static const CharFrame char_blaster_frame[] = {
@@ -79,33 +76,19 @@ void Char_Blaster_SetFrame(void *user, u8 frame)
 void Char_Blaster_Tick(Character *character)
 {
 	Char_Blaster *this = (Char_Blaster*)character;
-
-
-	//Initialize Pico test
-	this->bullets = ((Back_World2_3*)stage.back)->bullet_chart;
 	
+	//Perform idle dance
+	if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0)
+		Character_PerformIdle(character);
 
+	u8 anim = CharAnim_Idle;
 	if (stage.note_scroll >= 0)
 	{
-		//Scroll through Pico chart
-		u16 substep = stage.note_scroll >> FIXED_SHIFT;
-		while (substep >= ((*this->bullets) & 0x7FFF))
-		{
-			//Play animation and bump speakers
-			character->set_anim(character, ((*this->bullets) & 0x8000) ? CharAnim_Left : CharAnim_Left);
-			this->bullets++;
-		}
+		u8 *bullet_byte = (u8*)this->bullet;
+
+		//Directly use section and notes pointers
+		this->bullet_notes = (Note*)(bullet_byte + *((u16*)this->bullet));
 	}
-	else
-	{
-		//Perform idle dance
-		if (stage.song_step & 0x7)
-			Character_PerformIdle(character);
-	}
-
-
-
-
 	
 	//Animate and draw
 	Animatable_Animate(&character->animatable, (void*)this, Char_Blaster_SetFrame);
@@ -116,6 +99,7 @@ void Char_Blaster_SetAnim(Character *character, u8 anim)
 {
 	//Set animation
 	Animatable_SetAnim(&character->animatable, anim);
+	Character_CheckStartSing(character);
 }
 
 void Char_Blaster_Free(Character *character)
@@ -124,6 +108,7 @@ void Char_Blaster_Free(Character *character)
 	
 	//Free art
 	Mem_Free(this->arc_main);
+	Mem_Free(this->bullet);
 }
 
 Character *Char_BlasterBro_New(fixed_t x, fixed_t y)
@@ -156,6 +141,7 @@ Character *Char_BlasterBro_New(fixed_t x, fixed_t y)
 	
 	//Load art
 	this->arc_main = IO_Read("\\CHAR\\BLAST.ARC;1");
+	this->bullet = IO_Read("\\WORLD2\\BULLETS.CHT;1");
 	
 	const char **pathp = (const char *[]){
 		"blaster.tim", //Blaster_ArcMain_Idle0
@@ -167,8 +153,6 @@ Character *Char_BlasterBro_New(fixed_t x, fixed_t y)
 	
 	//Initialize render state
 	this->tex_id = this->frame = 0xFF;
-
-	this->bullets = ((Back_World2_3*)stage.back)->bullet_chart;
 	
 	return (Character*)this;
 }

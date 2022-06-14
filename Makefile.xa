@@ -10,6 +10,7 @@ all: \
   iso/music/freeplay2/freeplay2b.xa \
   iso/music/secret/secreta.xa \
   iso/music/secret/secretb.xa \
+  iso/music/mx/mx.xa \
 
 # XA converts
 iso/music/%.xa: iso/music/%.ogg
@@ -34,3 +35,5 @@ iso/music/freeplay2/freeplay2b.xa: iso/music/freeplay2/cross-console-clashi.xa i
 
 iso/music/secret/secreta.xa: iso/music/secret/wrong-warpi.xa iso/music/secret/wrong-warpv.xa iso/music/secret/first-leveli.xa iso/music/secret/first-levelv.xa
 iso/music/secret/secretb.xa: iso/music/secret/green-screeni.xa iso/music/secret/green-screenv.xa iso/music/secret/balls.xa iso/music/secret/balls.xa
+
+iso/music/mx/mx.xa: iso/music/mx/game-overi.xa iso/music/mx/game-overv.xa

@@ -770,6 +770,7 @@ void Menu_Tick(void)
 				{StageId_S_2, 0xFF9271FD, "FIRST LEVEL : )"},
 				{StageId_S_3, 0xFF9271FD, "GREEN SCREEN"},
 				{StageId_S_4, 0xFF9271FD, "BALLS"},
+				{StageId_MX, 0xFF9271FD, "GAME OVER"},
 			};
 			
 			//Initialize page

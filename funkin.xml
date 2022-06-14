@@ -111,6 +111,12 @@
 				<!-- Balls chart -->
 				<file name = "1.4.cht" type = "data" source = "iso/chart/secret/balls.json.cht"/>
 			</dir>
+
+			<!--MX assets -->
+			<dir name = "mx">
+				<!-- Game Over chart -->
+				<file name = "1.1.cht" type = "data" source = "iso/chart/mx/game-over.json.cht"/>
+			</dir>
 		
 			<!-- Character assets -->
 			<dir name = "char">
@@ -164,6 +170,8 @@
 				<file name = "secreta.xa" type = "xa" source = "iso/music/secret/secreta.xa"/>
 				<dummy sectors="128"/>
 				<file name = "secretb.xa" type = "xa" source = "iso/music/secret/secretb.xa"/>
+				<dummy sectors="128"/>
+				<file name = "mx.xa" type = "xa" source = "iso/music/mx/mx.xa"/>
 				<dummy sectors="128"/>
 			</dir>
 			

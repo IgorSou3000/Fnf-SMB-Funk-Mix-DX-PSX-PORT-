@@ -62,6 +62,8 @@ typedef enum
 	StageId_S_2, //First Level
 	StageId_S_3, //Green Screen
 	StageId_S_4, //Balls
+
+	StageId_MX, //Game Over
 	
 	StageId_Max
 } StageId;
@@ -183,6 +185,7 @@ typedef struct
 	//HUD textures
 	Gfx_Tex tex_hud0, tex_bg;
 
+	//3 2 1 stuff
 	u8 soundcooldown;
 	boolean playedsound;
 
