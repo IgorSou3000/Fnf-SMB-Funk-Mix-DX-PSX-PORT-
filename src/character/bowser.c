@@ -39,24 +39,24 @@ static const CharFrame char_bowser_frame[] = {
 	{Bowser_ArcMain_Main, { 76,   0,  35,  32}, {  0, 3}}, //2 idle 3
 	{Bowser_ArcMain_Main, {114,   0,  35,  32}, {  1, 3}}, //3 idle 4
 
-	{Bowser_ArcMain_Main, {152,   0,  27,  33}, {  0, 0}}, //4 left 1
-	{Bowser_ArcMain_Main, {182,   0,  28,  33}, {  0, 0}}, //5 left 2
-	{Bowser_ArcMain_Main, {213,   0,  28,  33}, {  0, 0}}, //6 left 3
+	{Bowser_ArcMain_Main, {152,   0,  27,  33}, {  5, 4}}, //4 left 1
+	{Bowser_ArcMain_Main, {182,   0,  28,  33}, {  4, 4}}, //5 left 2
+	{Bowser_ArcMain_Main, {213,   0,  28,  33}, {  4, 4}}, //6 left 3
 
-	{Bowser_ArcMain_Main, {  0,  36,  39,  22}, {  0, 0}}, //7 down 1
-	{Bowser_ArcMain_Main, { 42,  36,  38,  24}, {  0, 0}}, //8 down 2
-	{Bowser_ArcMain_Main, { 83,  36,  36,  25}, {  0, 0}}, //9 down 3
+	{Bowser_ArcMain_Main, {  0,  36,  39,  22}, {  3,-7}}, //7 down 1
+	{Bowser_ArcMain_Main, { 42,  36,  38,  24}, {  3,-5}}, //8 down 2
+	{Bowser_ArcMain_Main, { 83,  36,  36,  25}, {  2,-4}}, //9 down 3
 
-	{Bowser_ArcMain_Main, {122,  36,  29,  36}, {  0, 0}}, //10 up 1
-	{Bowser_ArcMain_Main, {154,  36,  30,  34}, {  0, 0}}, //11 up 2
-	{Bowser_ArcMain_Main, {187,  36,  30,  34}, {  0, 0}}, //12 up 3
-	{Bowser_ArcMain_Main, {220,  36,  30,  34}, {  0, 0}}, //13 up 4
-	{Bowser_ArcMain_Main, {  0,  75,  30,  34}, {  0, 0}}, //14 up 5
-	{Bowser_ArcMain_Main, { 33,  75,  30,  34}, {  0, 0}}, //15 up 6
+	{Bowser_ArcMain_Main, {122,  36,  29,  36}, {  2, 7}}, //10 up 1
+	{Bowser_ArcMain_Main, {154,  36,  30,  34}, {  2, 5}}, //11 up 2
+	{Bowser_ArcMain_Main, {187,  36,  30,  34}, {  2, 5}}, //12 up 3
+	{Bowser_ArcMain_Main, {220,  36,  30,  34}, {  2, 5}}, //13 up 4
+	{Bowser_ArcMain_Main, {  0,  75,  30,  34}, {  2, 5}}, //14 up 5
+	{Bowser_ArcMain_Main, { 33,  75,  30,  34}, {  2, 5}}, //15 up 6
 
-	{Bowser_ArcMain_Main, { 66,  75,  35,  31}, {  0, 0}}, //16 right 1
-	{Bowser_ArcMain_Main, {104,  75,  34,  31}, {  0, 0}}, //17 right 2
-	{Bowser_ArcMain_Main, {141,  75,  33,  32}, {  0, 0}}, //18 right 3
+	{Bowser_ArcMain_Main, { 66,  75,  35,  31}, { -2, 2}}, //16 right 1
+	{Bowser_ArcMain_Main, {104,  75,  34,  31}, { -1, 2}}, //17 right 2
+	{Bowser_ArcMain_Main, {141,  75,  33,  32}, { -1, 3}}, //18 right 3
 };
 
 static const Animation char_bowser_anim[CharAnim_Max] = {
