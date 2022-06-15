@@ -41,6 +41,7 @@
 				<file name = "hud1.tim" type = "data" source = "iso/stage/hud1.tim"/>
 				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0weeb.tim"/>
 				<file name = "hud1weeb.tim" type = "data" source = "iso/stage/hud1weeb.tim"/>
+				<file name = "hud0maro.tim" type = "data" source = "iso/stage/hud0maro.tim"/>
 				<file name = "bg.tim" type = "data" source = "iso/stage/bg.tim"/>
 			</dir>
 			

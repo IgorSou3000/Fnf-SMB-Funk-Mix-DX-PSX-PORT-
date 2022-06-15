@@ -1314,7 +1314,7 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 	stage.story = story;
 	
 	//Load HUD textures
-	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0.TIM;1"), GFX_LOADTEX_FREE);
+	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0MARO.TIM;1"), GFX_LOADTEX_FREE);
 	Gfx_LoadTex(&stage.tex_bg, IO_Read("\\STAGE\\BG.TIM;1"), GFX_LOADTEX_FREE);
 	//Load stage background
 	Stage_LoadStage();
