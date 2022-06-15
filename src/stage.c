@@ -79,6 +79,7 @@ static u32 Sounds[4];
 #include "stage/world1/world1_1.h"
 #include "stage/world1/world1_2.h"
 
+#include "stage/world2/world2_2.h"
 #include "stage/world2/world2_3.h"
 #include "stage/freeplay2/freeplay2_2.h"
 

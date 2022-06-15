@@ -68,13 +68,13 @@
 	},
 	{ //StageId_W2_2 (Hop Hop Heights)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(50,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(50,1)},
+		{Char_BF_New,    FIXED_DEC(90,1),  FIXED_DEC(76,1)},
+		{Char_Mario_New, FIXED_DEC(-90,1),  FIXED_DEC(12,1)},
 		{NULL},
 		{NULL},
 		
 		//Stage background
-		Back_World1_2_New,
+		Back_World2_2_New,
 		
 		//Song info
 		{FIXED_DEC(28,10)},

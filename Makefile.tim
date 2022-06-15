@@ -15,6 +15,7 @@ all: \
 	iso/characters/mario/main.arc \
 	iso/characters/boo/main.arc \
 	iso/backgrounds/world1/back.arc \
+	iso/backgrounds/world2/athletic/back.arc \
 	iso/backgrounds/world2/airship/back.arc \
 	iso/backgrounds/freeplay2/ghost/back.arc \
 	iso/characters/blaster/main.arc \
@@ -45,6 +46,9 @@ iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1
 iso/backgrounds/world1/back.arc: iso/backgrounds/world1/back0.tim iso/backgrounds/world1/back1.tim
 
 # World 2
+
+# Athletic
+iso/backgrounds/world2/athletic/back.arc: iso/backgrounds/world2/athletic/back.tim
 
 # Airship
 iso/backgrounds/world2/airship/back.arc: iso/backgrounds/world2/airship/ship.tim iso/backgrounds/world2/airship/cloud0.tim iso/backgrounds/world2/airship/cloud1.tim

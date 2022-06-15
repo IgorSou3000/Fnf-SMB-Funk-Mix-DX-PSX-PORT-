@@ -20,6 +20,7 @@ SRCS = src/main.c \
        src/stage/dummy.c \
        src/stage/world1/world1_1.c \
        src/stage/world1/world1_2.c \
+       src/stage/world2/world2_2.c \
        src/stage/world2/world2_3.c \
        src/stage/freeplay2/freeplay2_2.c \
        src/animation.c \

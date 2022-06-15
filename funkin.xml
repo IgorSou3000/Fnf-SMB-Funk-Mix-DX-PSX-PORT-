@@ -61,6 +61,7 @@
 			<!-- World 2 assets -->
 			<dir name = "world2">
 				<!-- Backgrounds art -->
+				<file name = "athletic.arc" type = "data" source = "iso/backgrounds/world2/athletic/back.arc"/>
 				<file name = "ship.arc" type = "data" source = "iso/backgrounds/world2/airship/back.arc"/>
 				
 				<!-- Deep Deep Voyage chart -->
