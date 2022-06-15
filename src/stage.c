@@ -1810,6 +1810,7 @@ void Stage_Tick(void)
 						if (playing && (note->type & NOTE_FLAG_OPPONENT) && !(note->type & NOTE_FLAG_HIT) && !(note->type & NOTE_FLAG_MINE))
 						{
 							//Opponent hits note
+							stage.player_state[1].arrow_hitan[note->type & 0x3] = stage.step_time;
 							Stage_StartVocal();
 							if (note->type & NOTE_FLAG_SUSTAIN)
 								opponent_snote = note_anims[note->type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0];

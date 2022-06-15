@@ -23,6 +23,9 @@ typedef struct
 	Gfx_Tex tex_cloud0; //cloud 0
 	Gfx_Tex tex_cloud1; //cloud 1
 
+	//variable for clouds moviment
+	s16 cloudsmove;
+
 } Back_World2_3;
 
 //World 1 background functions
@@ -35,17 +38,33 @@ void Back_World2_3_DrawBG(StageBack *back)
 	fx = stage.camera.x;
 	fy = stage.camera.y;
 
-	//Draw Clouds
+	//increase this for cloud move
+	this->cloudsmove--;
 
-	RECT cloud0_src = {0, 0, 224, 81};
-	RECT_FIXED cloud0_dst = {
-		FIXED_DEC(-160,1) - fx,
+	if (this->cloudsmove <= -895)
+	this->cloudsmove = 0;
+
+	//Draw Clouds
+	RECT cloud_src = {0, 0, 224, 81};
+	RECT_FIXED cloud_dst = {
+		FIXED_DEC(-160 + this->cloudsmove,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(cloud0_src.w*2,1),
-		FIXED_DEC(cloud0_src.h*2,1)
+		FIXED_DEC(cloud_src.w*2,1),
+		FIXED_DEC(cloud_src.h*2,1)
 	};
-	
-	Stage_DrawTex(&this->tex_cloud0, &cloud0_src, &cloud0_dst, stage.camera.bzoom);
+	Stage_DrawTex(&this->tex_cloud0, &cloud_src, &cloud_dst, stage.camera.bzoom);
+
+	FntPrint("cloud x %d", this->cloudsmove);
+
+	//since cloud 0 and cloud 1 have da same width height and shit,i just changed da x and which image use
+	cloud_dst.x += cloud_dst.w - FIXED_DEC(1,1);
+
+	Stage_DrawTex(&this->tex_cloud1, &cloud_src, &cloud_dst, stage.camera.bzoom);
+
+	cloud_dst.x += cloud_dst.w - FIXED_DEC(1,1);
+
+	//draw cloud 0 again but with a different x for make a decent loop
+	Stage_DrawTex(&this->tex_cloud0, &cloud_src, &cloud_dst, stage.camera.bzoom);
 }
 
 void Back_World2_3_DrawFG(StageBack *back)
