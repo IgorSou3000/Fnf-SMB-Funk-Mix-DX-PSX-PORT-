@@ -23,6 +23,7 @@ SRCS = src/main.c \
        src/stage/world2/world2_2.c \
        src/stage/world2/world2_3.c \
        src/stage/freeplay2/freeplay2_2.c \
+       src/stage/world1/world1_1pc.c \
        src/animation.c \
        src/character.c \
        src/character/bf.c \
@@ -31,6 +32,7 @@ SRCS = src/main.c \
        src/character/bowser.c \
        src/character/blaster.c \
        src/character/boo.c \
+       src/character/mx.c \
        src/object.c \
        src/object/combo.c \
        src/object/splash.c \

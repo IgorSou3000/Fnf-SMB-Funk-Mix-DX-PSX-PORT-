@@ -8,6 +8,7 @@ all: \
 	iso/stage/hud0.tim \
 	iso/stage/hud1.tim \
 	iso/stage/hud0maro.tim \
+	iso/stage/hud0pc.tim \
 	iso/stage/bg.tim \
 	iso/stage/hud0weeb.tim \
 	iso/stage/hud1weeb.tim \
@@ -18,8 +19,10 @@ all: \
 	iso/backgrounds/world2/athletic/back.arc \
 	iso/backgrounds/world2/airship/back.arc \
 	iso/backgrounds/freeplay2/ghost/back.arc \
+	iso/backgrounds/world1/pc/back.arc \
 	iso/characters/blaster/main.arc \
 	iso/characters/bowser/main.arc \
+	iso/characters/mx/main.arc \
 
 iso/%.tim: iso/%.png
 	tools/funkintimconv/funkintimconv $@ $<
@@ -38,6 +41,9 @@ iso/characters/mario/main.arc: iso/characters/mario/mario-s.tim iso/characters/m
 
 # Bowser
 iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
+
+# MX
+iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim
 
 # Boo
 iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
@@ -58,3 +64,8 @@ iso/characters/blaster/main.arc: iso/characters/blaster/blaster.tim
 
 # Ghost
 iso/backgrounds/freeplay2/ghost/back.arc: iso/backgrounds/freeplay2/ghost/bg.tim
+
+
+
+# MX
+iso/backgrounds/world1/pc/back.arc: iso/backgrounds/world1/pc/goal.tim

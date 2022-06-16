@@ -42,6 +42,7 @@
 				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0weeb.tim"/>
 				<file name = "hud1weeb.tim" type = "data" source = "iso/stage/hud1weeb.tim"/>
 				<file name = "hud0maro.tim" type = "data" source = "iso/stage/hud0maro.tim"/>
+				<file name = "hud0pc.tim" type = "data" source = "iso/stage/hud0pc.tim"/>
 				<file name = "bg.tim" type = "data" source = "iso/stage/bg.tim"/>
 			</dir>
 			
@@ -56,6 +57,9 @@
 				<file name = "1.2.cht" type = "data" source = "iso/chart/world1/bricks-and-lifts.json.cht"/>
 				<!-- Lethal Lava Lair chart -->
 				<file name = "1.3.cht" type = "data" source = "iso/chart/world1/lethal-lava-lair.json.cht"/>
+
+				<!-- PC port art -->
+				<file name = "pc.arc" type = "data" source = "iso/backgrounds/world1/pc/back.arc"/>
 			</dir>
 
 			<!-- World 2 assets -->
@@ -136,6 +140,9 @@
 
 				<!-- Boo assets -->
 				<file name = "boo.arc" type = "data" source = "iso/characters/boo/main.arc"/>
+
+				<!-- MX assets -->
+				<file name = "mx.arc" type = "data" source = "iso/characters/mx/main.arc"/>
 			</dir>
 		    
 			<!-- Sound effect -->

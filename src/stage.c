@@ -63,6 +63,27 @@ static const u8 note_anims[4][3] = {
 	{CharAnim_Right, CharAnim_RightAlt, PlayerAnim_RightMiss},
 };
 
+//Just for MX shit, swaps the position of player 1 and 2's notes
+void Stage_Note_Move(void)
+{
+	//swap hud if game over
+	if (stage.stage_id == StageId_MX)
+	{
+		note_x[0] = FIXED_DEC(-128,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		note_x[1] = FIXED_DEC(-94,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		note_x[2] = FIXED_DEC(-60,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		note_x[3] = FIXED_DEC(-26,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		note_x[4] = FIXED_DEC(26,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		note_x[5] = FIXED_DEC(60,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		note_x[6] = FIXED_DEC(94,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		note_x[7] = FIXED_DEC(128,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+	}
+	else
+	{
+		//:)
+	}
+}
+
 
 
 //Stage definitions
@@ -75,13 +96,17 @@ static u32 Sounds[4];
 #include "character/bowser.h"
 #include "character/blaster.h"
 #include "character/boo.h"
+#include "character/mx.h"
 
 #include "stage/world1/world1_1.h"
 #include "stage/world1/world1_2.h"
 
 #include "stage/world2/world2_2.h"
 #include "stage/world2/world2_3.h"
+
 #include "stage/freeplay2/freeplay2_2.h"
+
+#include "stage/world1/world1_1pc.h"
 
 static const StageDef stage_defs[StageId_Max] = {
 	#include "stagedef_disc1.h"
@@ -377,7 +402,10 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 			//Hit the note
 			note->type |= NOTE_FLAG_HIT;
 			
-			this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
+			if (stage.ignore_note == 0)
+			{
+				this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
+			}
 
 			u8 hit_type = Stage_HitNote(this, type, stage.note_scroll - note_fp);
 			this->arrow_hitan[type & 0x3] = stage.step_time;
@@ -443,8 +471,11 @@ static void Stage_SustainCheck(PlayerState *this, u8 type)
 		
 		//Hit the note
 		note->type |= NOTE_FLAG_HIT;
-		
-		this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
+		if (stage.ignore_note == 0)
+		{
+			this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
+			break;
+		}
 		
 		Stage_StartVocal();
 		this->arrow_hitan[type & 0x3] = stage.step_time;
@@ -1315,7 +1346,10 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 	stage.story = story;
 	
 	//Load HUD textures
-	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0MARO.TIM;1"), GFX_LOADTEX_FREE);
+	if (stage.stage_id == StageId_MX)
+		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0PC.TIM;1"), GFX_LOADTEX_FREE);
+	else
+		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0MARO.TIM;1"), GFX_LOADTEX_FREE);
 	Gfx_LoadTex(&stage.tex_bg, IO_Read("\\STAGE\\BG.TIM;1"), GFX_LOADTEX_FREE);
 	//Load stage background
 	Stage_LoadStage();
@@ -1624,6 +1658,8 @@ void Stage_Tick(void)
 					Stage_MoveChar();
 					break;
 			}
+
+			Stage_Note_Move();
 			
 			
 				const fixed_t interp_int = FIXED_UNIT * 8 / 75;
@@ -1820,11 +1856,13 @@ void Stage_Tick(void)
 							note->type |= NOTE_FLAG_HIT;
 						}
 					}
-					
-					if (opponent_anote != CharAnim_Idle)
-						stage.opponent->set_anim(stage.opponent, opponent_anote);
-					else if (opponent_snote != CharAnim_Idle)
-						stage.opponent->set_anim(stage.opponent, opponent_snote);
+					if (stage.ignore_note == 0)
+					{
+						if (opponent_anote != CharAnim_Idle)
+							stage.opponent->set_anim(stage.opponent, opponent_anote);
+						else if (opponent_snote != CharAnim_Idle)
+							stage.opponent->set_anim(stage.opponent, opponent_snote);
+					}
 					break;
 				}
 				case StageMode_2P:

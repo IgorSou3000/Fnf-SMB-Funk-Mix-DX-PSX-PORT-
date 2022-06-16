@@ -34,7 +34,7 @@ void Back_World2_2_DrawBG(StageBack *back)
 	fy = stage.camera.y;
 
 	//Draw Clud
-	RECT clud_src = {0, 114, 32, 24};
+	RECT clud_src = {0, 114, 32, 24}; //shoutout to UNSTOPP4BLE for pointing out that the src.y isn't 144 lmao
 	RECT_FIXED clud_dst = {
 		FIXED_DEC(-84,1),
 		FIXED_DEC(-62,1),
