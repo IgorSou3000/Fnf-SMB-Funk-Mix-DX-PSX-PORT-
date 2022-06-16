@@ -63,11 +63,34 @@ static const u8 note_anims[4][3] = {
 	{CharAnim_Right, CharAnim_RightAlt, PlayerAnim_RightMiss},
 };
 
-//Just for MX shit, swaps the position of player 1 and 2's notes
-void Stage_Note_Move(void)
+//Load Notes position
+void Stage_Load_Notes(void)
 {
-	//swap hud if game over
-	if (stage.stage_id == StageId_MX)
+	//repeating da normal note position to not fuck middlescroll
+	//bf
+	note_x[0] = FIXED_DEC(26,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+	note_x[1] = FIXED_DEC(60,1) + FIXED_DEC(SCREEN_WIDEADD,4); //+34
+	note_x[2] = FIXED_DEC(94,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+	note_x[3] = FIXED_DEC(128,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+	//opponent
+	note_x[4] = FIXED_DEC(-128,1) - FIXED_DEC(SCREEN_WIDEADD,4);
+	note_x[5] = FIXED_DEC(-94,1) - FIXED_DEC(SCREEN_WIDEADD,4); //+34
+	note_x[6] = FIXED_DEC(-60,1) - FIXED_DEC(SCREEN_WIDEADD,4);
+	note_x[7] = FIXED_DEC(-26,1) - FIXED_DEC(SCREEN_WIDEADD,4);
+
+	//middle note x
+	if(stage.middlescroll)
+	{
+	 //bf
+	for (u8 i = 0; i < 4; i++)
+	note_x[i] -= FIXED_DEC(78,1);
+	 //opponent
+	 for (u8 i = 4; i < 8; i++)
+	 note_x[i] = FIXED_DEC(-400,1) - FIXED_DEC(SCREEN_WIDEADD,4);
+	}
+
+	//swap note if game over
+	else if (stage.stage_id == StageId_MX)
 	{
 		note_x[0] = FIXED_DEC(-128,1) + FIXED_DEC(SCREEN_WIDEADD,4);
 		note_x[1] = FIXED_DEC(-94,1) + FIXED_DEC(SCREEN_WIDEADD,4);
@@ -78,10 +101,22 @@ void Stage_Note_Move(void)
 		note_x[6] = FIXED_DEC(94,1) + FIXED_DEC(SCREEN_WIDEADD,4);
 		note_x[7] = FIXED_DEC(128,1) + FIXED_DEC(SCREEN_WIDEADD,4);
 	}
+
+
+	//normal note
 	else
-	{
-		//:)
-	}
+		{
+		 //bf
+		 note_x[0] = FIXED_DEC(26,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		 note_x[1] = FIXED_DEC(60,1) + FIXED_DEC(SCREEN_WIDEADD,4); //+34
+		 note_x[2] = FIXED_DEC(94,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		 note_x[3] = FIXED_DEC(128,1) + FIXED_DEC(SCREEN_WIDEADD,4);
+		 //opponent
+		 note_x[4] = FIXED_DEC(-128,1) - FIXED_DEC(SCREEN_WIDEADD,4);
+		 note_x[5] = FIXED_DEC(-94,1) - FIXED_DEC(SCREEN_WIDEADD,4); //+34
+		 note_x[6] = FIXED_DEC(-60,1) - FIXED_DEC(SCREEN_WIDEADD,4);
+		 note_x[7] = FIXED_DEC(-26,1) - FIXED_DEC(SCREEN_WIDEADD,4);
+		}
 }
 
 
@@ -426,7 +461,7 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 			//Hit the mine
 			note->type |= NOTE_FLAG_HIT;
 	
-			this->life--;
+			this->character->powerup--;
 
 			if (this->character->spec & CHAR_SPEC_MISSANIM)
 				this->character->set_anim(this->character, note_anims[type & 0x3][2]);
@@ -449,7 +484,7 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 			this->character->set_anim(this->character, note_anims[type & 0x3][0]);
 		Stage_MissNote(this);
 		
-		this->life--;
+		this->character->powerup--;
 		this->score -= 1;
 		this->refresh_score = true;
 	}
@@ -920,7 +955,7 @@ static void Stage_DrawNotes(void)
 					//Missed note
 					Stage_CutVocal();
 					Stage_MissNote(this);
-					this->life--;
+					this->character->powerup--;
 					
 				}
 			}
@@ -1016,8 +1051,8 @@ static void Stage_DrawNotes(void)
 					continue;
 				
 				//Draw note body
-				note_src.x = 192 + ((note->type & 0x1) << 5);
-				note_src.y = (note->type & 0x2) << 4;
+				note_src.x = 192;
+				note_src.y = 192;
 				note_src.w = 32;
 				note_src.h = 32;
 				
@@ -1032,29 +1067,7 @@ static void Stage_DrawNotes(void)
 				if (stage.middlescroll && note->type & NOTE_FLAG_OPPONENT)
 					Stage_BlendTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump, 1);
 				else
-					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
-				
-				//Draw note fire
-				note_src.x = 192 + ((animf_count & 0x1) << 5);
-				note_src.y = 64 + ((animf_count & 0x2) * 24);
-				note_src.w = 32;
-				note_src.h = 48;
-					
-				if (stage.downscroll)
-				{
-					note_dst.y += note_dst.h;
-					note_dst.h = note_dst.h * -3 / 2;
-				}
-				else
-				{
-					note_dst.h = note_dst.h * 3 / 2;
-				}
-				//draw for opponent
-				if (stage.middlescroll && note->type & NOTE_FLAG_OPPONENT)
-					Stage_BlendTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump, 1);
-				else
-					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
-				
+					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);	
 			}
 			else
 			{
@@ -1315,11 +1328,14 @@ static void Stage_LoadState(void)
 	stage.player_state[1].character = stage.opponent;
 	stage.soundcooldown = 0;
 	stage.playedsound = false;
+
+	//reseting this for avoid bugs
+	stage.ignore_note = 0;
 	for (int i = 0; i < 2; i++)
 	{
 		memset(stage.player_state[i].arrow_hitan, 0, sizeof(stage.player_state[i].arrow_hitan));
 		
-		stage.player_state[i].life = 3;
+		stage.player_state[i].character->powerup = 3;
 		stage.player_state[i].combo = 0;
 		stage.player_state[i].miss = 0;
 		stage.player_state[i].accuracy = 0;
@@ -1356,6 +1372,9 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 
 	//Load SFX
 	Stage_LoadSFX();
+
+	//Load Notes Position
+	Stage_Load_Notes();
 
 	//load fonts
 	FontData_Load(&stage.font_smb1, Font_SMB1);
@@ -1572,38 +1591,8 @@ void Stage_Tick(void)
 	{
 		case StageState_Play:
 		{  
-			//middle note x
-			if(stage.middlescroll)
-			{
-				//bf
-				note_x[0] = FIXED_DEC(26 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[1] = FIXED_DEC(60 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4); //+34
-				note_x[2] = FIXED_DEC(94 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[3] = FIXED_DEC(128 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4);
-				//opponent
-				note_x[4] = FIXED_DEC(-50 - 78,1) - FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[5] = FIXED_DEC(-16 - 78,1) - FIXED_DEC(SCREEN_WIDEADD,4); //+34
-				note_x[6] = FIXED_DEC(170 - 78,1) - FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[7] = FIXED_DEC(204 - 78,1) - FIXED_DEC(SCREEN_WIDEADD,4);
-			}
-			else
-			{
-				//bf
-				note_x[0] = FIXED_DEC(26,1) + FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[1] = FIXED_DEC(60,1) + FIXED_DEC(SCREEN_WIDEADD,4); //+34
-				note_x[2] = FIXED_DEC(94,1) + FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[3] = FIXED_DEC(128,1) + FIXED_DEC(SCREEN_WIDEADD,4);
-				//opponent
-				note_x[4] = FIXED_DEC(-128,1) - FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[5] = FIXED_DEC(-94,1) - FIXED_DEC(SCREEN_WIDEADD,4); //+34
-				note_x[6] = FIXED_DEC(-60,1) - FIXED_DEC(SCREEN_WIDEADD,4);
-				note_x[7] = FIXED_DEC(-26,1) - FIXED_DEC(SCREEN_WIDEADD,4);
-			}
-
-
-
 			Stage_CountDown();
-			if (stage.botplay == 1)
+			if (stage.botplay)
 			{
 				//Draw botplay
 				RECT bot_fill = {174, 225, 67, 16};
@@ -1657,10 +1646,7 @@ void Stage_Tick(void)
 					FntPrint("player4 pos X %d Y %d", stage.opponent2->x/1024, stage.opponent2->y/1024);
 					Stage_MoveChar();
 					break;
-			}
-
-			Stage_Note_Move();
-			
+			}		
 			
 				const fixed_t interp_int = FIXED_UNIT * 8 / 75;
 				if (stage.note_scroll < 0)
@@ -1953,15 +1939,15 @@ void Stage_Tick(void)
 			if (stage.mode < StageMode_2P)
 			{
 				//Perform life checks
-				if (stage.player_state[0].life <= 0)
+				if (stage.player_state[0].character->powerup <= 0)
 				{
 					//Player has died
-					stage.player_state[0].life = 0;
+					stage.player_state[0].character->powerup = 0;
 						
 					stage.state = StageState_Dead;
 				}
-				if (stage.player_state[0].life > 3)
-					stage.player_state[0].life = 3;
+				if (stage.player_state[0].character->powerup > 3)
+					stage.player_state[0].character->powerup = 3;
 			}
 			
 			//making black for cover any green
@@ -1971,9 +1957,9 @@ void Stage_Tick(void)
 			RECT bg_src = {0, 0, 160, 120};
 
 			RECT_FIXED bg_dst = {
-			FIXED_DEC(-160,1), 
+			FIXED_DEC(-161,1), 
 			FIXED_DEC(-120,1), 
-			FIXED_DEC(320,1),
+			FIXED_DEC(321,1),
 			FIXED_DEC(240,1)
 		};
 		//inverting square and using camera for move all the sprites/bg
@@ -1983,7 +1969,6 @@ void Stage_Tick(void)
 			bg_dst.y += bg_dst.h;
 			bg_dst.h = -bg_dst.h;
 			}
-
 			Stage_DrawTex(&stage.tex_bg, &bg_src, &bg_dst, stage.bump);
 			
 			//Draw stage foreground
@@ -2050,10 +2035,6 @@ void Stage_Tick(void)
 			//Change background colour to black
 			Gfx_SetClear(0, 0, 0);
 			
-			//Run death animation, focus on player, and change state
-			stage.player->set_anim(stage.player, PlayerAnim_Dead0);
-			
-			Stage_FocusCharacter(stage.player, 0);
 			stage.song_time = 0;
 			
 			stage.state = StageState_DeadLoad;
@@ -2061,50 +2042,23 @@ void Stage_Tick(void)
 	//Fallthrough
 		case StageState_DeadLoad:
 		{
-			//Scroll camera and tick player
+			//tick player
 			if (stage.song_time < FIXED_UNIT)
 				stage.song_time += FIXED_UNIT / 60;
-			stage.camera.td = FIXED_DEC(-2, 100) + FIXED_MUL(stage.song_time, FIXED_DEC(45, 1000));
-			if (stage.camera.td > 0)
-				Stage_ScrollCamera();
 			stage.player->tick(stage.player);
 			
-			//Drop mic and change state if CD has finished reading and animation has ended
-			if (IO_IsReading() || stage.player->animatable.anim != PlayerAnim_Dead1)
-				break;
-			
-			stage.player->set_anim(stage.player, PlayerAnim_Dead2);
-			stage.camera.td = FIXED_DEC(25, 1000);
 			stage.state = StageState_DeadDrop;
 			break;
 		}
 		case StageState_DeadDrop:
 		{
-			//Scroll camera and tick player
-			Stage_ScrollCamera();
+			//tick player
 			stage.player->tick(stage.player);
-			
-			//Enter next state once mic has been dropped
-			if (stage.player->animatable.anim == PlayerAnim_Dead3)
-			{
-				stage.state = StageState_DeadRetry;
-				Audio_PlayXA_Track(XA_GameOver, 0x40, 1, true);
-			}
 			break;
 		}
 		case StageState_DeadRetry:
 		{
-			//Randomly twitch
-			if (stage.player->animatable.anim == PlayerAnim_Dead3)
-			{
-				if (RandomRange(0, 29) == 0)
-					stage.player->set_anim(stage.player, PlayerAnim_Dead4);
-				if (RandomRange(0, 29) == 0)
-					stage.player->set_anim(stage.player, PlayerAnim_Dead5);
-			}
-			
-			//Scroll camera and tick player
-			Stage_ScrollCamera();
+			//tick player
 			stage.player->tick(stage.player);
 			break;
 		}

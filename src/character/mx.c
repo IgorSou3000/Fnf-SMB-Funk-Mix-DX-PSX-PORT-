@@ -12,7 +12,6 @@
 #include "../main.h"
 
 u8 phase; //for... uh... phase stuff
-boolean noidle; //for temporarily disabling idle, so animations don't end prematurely
 
 
 //MX character structure
@@ -97,22 +96,24 @@ static const Animation char_mario_anim[CharAnim_Max] = {
 	{2, (const u8[]){ 3, 4, ASCR_BACK, 1}},         //CharAnim_Down
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_DownAlt
 	{2, (const u8[]){ 5, 6, ASCR_BACK, 1}},         //CharAnim_Up
-	{2, (const u8[]){9, 10, 11, 12, ASCR_BACK, 1}},   //CharAnim_UpAlt
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
 	{2, (const u8[]){ 7, 8, ASCR_BACK, 1}},         //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){9, 10, 11, 12, ASCR_BACK, 1}},	//CharAnim_Special
 };
 
 //Phase 2 animations
 static const Animation char_near_anim[CharAnim_Max] = {
 	{3, (const u8[]){ 15, 14, 14, 14, 15, 13, 14, ASCR_BACK, 1}},         //CharAnim_Idle
 	{2, (const u8[]){ 16, 17, ASCR_BACK, 1}},         //CharAnim_Left
-	{1, (const u8[]){24, 25, 25, 26, 26, ASCR_BACK, 1}},   //CharAnim_LeftAlt (laugh 1)
+	{1, (const u8[]){24, 25, 25, 26, 26, ASCR_BACK, 1}},   //CharAnim_LeftAlt
 	{2, (const u8[]){ 18, 19, ASCR_BACK, 1}},         //CharAnim_Down
-	{1, (const u8[]){ 27, 28, ASCR_BACK, 1}},   //CharAnim_DownAlt (laugh 2)
+	{1, (const u8[]){ 27, 28, ASCR_BACK, 1}},   //CharAnim_DownAlt
 	{2, (const u8[]){ 20, 21, ASCR_BACK, 1}},         //CharAnim_Up
-	{1, (const u8[]){29, 30, ASCR_BACK, 1}},   //CharAnim_UpAlt (laugh 3)
+	{1, (const u8[]){29, 30, ASCR_BACK, 1}},   //CharAnim_UpAlt
 	{2, (const u8[]){ 22, 23, ASCR_BACK, 1}},         //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){24, 25, 26, 26, 27, 28, 28, 29, 30, 30, 30, 30, 30, 30, ASCR_BACK, 1}},   //CharAnim_Special(laughs)
 };
 
 //MX character functions
@@ -134,13 +135,9 @@ void Char_MX_Tick(Character *character)
 {
 	Char_MX *this = (Char_MX*)character;
 	
-	//don't return to idle if noidle is 1
-	if (noidle == 0)
-	{
 		//Perform idle dance
 		if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0)
 			Character_PerformIdle(character);
-	}
 	
 	//Animate and draw
 	//use fake mario sprites when phase is 0, and use phase 2 sprites when phase is 2
@@ -159,7 +156,7 @@ void Char_MX_Tick(Character *character)
 		case 507:
 		{
 			stage.ignore_note = 1; //Briefly disable note animations so that the transformation animation can happen during the hold note
-			character->set_anim(character, CharAnim_UpAlt); //Transformation animation
+			character->set_anim(character, CharAnim_Special); //Transformation animation
 			break;
 		}
 		case 512:
@@ -170,20 +167,10 @@ void Char_MX_Tick(Character *character)
 		}
 		case 751:
 		{
-			character->set_anim(character, CharAnim_LeftAlt); //Laugh 1
-			noidle = 1; //Temporarily disable idle
+			character->set_anim(character, CharAnim_Special); //Start Laugh's
 			break;
 		}
-		case 757:
-		{
-			character->set_anim(character, CharAnim_DownAlt); //Laugh 2
-			break;
-		}
-		case 760:
-		{
-			character->set_anim(character, CharAnim_UpAlt); //Laugh 3
-			break;
-		}
+	
 		case 768: //Crash, obviously remove this when the rest of the song starts to be worked on
 		{
 			sprintf(error_msg, "Not doing that part. :)"); //prepare message
@@ -237,7 +224,6 @@ Character *Char_MX_New(fixed_t x, fixed_t y)
 	this->character.health_i = 15; //does this even do anything in this port
 
 	phase = 0;
-	noidle = 0;
 	
 	this->character.focus_x = FIXED_DEC(65,1);
 	this->character.focus_y = FIXED_DEC(-115,1);

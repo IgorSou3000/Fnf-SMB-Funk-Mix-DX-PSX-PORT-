@@ -49,8 +49,8 @@ void Back_World2_3_DrawBG(StageBack *back)
 	RECT_FIXED cloud_dst = {
 		FIXED_DEC(-160 + this->cloudsmove,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(cloud_src.w*2,1),
-		FIXED_DEC(cloud_src.h*2,1)
+		FIXED_DEC(cloud_src.w*2 + 1,1),
+		FIXED_DEC(cloud_src.h*2 + 1,1)
 	};
 	Stage_DrawTex(&this->tex_cloud0, &cloud_src, &cloud_dst, stage.camera.bzoom);
 
@@ -81,8 +81,8 @@ void Back_World2_3_DrawFG(StageBack *back)
 	RECT_FIXED back_dst = {
 		FIXED_DEC(-160,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(back_src.w*2,1),
-		FIXED_DEC(back_src.h*2,1)
+		FIXED_DEC(back_src.w*2 + 1,1),
+		FIXED_DEC(back_src.h*2 + 1,1)
 	};
 	
 	Stage_DrawTex(&this->tex_back0, &back_src, &back_dst, stage.camera.bzoom);

@@ -12,28 +12,6 @@
 #include "../random.h"
 #include "../main.h"
 
-//Boyfriend skull fragments
-static SkullFragment char_bf_skull[15] = {
-	{ 1 * 8, -87 * 8, -13, -13},
-	{ 9 * 8, -88 * 8,   5, -22},
-	{18 * 8, -87 * 8,   9, -22},
-	{26 * 8, -85 * 8,  13, -13},
-	
-	{-3 * 8, -82 * 8, -13, -11},
-	{ 8 * 8, -85 * 8,  -9, -15},
-	{20 * 8, -82 * 8,   9, -15},
-	{30 * 8, -79 * 8,  13, -11},
-	
-	{-1 * 8, -74 * 8, -13, -5},
-	{ 8 * 8, -77 * 8,  -9, -9},
-	{19 * 8, -75 * 8,   9, -9},
-	{26 * 8, -74 * 8,  13, -5},
-	
-	{ 5 * 8, -73 * 8, -5, -3},
-	{14 * 8, -76 * 8,  9, -6},
-	{26 * 8, -67 * 8, 15, -3},
-};
-
 //Boyfriend player types
 enum
 {
@@ -69,13 +47,11 @@ typedef struct
 	u8 frame, tex_id;
 	
 	u8 retry_bump;
-	
-	SkullFragment skull[COUNT_OF(char_bf_skull)];
-	u8 skull_scale;
 } Char_BF;
 
 //Boyfriend player definitions
 static const CharFrame char_bf_frame[] = {
+	//bf small
 	{BF_ArcMain_BF_Small, {  2,   7,  18,  18}, { 17,  18}}, //0 idle 1
 	{BF_ArcMain_BF_Small, { 29,   6,  16,  19}, { 16,  19}}, //1 idle 2
 	{BF_ArcMain_BF_Small, { 52,   5,  21,  20}, { 18,  20}}, //2 idle 3
@@ -96,9 +72,68 @@ static const CharFrame char_bf_frame[] = {
 	{BF_ArcMain_BF_Small, { 29,  81,  18,  19}, { 16,  19}}, //13 right 1
 	{BF_ArcMain_BF_Small, { 56,  81,  15,  19}, { 14,  19}}, //14 right 2
 	{BF_ArcMain_BF_Small, { 80,  81,  15,  19}, { 14,  19}}, //15 right 3
+
+	{BF_ArcMain_BF_Small, {  6, 105,  14,  20}, { 14,  19}}, //16 walking 1
+	{BF_ArcMain_BF_Small, { 30, 106,  14,  19}, { 14,  19}}, //17 walking 2
+	{BF_ArcMain_BF_Small, { 55, 105,  15,  20}, { 14,  19}}, //18 walking 3
+	{BF_ArcMain_BF_Small, { 77, 106,  16,  19}, { 14,  19}}, //19 walking 4
+
+	//bf normal
+	{BF_ArcMain_BF, {  4,   9,  18,  16}, { 16,  16}}, //20 idle 1
+	{BF_ArcMain_BF, { 29,   8,  17,  17}, { 16,  17}}, //21 idle 2
+	{BF_ArcMain_BF, { 54,   7,  17,  18}, { 16,  18}}, //22 idle 3
+	{BF_ArcMain_BF, { 79,   5,  18,  20}, { 16,  20}}, //23 idle 4
+
+	{BF_ArcMain_BF, {  3,  31,  18,  19}, { 17,  19}}, //24 left 1
+	{BF_ArcMain_BF, { 28,  31,  17,  20}, { 16,  19}}, //25 left 2
+
+	{BF_ArcMain_BF, { 54,  34,  17,  16}, { 16,  16}}, //26 down 1
+	{BF_ArcMain_BF, { 80,  32,  16,  18}, { 15,  18}}, //27 down 2
+
+	{BF_ArcMain_BF, {  3,  53,  18,  22}, { 16,  22}}, //28 up 1
+	{BF_ArcMain_BF, { 29,  54,  18,  21}, { 16,  21}}, //29 up 2
+
+	{BF_ArcMain_BF, { 56,  55,  17,  20}, { 14,  20}}, //30 right 1
+	{BF_ArcMain_BF, { 82,  55,  17,  20}, { 14,  20}}, //31 right 2
+
+	{BF_ArcMain_BF, {  3,  79,  20,  21}, { 14,  19}}, //32 peace 1
+	{BF_ArcMain_BF, { 26,  80,  19,  20}, { 14,  19}}, //33 peace 2
+	{BF_ArcMain_BF, { 51,  80,  20,  20}, { 14,  19}}, //34 peace 3
+
+	{BF_ArcMain_BF, { 81,  80,  16,  20}, { 14,  19}}, //35 walking 1
+	{BF_ArcMain_BF, {  5, 105,  16,  20}, { 14,  19}}, //36 walking 2
+	{BF_ArcMain_BF, { 31, 105,  16,  20}, { 14,  19}}, //37 walking 3
+	{BF_ArcMain_BF, { 51, 105,  18,  20}, { 14,  19}}, //38 walking 4
+
+	//bf fire
+	{BF_ArcMain_BF_Fire, {  4,   9,  18,  16}, { 16,  16}}, //39 idle 1
+	{BF_ArcMain_BF_Fire, { 29,   8,  17,  17}, { 16,  17}}, //40 idle 2
+	{BF_ArcMain_BF_Fire, { 54,   7,  17,  18}, { 16,  18}}, //41 idle 3
+	{BF_ArcMain_BF_Fire, { 79,   5,  18,  20}, { 16,  20}}, //42 idle 4
+
+	{BF_ArcMain_BF_Fire, {  3,  31,  18,  19}, { 17,  19}}, //43 left 1
+	{BF_ArcMain_BF_Fire, { 28,  31,  17,  20}, { 16,  19}}, //44 left 2
+
+	{BF_ArcMain_BF_Fire, { 54,  34,  17,  16}, { 16,  16}}, //45 down 1
+	{BF_ArcMain_BF_Fire, { 80,  32,  16,  18}, { 15,  18}}, //46 down 2
+
+	{BF_ArcMain_BF_Fire, {  3,  53,  18,  22}, { 16,  22}}, //47 up 1
+	{BF_ArcMain_BF_Fire, { 29,  54,  18,  21}, { 16,  21}}, //48 up 2
+
+	{BF_ArcMain_BF_Fire, { 56,  55,  17,  20}, { 14,  20}}, //49 right 1
+	{BF_ArcMain_BF_Fire, { 82,  55,  17,  20}, { 14,  20}}, //50 right 2
+
+	{BF_ArcMain_BF_Fire, {  3,  79,  20,  21}, { 14,  19}}, //51 peace 1
+	{BF_ArcMain_BF_Fire, { 26,  80,  19,  20}, { 14,  19}}, //52 peace 2
+	{BF_ArcMain_BF_Fire, { 51,  80,  20,  20}, { 14,  19}}, //53 peace 3
+
+	{BF_ArcMain_BF_Fire, { 81,  80,  16,  20}, { 14,  19}}, //54 walking 1
+	{BF_ArcMain_BF_Fire, {  5, 105,  16,  20}, { 14,  19}}, //55 walking 2
+	{BF_ArcMain_BF_Fire, { 31, 105,  16,  20}, { 14,  19}}, //56 walking 3
+	{BF_ArcMain_BF_Fire, { 51, 105,  18,  20}, { 14,  19}}, //57 walking 4
 };
 
-static const Animation char_bf_anim[PlayerAnim_Max] = {
+static const Animation char_bf_small_anim[CharAnim_Max] = {
 	{2, (const u8[]){ 0,  1,  2,  3, ASCR_BACK, 1}}, //CharAnim_Idle
 	{2, (const u8[]){ 4,  5,  6, ASCR_BACK, 1}},             //CharAnim_Left
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_LeftAlt
@@ -108,25 +143,33 @@ static const Animation char_bf_anim[PlayerAnim_Max] = {
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_UpAlt
 	{2, (const u8[]){13, 14, 15, ASCR_BACK, 1}},             //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_RightAlt
-	
-	{1, (const u8[]){ 5, 20, 20, 21, ASCR_BACK, 1}},     //PlayerAnim_LeftMiss
-	{1, (const u8[]){ 7, 22, 22, 23, ASCR_BACK, 1}},     //PlayerAnim_DownMiss
-	{1, (const u8[]){ 9, 24, 24, 25, ASCR_BACK, 1}},     //PlayerAnim_UpMiss
-	{1, (const u8[]){11, 26, 26, 27, ASCR_BACK, 1}},     //PlayerAnim_RightMiss
-	
-	{2, (const u8[]){13, 14, 15, ASCR_BACK, 1}},         //PlayerAnim_Peace
-	{2, (const u8[]){16, 17, 18, 19, ASCR_REPEAT}},      //PlayerAnim_Sweat
-	
-	{5, (const u8[]){28, 29, 30, 31, 31, 31, 31, 31, 31, 31, ASCR_CHGANI, PlayerAnim_Dead1}}, //PlayerAnim_Dead0
-	{5, (const u8[]){31, ASCR_REPEAT}},                                                       //PlayerAnim_Dead1
-	{3, (const u8[]){32, 33, 34, 35, 35, 35, 35, 35, 35, 35, ASCR_CHGANI, PlayerAnim_Dead3}}, //PlayerAnim_Dead2
-	{3, (const u8[]){35, ASCR_REPEAT}},                                                       //PlayerAnim_Dead3
-	{3, (const u8[]){36, 37, 35, 35, 35, 35, 35, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead4
-	{3, (const u8[]){38, 39, 35, 35, 35, 35, 35, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead5
-	
-	{10, (const u8[]){35, 35, 35, ASCR_BACK, 1}}, //PlayerAnim_Dead4
-	{ 3, (const u8[]){38, 39, 35, ASCR_REPEAT}},  //PlayerAnim_Dead5
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_Special
 };
+static const Animation char_bf_anim[CharAnim_Max] = {
+	{2, (const u8[]){20, 21, 21, 22, 23, ASCR_BACK, 1}}, //CharAnim_Idle
+	{2, (const u8[]){24, 25, ASCR_BACK, 1}},             //CharAnim_Left
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_LeftAlt
+	{2, (const u8[]){26, 27, ASCR_BACK, 1}},             //CharAnim_Down
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_DownAlt
+	{2, (const u8[]){28, 29, ASCR_BACK, 1}},             //CharAnim_Up
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_UpAlt
+	{2, (const u8[]){30, 31, ASCR_BACK, 1}},             //CharAnim_Right
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_RightAlt
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_Special
+};
+static const Animation char_bf_fire_anim[CharAnim_Max] = {
+	{2, (const u8[]){39, 40, 40, 41, 42, ASCR_BACK, 1}}, //CharAnim_Idle
+	{2, (const u8[]){43, 44, ASCR_BACK, 1}},             //CharAnim_Left
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_LeftAlt
+	{2, (const u8[]){45, 46, ASCR_BACK, 1}},             //CharAnim_Down
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_DownAlt
+	{2, (const u8[]){47, 48, ASCR_BACK, 1}},             //CharAnim_Up
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_UpAlt
+	{2, (const u8[]){49, 50, ASCR_BACK, 1}},             //CharAnim_Right
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_RightAlt
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_Special
+};
+
 
 //Boyfriend player functions
 void Char_BF_SetFrame(void *user, u8 frame)
@@ -162,7 +205,7 @@ void Char_BF_Tick(Character *character)
 	if (stage.flag & STAGE_FLAG_JUST_STEP)
 	{
 		//Perform idle dance
-		if (Animatable_Ended(&character->animatable) &&
+		if ((Animatable_Ended(&character->animatable) || Animatable_Ended(&character->animatable2) || Animatable_Ended(&character->animatable3)) &&
 			(character->animatable.anim != CharAnim_Left &&
 		     character->animatable.anim != CharAnim_LeftAlt &&
 		     character->animatable.anim != PlayerAnim_LeftMiss &&
@@ -185,7 +228,22 @@ void Char_BF_Tick(Character *character)
 	}
 	
 	//Animate and draw character
+	switch (character->powerup -1)
+	{
+	case 2:
+	Animatable_Animate(&character->animatable3, (void*)this, Char_BF_SetFrame);
+	break;
+	case 1:
+	Animatable_Animate(&character->animatable2, (void*)this, Char_BF_SetFrame);
+	break;
+	case 0:
 	Animatable_Animate(&character->animatable, (void*)this, Char_BF_SetFrame);
+	break;
+	default:
+	Animatable_Animate(&character->animatable, (void*)this, Char_BF_SetFrame);
+	break;
+	}
+
 	Character_Draw(character, &this->tex, &char_bf_frame[this->frame]);
 }
 
@@ -193,40 +251,10 @@ void Char_BF_SetAnim(Character *character, u8 anim)
 {
 	Char_BF *this = (Char_BF*)character;
 	
-	//Perform animation checks
-	switch (anim)
-	{
-		case PlayerAnim_Dead0:
-			//Begin reading dead.arc and adjust focus
-			this->arc_dead = IO_AsyncReadFile(&this->file_dead_arc);
-			character->focus_x = FIXED_DEC(0,1);
-			character->focus_y = FIXED_DEC(-40,1);
-			character->focus_zoom = FIXED_DEC(125,100);
-			break;
-		case PlayerAnim_Dead2:
-			//Unload main.arc
-			Mem_Free(this->arc_main);
-			this->arc_main = this->arc_dead;
-			this->arc_dead = NULL;
-			
-			//Find dead.arc files
-			const char **pathp = (const char *[]){
-				"dead1.tim", //BF_ArcDead_Dead1
-				"dead2.tim", //BF_ArcDead_Dead2
-				"retry.tim", //BF_ArcDead_Retry
-				NULL
-			};
-			IO_Data *arc_ptr = this->arc_ptr;
-			for (; *pathp != NULL; pathp++)
-				*arc_ptr++ = Archive_Find(this->arc_main, *pathp);
-			
-			//Load retry art
-			Gfx_LoadTex(&this->tex_retry, this->arc_ptr[BF_ArcDead_Retry], 0);
-			break;
-	}
-	
 	//Set animation
 	Animatable_SetAnim(&character->animatable, anim);
+	Animatable_SetAnim(&character->animatable2, anim);
+	Animatable_SetAnim(&character->animatable3, anim);
 	Character_CheckStartSing(character);
 }
 
@@ -255,7 +283,9 @@ Character *Char_BF_New(fixed_t x, fixed_t y)
 	this->character.set_anim = Char_BF_SetAnim;
 	this->character.free = Char_BF_Free;
 	
-	Animatable_Init(&this->character.animatable, char_bf_anim);
+	Animatable_Init(&this->character.animatable, char_bf_small_anim);
+	Animatable_Init(&this->character.animatable2, char_bf_anim);
+	Animatable_Init(&this->character.animatable3, char_bf_fire_anim);
 	Character_Init((Character*)this, x, y);
 	
 	//Set character information
@@ -283,18 +313,6 @@ Character *Char_BF_New(fixed_t x, fixed_t y)
 	
 	//Initialize player state
 	this->retry_bump = 0;
-	
-	//Copy skull fragments
-	memcpy(this->skull, char_bf_skull, sizeof(char_bf_skull));
-	this->skull_scale = 64;
-	
-	SkullFragment *frag = this->skull;
-	for (size_t i = 0; i < COUNT_OF_MEMBER(Char_BF, skull); i++, frag++)
-	{
-		//Randomize trajectory
-		frag->xsp += RandomRange(-4, 4);
-		frag->ysp += RandomRange(-2, 2);
-	}
 	
 	return (Character*)this;
 }

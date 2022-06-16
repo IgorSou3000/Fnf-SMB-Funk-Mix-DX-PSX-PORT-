@@ -38,8 +38,8 @@ void Back_World2_2_DrawBG(StageBack *back)
 	RECT_FIXED clud_dst = {
 		FIXED_DEC(-84,1),
 		FIXED_DEC(-62,1),
-		FIXED_DEC(64,1),
-		FIXED_DEC(48,1)
+		FIXED_DEC(64 + 1,1),
+		FIXED_DEC(48 + 1,1)
 	};
 
 	Stage_DrawTex(&this->tex_back, &clud_src, &clud_dst, stage.camera.bzoom);
@@ -61,9 +61,9 @@ void Back_World2_2_DrawFG(StageBack *back)
 	RECT back_src = {0, 0, 160, 81};
 	RECT_FIXED back_dst = {
 		FIXED_DEC(-160,1) - fx,
-		FIXED_DEC(-64,1) - fy,
-		FIXED_DEC(back_src.w*2,1),
-		FIXED_DEC(back_src.h*2,1)
+		FIXED_DEC(-65,1) - fy,
+		FIXED_DEC(back_src.w*2 + 1,1),
+		FIXED_DEC(back_src.h*2 + 1,1)
 	};
 	
 	Stage_DrawTex(&this->tex_back, &back_src, &back_dst, stage.camera.bzoom);

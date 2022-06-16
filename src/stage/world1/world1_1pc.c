@@ -38,8 +38,8 @@ void Back_World1_1PC_DrawBG(StageBack *back) // 1-1
 	RECT_FIXED back_dst = {
 		FIXED_DEC(-160,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(back_src.w*2,1),
-		FIXED_DEC(back_src.h*2,1)
+		FIXED_DEC(back_src.w*2 + 1,1),
+		FIXED_DEC(back_src.h*2 + 1,1)
 	};
 	
 	Stage_DrawTex(&this->tex_goal, &back_src, &back_dst, stage.camera.bzoom);

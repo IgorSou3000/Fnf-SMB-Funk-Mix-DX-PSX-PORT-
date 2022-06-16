@@ -74,6 +74,9 @@ static struct
 	boolean page_swap;
 	u8 select, next_select;
 	
+	//moving bg for title and main menu
+	s16 movingbg;
+	
 	fixed_t scroll;
 	fixed_t trans_time;
 	
@@ -84,15 +87,6 @@ static struct
 		{
 			u8 funny_message;
 		} opening;
-		struct
-		{
-			fixed_t logo_bump;
-			fixed_t fade, fadespd;
-		} title;
-		struct
-		{
-			fixed_t fade, fadespd;
-		} story;
 		struct
 		{
 			fixed_t back_r, back_g, back_b;
@@ -109,7 +103,7 @@ static struct
 	} page_param;
 	
 	//Menu assets
-	Gfx_Tex tex_back, tex_ng, tex_story, tex_title;
+	Gfx_Tex tex_back, tex_menu0, tex_story, tex_title;
 	FontData font_bold, font_arial, font_smb1;
 	
 	Character *gf; //Title Girlfriend
@@ -235,7 +229,7 @@ void Menu_Load(MenuPage page)
 	//Load menu assets
 	IO_Data menu_arc = IO_Read("\\MENU\\MENU.ARC;1");
 	Gfx_LoadTex(&menu.tex_back,  Archive_Find(menu_arc, "back.tim"),  0);
-	Gfx_LoadTex(&menu.tex_ng,    Archive_Find(menu_arc, "ng.tim"),    0);
+	Gfx_LoadTex(&menu.tex_menu0,    Archive_Find(menu_arc, "menu0.tim"),    0);
 	Gfx_LoadTex(&menu.tex_story, Archive_Find(menu_arc, "story.tim"), 0);
 	Gfx_LoadTex(&menu.tex_title, Archive_Find(menu_arc, "title.tim"), 0);
 	Mem_Free(menu_arc);
@@ -253,7 +247,7 @@ void Menu_Load(MenuPage page)
 	
 	switch (menu.page = menu.next_page = page)
 	{
-		case MenuPage_Opening:
+		case MenuPage_Warning:
 			//Get funny message to use
 			//Do this here so timing is less reliant on VSync
 			menu.page_state.opening.funny_message = ((*((volatile u32*)0xBF801120)) >> 3) % COUNT_OF(funny_messages); //sysclk seeding
@@ -284,10 +278,6 @@ void Menu_Load(MenuPage page)
     data = IO_ReadFile(&file);
     Sounds[2] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
-
-	//Play menu music
-	Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-	Audio_WaitPlayXA();
 	
 	//Set background colour
 	Gfx_SetClear(0, 0, 0);
@@ -333,91 +323,34 @@ void Menu_Tick(void)
 	MenuPage exec_page;
 	switch (exec_page = menu.page)
 	{
-		case MenuPage_Opening:
+		case MenuPage_Warning:
 		{
-			u16 beat = stage.song_step >> 2;
-			
-			//Start title screen if opening ended
-			if (beat >= 16)
-			{
-				menu.page = menu.next_page = MenuPage_Title;
-				menu.page_swap = true;
-				//Fallthrough
-			}
-			else
-			{
 				//Start title screen if start pressed
 				if (pad_state.held & PAD_START)
-					menu.page = menu.next_page = MenuPage_Title;
-				
-				//Draw different text depending on beat
-				RECT src_ng = {0, 0, 128, 128};
-				const char **funny_message = funny_messages[menu.page_state.opening.funny_message];
-				
-				switch (beat)
 				{
-					case 3:
-						menu.font_bold.draw(&menu.font_bold, "PRESENT", SCREEN_WIDTH2, SCREEN_HEIGHT2 + 32, FontAlign_Center);
-				//Fallthrough
-					case 2:
-					case 1:
-						menu.font_bold.draw(&menu.font_bold, "NINJAMUFFIN",   SCREEN_WIDTH2, SCREEN_HEIGHT2 - 32, FontAlign_Center);
-						menu.font_bold.draw(&menu.font_bold, "PHANTOMARCADE", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 16, FontAlign_Center);
-						menu.font_bold.draw(&menu.font_bold, "KAWAISPRITE",   SCREEN_WIDTH2, SCREEN_HEIGHT2,      FontAlign_Center);
-						menu.font_bold.draw(&menu.font_bold, "EVILSKER",      SCREEN_WIDTH2, SCREEN_HEIGHT2 + 16, FontAlign_Center);
-						break;
-					
-					case 7:
-						menu.font_bold.draw(&menu.font_bold, "NEWGROUNDS",    SCREEN_WIDTH2, SCREEN_HEIGHT2 - 32, FontAlign_Center);
-						Gfx_BlitTex(&menu.tex_ng, &src_ng, (SCREEN_WIDTH - 128) >> 1, SCREEN_HEIGHT2 - 16);
-				//Fallthrough
-					case 6:
-					case 5:
-						menu.font_bold.draw(&menu.font_bold, "IN ASSOCIATION", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 64, FontAlign_Center);
-						menu.font_bold.draw(&menu.font_bold, "WITH",           SCREEN_WIDTH2, SCREEN_HEIGHT2 - 48, FontAlign_Center);
-						break;
-					
-					case 11:
-						menu.font_bold.draw(&menu.font_bold, funny_message[1], SCREEN_WIDTH2, SCREEN_HEIGHT2, FontAlign_Center);
-				//Fallthrough
-					case 10:
-					case 9:
-						menu.font_bold.draw(&menu.font_bold, funny_message[0], SCREEN_WIDTH2, SCREEN_HEIGHT2 - 16, FontAlign_Center);
-						break;
-					
-					case 15:
-						menu.font_bold.draw(&menu.font_bold, "FUNKIN", SCREEN_WIDTH2, SCREEN_HEIGHT2 + 8, FontAlign_Center);
-				//Fallthrough
-					case 14:
-						menu.font_bold.draw(&menu.font_bold, "NIGHT", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 8, FontAlign_Center);
-				//Fallthrough
-					case 13:
-						menu.font_bold.draw(&menu.font_bold, "FRIDAY", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 24, FontAlign_Center);
-						break;
+					menu.page = menu.next_page = MenuPage_Title;
+					menu.page_swap = true;
 				}
+				
+				//draw warning
+				RECT warning_src = {0, 132, 160, 120};
+				RECT warning_dst = {0,   0, 320, 240};
+
+				Gfx_DrawTex(&menu.tex_menu0, &warning_src, &warning_dst);
 				break;
-			}
 		}
 	//Fallthrough
 		case MenuPage_Title:
 		{
+			//decrease variable
+			menu.movingbg--;
+			//Set background colour
+			Gfx_SetClear(148,148,255);
 			//Initialize page
 			if (menu.page_swap)
 			{
-				menu.page_state.title.logo_bump = (FIXED_DEC(7,1) / 24) - 1;
-				menu.page_state.title.fade = FIXED_DEC(255,1);
-				menu.page_state.title.fadespd = FIXED_DEC(90,1);
+				Audio_PlayXA_Track(XA_Title, 0x40, 0, 0);
 			}
-			
-			//Draw white fade
-			if (menu.page_state.title.fade > 0)
-			{
-				static const RECT flash = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-				u8 flash_col = menu.page_state.title.fade >> FIXED_SHIFT;
-				Gfx_BlendRect(&flash, flash_col, flash_col, flash_col, 1);
-				menu.page_state.title.fade -= FIXED_MUL(menu.page_state.title.fadespd, timer_dt);
-			}
-			
 			//Go to main menu when start is pressed
 			if (menu.trans_time > 0 && (menu.trans_time -= timer_dt) <= 0)
 				Trans_Start();
@@ -427,60 +360,22 @@ void Menu_Tick(void)
 				//play confirm sound
 				Audio_PlaySound(Sounds[1]);
 				menu.trans_time = FIXED_UNIT;
-				menu.page_state.title.fade = FIXED_DEC(255,1);
-				menu.page_state.title.fadespd = FIXED_DEC(300,1);
 				menu.next_page = MenuPage_Main;
 				menu.next_select = 0;
 			}
-			
-			//Draw Friday Night Funkin' logo
-			if ((stage.flag & STAGE_FLAG_JUST_STEP) && (stage.song_step & 0x3) == 0 && menu.page_state.title.logo_bump == 0)
-				menu.page_state.title.logo_bump = (FIXED_DEC(7,1) / 24) - 1;
-			
-			static const fixed_t logo_scales[] = {
-				FIXED_DEC(1,1),
-				FIXED_DEC(101,100),
-				FIXED_DEC(102,100),
-				FIXED_DEC(103,100),
-				FIXED_DEC(105,100),
-				FIXED_DEC(110,100),
-				FIXED_DEC(97,100),
-			};
-			fixed_t logo_scale = logo_scales[(menu.page_state.title.logo_bump * 24) >> FIXED_SHIFT];
-			u32 x_rad = (logo_scale * (176 >> 1)) >> FIXED_SHIFT;
-			u32 y_rad = (logo_scale * (112 >> 1)) >> FIXED_SHIFT;
-			
-			RECT logo_src = {0, 0, 176, 112};
-			RECT logo_dst = {
-				100 - x_rad + (SCREEN_WIDEADD2 >> 1),
-				68 - y_rad,
-				x_rad << 1,
-				y_rad << 1
-			};
-			Gfx_DrawTex(&menu.tex_title, &logo_src, &logo_dst);
-			
-			if (menu.page_state.title.logo_bump > 0)
-				if ((menu.page_state.title.logo_bump -= timer_dt) < 0)
-					menu.page_state.title.logo_bump = 0;
-			
-			//Draw "Press Start to Begin"
-			if (menu.next_page == menu.page)
-			{
-				//Blinking blue
-				s16 press_lerp = (MUtil_Cos(animf_count << 3) + 0x100) >> 1;
-				u8 press_r = 51 >> 1;
-				u8 press_g = (58  + ((press_lerp * (255 - 58))  >> 8)) >> 1;
-				u8 press_b = (206 + ((press_lerp * (255 - 206)) >> 8)) >> 1;
-				
-				RECT press_src = {0, 112, 256, 32};
-				Gfx_BlitTexCol(&menu.tex_title, &press_src, (SCREEN_WIDTH - 256) / 2, SCREEN_HEIGHT - 48, press_r, press_g, press_b);
-			}
-			else
-			{
-				//Flash white
-				RECT press_src = {0, (animf_count & 1) ? 144 : 112, 256, 32};
-				Gfx_BlitTex(&menu.tex_title, &press_src, (SCREEN_WIDTH - 256) / 2, SCREEN_HEIGHT - 48);
-			}
+			//draw clouds
+			RECT cloud_src = {0, 0, 128, 62};
+			RECT cloud_dst = {0,136, 256, 104};
+
+			Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
+
+			//manipulating da src y and dst x for draw another cloud
+			cloud_src.y = 66;
+			cloud_dst.x += cloud_dst.w - 1;
+
+			Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
+
+			FntPrint("bg x %d", menu.movingbg);
 			break;
 		}
 		case MenuPage_Main:
@@ -494,7 +389,10 @@ void Menu_Tick(void)
 			
 			//Initialize page
 			if (menu.page_swap)
+			{
+				Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 1, 1);
 				menu.scroll = menu.select * FIXED_DEC(12,1);
+			}
 				
 			
 			//Draw version identification
@@ -631,17 +529,6 @@ void Menu_Tick(void)
 			{
 				menu.scroll = 0;
 				menu.page_param.stage.diff = StageDiff_Normal;
-				menu.page_state.title.fade = FIXED_DEC(0,1);
-				menu.page_state.title.fadespd = FIXED_DEC(0,1);
-			}
-			
-			//Draw white fade
-			if (menu.page_state.title.fade > 0)
-			{
-				static const RECT flash = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-				u8 flash_col = menu.page_state.title.fade >> FIXED_SHIFT;
-				Gfx_BlendRect(&flash, flash_col, flash_col, flash_col, 1);
-				menu.page_state.title.fade -= FIXED_MUL(menu.page_state.title.fadespd, timer_dt);
 			}
 			
 			//Draw difficulty selector
@@ -682,8 +569,6 @@ void Menu_Tick(void)
 					menu.page_param.stage.id = menu_options[menu.select].stage;
 					menu.page_param.stage.story = true;
 					menu.trans_time = FIXED_UNIT;
-					menu.page_state.title.fade = FIXED_DEC(255,1);
-					menu.page_state.title.fadespd = FIXED_DEC(510,1);
 				}
 				
 				//Return to main menu if circle is pressed

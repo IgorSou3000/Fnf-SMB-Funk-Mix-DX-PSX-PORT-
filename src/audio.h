@@ -31,6 +31,7 @@ typedef enum
 typedef enum
 {
 	//MENU.XA
+	XA_Title, //Title
 	XA_GettinFreaky, //Gettin' Freaky
 	XA_GameOver,     //Game Over
 	//WORLD1A.XA

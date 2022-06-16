@@ -8,6 +8,7 @@ typedef struct
 
 static const XA_TrackDef xa_tracks[] = {
 	//MENU.XA
+	{XA_Menu, XA_LENGTH(9000)}, //XA_Title
 	{XA_Menu, XA_LENGTH(11295)}, //XA_GettinFreaky
 	{XA_Menu, XA_LENGTH(3840)},  //XA_GameOver
 	//WORLD1A.XA
@@ -68,6 +69,7 @@ typedef struct
 
 static const XA_Mp3 xa_mp3s[] = {
 	//MENU.XA
+	{"title", false},   //XA_Title
 	{"freaky", false},   //XA_GettinFreaky
 	{"gameover", false}, //XA_GameOver
 

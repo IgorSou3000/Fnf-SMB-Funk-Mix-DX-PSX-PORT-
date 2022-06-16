@@ -25,6 +25,7 @@ typedef enum
 	CharAnim_Down,  CharAnim_DownAlt,
 	CharAnim_Up,    CharAnim_UpAlt,
 	CharAnim_Right, CharAnim_RightAlt,
+	CharAnim_Special,
 	
 	CharAnim_Max //Max standard/shared animation
 } CharAnim;
@@ -52,9 +53,14 @@ typedef struct Character
 	u8 health_i; //hud1.tim
 	fixed_t focus_x, focus_y, focus_zoom;
 	
+	//putting this in character for be more easy to mod
+	s16 powerup;
+	s16 cooldown;
+	
 	//Animation state
 	Animatable animatable;
 	Animatable animatable2; //for additional animation set
+	Animatable animatable3; //for additional animation set
 	fixed_t sing_end;
 	u16 pad_held;
 } Character;

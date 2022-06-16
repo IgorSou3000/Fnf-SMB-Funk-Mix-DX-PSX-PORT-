@@ -109,19 +109,7 @@ void Character_PerformIdle(Character *this)
 	Character_CheckEndSing(this);
 	if (stage.flag & STAGE_FLAG_JUST_STEP)
 	{
-		if (Animatable_Ended(&this->animatable) &&
-		    (this->animatable.anim != CharAnim_Left &&
-		     this->animatable.anim != CharAnim_LeftAlt &&
-		     this->animatable.anim != CharAnim_Down &&
-		     this->animatable.anim != CharAnim_DownAlt &&
-		     this->animatable.anim != CharAnim_Up &&
-		     this->animatable.anim != CharAnim_UpAlt &&
-		     this->animatable.anim != CharAnim_Right &&
-		     this->animatable.anim != CharAnim_RightAlt) &&
-		    (stage.song_step & 0x7) == 0)
-			this->set_anim(this, CharAnim_Idle);
-		
-		if (Animatable_Ended(&this->animatable2) &&
+		if ((Animatable_Ended(&this->animatable) || Animatable_Ended(&this->animatable2) || Animatable_Ended(&this->animatable3)) &&
 		    (this->animatable.anim != CharAnim_Left &&
 		     this->animatable.anim != CharAnim_LeftAlt &&
 		     this->animatable.anim != CharAnim_Down &&

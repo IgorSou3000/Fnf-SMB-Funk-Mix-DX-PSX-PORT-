@@ -12,7 +12,7 @@
 //Menu enums
 typedef enum
 {
-	MenuPage_Opening,
+	MenuPage_Warning,
 	MenuPage_Title,
 	MenuPage_Main,
 	MenuPage_Story,

@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 	
 	//Start game
 	gameloop = GameLoop_Menu;
-	Menu_Load(MenuPage_Opening);
+	Menu_Load(MenuPage_Warning);
 	
 	//Game loop
 	while (PSX_Running())
