@@ -60,7 +60,7 @@ typedef struct Character
 	//Animation state
 	Animatable animatable;
 	Animatable animatable2; //for additional animation set
-	Animatable animatable3; //for additional animation set
+	Animatable animatable3; //for additional additional animation set
 	fixed_t sing_end;
 	u16 pad_held;
 } Character;

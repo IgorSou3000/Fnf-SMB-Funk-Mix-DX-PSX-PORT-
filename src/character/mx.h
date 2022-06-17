@@ -12,4 +12,12 @@
 //Mario character functions
 Character *Char_MX_New(fixed_t x, fixed_t y);
 
+//putting this here so that the stage can access the phase stuff as well
+typedef struct
+{
+  u8 phase; //for... uh... phase stuff
+} MX;
+
+extern MX mx;
+
 #endif

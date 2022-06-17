@@ -11,14 +11,14 @@
 #include "../stage.h"
 #include "../main.h"
 
-u8 phase; //for... uh... phase stuff
-
+MX mx;
 
 //MX character structure
 enum
 {
 	MX_ArcMain_Main, //Fake Mario sprites
 	MX_ArcMain_Near, //Phase 2 sprites
+	MX_ArcMain_Run, //Running sprites
 	
 	MX_Arc_Max,
 };
@@ -86,6 +86,12 @@ static const CharFrame char_mx_frame[] = {
 
 	{MX_ArcMain_Near, {  0,  75,  44,  44}, {  8,12}}, //29 laugh 3 1
 	{MX_ArcMain_Near, { 47,  75,  46,  41}, { 10, 9}}, //30 laugh 3 2
+
+	//Running
+
+	{MX_ArcMain_Run, {  0,   0,  34,  42}, {  0, 0}}, //31 run
+	{MX_ArcMain_Run, { 37,   0,  24,  40}, { -2,-2}}, //32 run
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //33 run
 };
 
 //Faker animations
@@ -116,6 +122,20 @@ static const Animation char_near_anim[CharAnim_Max] = {
 	{2, (const u8[]){24, 25, 26, 26, 27, 28, 28, 29, 30, 30, 30, 30, 30, 30, ASCR_BACK, 1}},   //CharAnim_Special(laughs)
 };
 
+//Running animations
+static const Animation char_run_anim[CharAnim_Max] = {
+	{2, (const u8[]){ 31, 32, 33, ASCR_REPEAT}},         //CharAnim_Idle
+	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Left
+	{1, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_LeftAlt
+	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Down
+	{1, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_DownAlt
+	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Up
+	{1, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
+	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Right
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_Special(jump)
+};
+
 //MX character functions
 void Char_MX_SetFrame(void *user, u8 frame)
 {
@@ -141,16 +161,27 @@ void Char_MX_Tick(Character *character)
 	
 	//Animate and draw
 	//use fake mario sprites when phase is 0, and use phase 2 sprites when phase is 2
-	if (phase == 0)
+	switch (mx.phase)
 	{
-		Animatable_Animate(&character->animatable, (void*)this, Char_MX_SetFrame);
-	}
-	else if (phase == 2)
-	{
-		Animatable_Animate(&character->animatable2, (void*)this, Char_MX_SetFrame);
+		case 0:
+		{
+			Animatable_Animate(&character->animatable, (void*)this, Char_MX_SetFrame);
+			break;
+		}
+		case 2:
+		{
+			Animatable_Animate(&character->animatable2, (void*)this, Char_MX_SetFrame);
+			break;
+		}
+		case 3:
+		{
+			Animatable_Animate(&character->animatable3, (void*)this, Char_MX_SetFrame);
+			break;
+		}
 	}
 	Character_Draw(character, &this->tex, &char_mx_frame[this->frame]);
 
+	//step specific stuff
 	switch (stage.song_step)
 	{
 		case 507:
@@ -161,7 +192,7 @@ void Char_MX_Tick(Character *character)
 		}
 		case 512:
 		{
-			phase = 2; //start using phase 2 sprites
+			mx.phase = 2; //start using phase 2 sprites
 			stage.ignore_note = 0; //stop ignoring note animations
 			break;
 		}
@@ -171,10 +202,12 @@ void Char_MX_Tick(Character *character)
 			break;
 		}
 	
-		case 768: //Crash, obviously remove this when the rest of the song starts to be worked on
+		case 767: //Start next phase
 		{
-			sprintf(error_msg, "Not doing that part. :)"); //prepare message
-			ErrorLock(); //Lock up the game and display error screen
+			mx.phase = 3;
+			//reposition mx because the offsets are getting difficult to keep up with
+			stage.opponent->x = FIXED_DEC(72,1);
+			stage.opponent->y = FIXED_DEC(-18,1);
 		}
 		default: //do nothing otherwise lol
 			break;
@@ -186,6 +219,7 @@ void Char_MX_SetAnim(Character *character, u8 anim)
 	//Set animation
 	Animatable_SetAnim(&character->animatable, anim);
 	Animatable_SetAnim(&character->animatable2, anim);
+	Animatable_SetAnim(&character->animatable3, anim);
 	Character_CheckStartSing(character);
 }
 
@@ -215,6 +249,7 @@ Character *Char_MX_New(fixed_t x, fixed_t y)
 	
 	Animatable_Init(&this->character.animatable, char_mario_anim);
 	Animatable_Init(&this->character.animatable2, char_near_anim);
+	Animatable_Init(&this->character.animatable3, char_run_anim);
 
 	Character_Init((Character*)this, x, y);
 	
@@ -223,7 +258,7 @@ Character *Char_MX_New(fixed_t x, fixed_t y)
 	
 	this->character.health_i = 15; //does this even do anything in this port
 
-	phase = 0;
+	mx.phase = 0;
 	
 	this->character.focus_x = FIXED_DEC(65,1);
 	this->character.focus_y = FIXED_DEC(-115,1);
@@ -235,6 +270,7 @@ Character *Char_MX_New(fixed_t x, fixed_t y)
 	const char **pathp = (const char *[]){
 		"mario.tim", //MX_ArcMain_Main
 		"near.tim", //MX_ArcMain_Near
+		"run.tim",
 		NULL
 	};
 	IO_Data *arc_ptr = this->arc_ptr;

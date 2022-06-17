@@ -14,19 +14,19 @@ but make it loop back to 0 afterwords.
 size:158x81
 
 (begin loop for first time)
-1:0x81
+1:0x84
 size:160x81
 
-2:0x162
+2:0x168
 size:160x81
 =====level1.png=====
 3:0x0
 size:160x81
 
-4:0x81
+4:0x84
 size:160x81
 
-5:0x162
+5:0x168
 size:160x81
 =====level2.png=====
 6:0x0

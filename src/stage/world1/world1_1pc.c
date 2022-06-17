@@ -5,6 +5,7 @@
 */
 
 #include "world1_1pc.h"
+#include "../../character/mx.h"
 
 #include "../../archive.h"
 #include "../../mem.h"
@@ -43,6 +44,18 @@ void Back_World1_1PC_DrawBG(StageBack *back) // 1-1
 	};
 	
 	Stage_DrawTex(&this->tex_goal, &back_src, &back_dst, stage.camera.bzoom);
+
+	//And down-a here, is where the disaster begins! Wahoo!
+	RECT level0_src = {0,   0, 158, 81};
+	RECT level1_src = {0,  84, 160, 81}; //reused for level4
+	RECT level2_src = {0, 168, 160, 81}; //reused for level5
+	RECT level3_src = {0,   0, 160, 81}; //reused for level6
+
+	if (mx.phase == 3)
+	{
+		//I dunno. Haven't made it that far yet.
+	}
+	
 }
 
 void Back_World1_1PC_Free(StageBack *back)

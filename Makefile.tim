@@ -43,7 +43,7 @@ iso/characters/mario/main.arc: iso/characters/mario/mario-s.tim iso/characters/m
 iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
 
 # MX
-iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim
+iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim iso/characters/mx/run.tim
 
 # Boo
 iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
