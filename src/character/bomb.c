@@ -15,6 +15,7 @@
 enum
 {
 	Bomb_ArcMain_Normal,
+	Bomb_ArcMain_Mad,
 	
 	Bomb_Arc_Max,
 };
@@ -34,6 +35,7 @@ typedef struct
 
 //Bomb character definitions
 static const CharFrame char_bomb_frame[] = {
+	//bomb normal
 	{Bomb_ArcMain_Normal, {  4,   7,  18,  18}, { 16, 18}}, //0 idle 1
 	{Bomb_ArcMain_Normal, { 29,   4,  17,  21}, { 16, 21}}, //1 idle 2
 	{Bomb_ArcMain_Normal, { 55,   1,  16,  24}, { 16, 24}}, //2 idle 3
@@ -50,8 +52,28 @@ static const CharFrame char_bomb_frame[] = {
 
 	{Bomb_ArcMain_Normal, { 54,  55,  16,  20}, { 14, 20}}, //10 right 1
 	{Bomb_ArcMain_Normal, { 79,  52,  17,  23}, { 15, 23}}, //11 right 2
+
+
+	//bomb mad
+	{Bomb_ArcMain_Mad, {  4,   3,  18,  22}, { 16, 22}}, //12 idle 1
+	{Bomb_ArcMain_Mad, { 29,   3,  17,  22}, { 16, 22}}, //13 idle 2
+	{Bomb_ArcMain_Mad, { 55,   3,  18,  22}, { 16, 22}}, //14 idle 3
+	{Bomb_ArcMain_Mad, { 79,   4,  16,  21}, { 16, 21}}, //15 idle 4
+
+	{Bomb_ArcMain_Mad, {  5,  27,  17,  23}, { 17, 23}}, //16 left 1
+	{Bomb_ArcMain_Mad, { 30,  27,  16,  23}, { 16, 23}}, //17 left 2
+
+	{Bomb_ArcMain_Mad, { 54,  28,  19,  22}, { 16, 22}}, //18 down 1
+	{Bomb_ArcMain_Mad, { 79,  28,  17,  22}, { 15, 22}}, //19 down 2
+
+	{Bomb_ArcMain_Mad, {  4,  52,  16,  23}, { 16, 23}}, //20 up 1
+	{Bomb_ArcMain_Mad, { 29,  52,  16,  23}, { 16, 23}}, //21 up 2
+
+	{Bomb_ArcMain_Mad, { 54,  53,  16,  22}, { 14, 22}}, //22 right 1
+	{Bomb_ArcMain_Mad, { 79,  53,  17,  22}, { 15, 22}}, //23 right 2
 };
 
+//bomb
 static const Animation char_bomb_anim[CharAnim_Max] = {
 	{2, (const u8[]){ 0,  1,  2,  3,  3, ASCR_BACK, 1}},         //CharAnim_Idle
 	{2, (const u8[]){ 4,  5, ASCR_BACK, 1}},         //CharAnim_Left
@@ -61,6 +83,18 @@ static const Animation char_bomb_anim[CharAnim_Max] = {
 	{2, (const u8[]){ 8,  9, ASCR_BACK, 1}},         //CharAnim_Up
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
 	{2, (const u8[]){10, 11, ASCR_BACK, 1}},         //CharAnim_Right
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+};
+//bomb mad
+static const Animation char_bomb_m_anim[CharAnim_Max] = {
+	{2, (const u8[]){12, 13, 14, 15, 15, ASCR_BACK, 1}},         //CharAnim_Idle
+	{2, (const u8[]){16, 17, ASCR_BACK, 1}},         //CharAnim_Left
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_LeftAlt
+	{2, (const u8[]){18, 19, ASCR_BACK, 1}},         //CharAnim_Down
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_DownAlt
+	{2, (const u8[]){20, 21, ASCR_BACK, 1}},         //CharAnim_Up
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
+	{2, (const u8[]){22, 23, ASCR_BACK, 1}},         //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
 };
 
@@ -123,7 +157,7 @@ Character *Char_Bomb_New(fixed_t x, fixed_t y)
 	this->character.set_anim = Char_Bomb_SetAnim;
 	this->character.free = Char_Bomb_Free;
 	
-	Animatable_Init(&this->character.animatable, char_bomb_anim);
+	Animatable_Init(&this->character.animatable, char_bomb_m_anim);
 	Character_Init((Character*)this, x, y);
 	
 	//Set character information

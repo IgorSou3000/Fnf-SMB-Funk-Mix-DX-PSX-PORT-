@@ -57,7 +57,7 @@ typedef struct Character
 	s16 powerup;
 	s16 cooldown;
 
-	boolean ignore_note;
+	boolean ignore_note;  //When enabled, characters will not play note animations. This is for doing special animations without notes interrupting them.
 	
 	//Animation state
 	Animatable animatable;

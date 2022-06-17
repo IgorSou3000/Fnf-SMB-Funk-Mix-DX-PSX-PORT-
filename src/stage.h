@@ -265,8 +265,6 @@ typedef struct
 	ObjectList objlist_splash, objlist_fg, objlist_bg;
 
 	u8 debug; //Pressing select will change this value, and allows use of a step tracker, as well as viewing and modifying character positions.
-
-	boolean ignore_note; //When enabled, characters will not play note animations. This is for doing special animations without notes interrupting them.
 } Stage;
 
 extern Stage stage;
