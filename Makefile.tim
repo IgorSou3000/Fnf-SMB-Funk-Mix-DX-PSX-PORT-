@@ -20,6 +20,7 @@ all: \
 	iso/backgrounds/world2/airship/back.arc \
 	iso/backgrounds/freeplay2/ghost/back.arc \
 	iso/backgrounds/world1/pc/back.arc \
+	iso/characters/bomb/main.arc \
 	iso/characters/blaster/main.arc \
 	iso/characters/bowser/main.arc \
 	iso/characters/mx/main.arc \
@@ -31,7 +32,7 @@ iso/%.arc:
 	tools/funkinarcpak/funkinarcpak $@ $^
 
 # Menu
-iso/menu/menu.arc: iso/menu/back.tim iso/menu/menu0.tim iso/menu/story.tim iso/menu/title.tim
+iso/menu/menu.arc:iso/menu/menu0.tim iso/menu/story.tim iso/menu/title.tim iso/menu/mainmenu/mainbg.tim iso/menu/mainmenu/main.tim
 
 # BF
 iso/characters/bf/main.arc: iso/characters/bf/bf-small.tim iso/characters/bf/bf.tim iso/characters/bf/bf-fire.tim
@@ -39,14 +40,17 @@ iso/characters/bf/main.arc: iso/characters/bf/bf-small.tim iso/characters/bf/bf.
 # Mario
 iso/characters/mario/main.arc: iso/characters/mario/mario-s.tim iso/characters/mario/mario.tim iso/characters/mario/mario-f.tim
 
+# Bomb
+iso/characters/bomb/main.arc: iso/characters/bomb/bomb.tim iso/characters/bomb/bomb-m.tim
+
 # Bowser
 iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
 
-# MX
-iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim iso/characters/mx/run.tim
-
 # Boo
 iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
+
+# MX
+iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim iso/characters/mx/run.tim
 
 # World 1
 iso/backgrounds/world1/back.arc: iso/backgrounds/world1/back0.tim iso/backgrounds/world1/back1.tim
@@ -64,7 +68,6 @@ iso/characters/blaster/main.arc: iso/characters/blaster/blaster.tim
 
 # Ghost
 iso/backgrounds/freeplay2/ghost/back.arc: iso/backgrounds/freeplay2/ghost/bg.tim
-
 
 
 # MX

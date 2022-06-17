@@ -28,6 +28,96 @@
 
 //#define STAGE_FREECAM //Freecam
 
+//Stage definitions
+boolean noteshake;
+
+static u32 Sounds[4];
+
+#include "character/bf.h"
+#include "character/mario.h"
+#include "character/bomb.h"
+#include "character/bowser.h"
+#include "character/blaster.h"
+#include "character/boo.h"
+#include "character/mx.h"
+
+#include "stage/world1/world1_1.h"
+#include "stage/world1/world1_2.h"
+
+#include "stage/world2/world2_2.h"
+#include "stage/world2/world2_3.h"
+
+#include "stage/freeplay2/freeplay2_2.h"
+
+#include "stage/world1/world1_1pc.h"
+
+static const StageDef stage_defs[StageId_Max] = {
+	#include "stagedef_disc1.h"
+};
+
+//Stage state
+Stage stage;
+
+//Stage music functions
+static void Stage_StartVocal(void)
+{
+	if (!(stage.flag & STAGE_FLAG_VOCAL_ACTIVE))
+	{
+		Audio_ChannelXA(stage.stage_def->music_channel);
+		stage.flag |= STAGE_FLAG_VOCAL_ACTIVE;
+	}
+}
+
+static void Stage_CutVocal(void)
+{
+	if (stage.flag & STAGE_FLAG_VOCAL_ACTIVE)
+	{
+		Audio_ChannelXA(stage.stage_def->music_channel + 1);
+		stage.flag &= ~STAGE_FLAG_VOCAL_ACTIVE;
+	}
+}
+
+//Stage camera functions
+static void Stage_FocusCharacter(Character *ch, fixed_t div)
+{
+	//Use character focus settings to update target position and zoom
+	stage.camera.tx = ch->x + ch->focus_x;
+	stage.camera.ty = ch->y + ch->focus_y;
+	stage.camera.tz = ch->focus_zoom;
+	stage.camera.td = div;
+}
+
+static void Stage_ScrollCamera(void)
+{
+	#ifdef STAGE_FREECAM
+		if (pad_state.held & PAD_LEFT)
+			stage.camera.x -= FIXED_DEC(2,1);
+		if (pad_state.held & PAD_UP)
+			stage.camera.y -= FIXED_DEC(2,1);
+		if (pad_state.held & PAD_RIGHT)
+			stage.camera.x += FIXED_DEC(2,1);
+		if (pad_state.held & PAD_DOWN)
+			stage.camera.y += FIXED_DEC(2,1);
+		if (pad_state.held & PAD_TRIANGLE)
+			stage.camera.zoom -= FIXED_DEC(1,100);
+		if (pad_state.held & PAD_CROSS)
+			stage.camera.zoom += FIXED_DEC(1,100);
+	#else
+		//Get delta position
+		fixed_t dx = stage.camera.tx - stage.camera.x;
+		fixed_t dy = stage.camera.ty - stage.camera.y;
+		fixed_t dz = stage.camera.tz - stage.camera.zoom;
+		
+		//Scroll based off current divisor
+		stage.camera.x += FIXED_MUL(dx, stage.camera.td);
+		stage.camera.y += FIXED_MUL(dy, stage.camera.td);
+		stage.camera.zoom += FIXED_MUL(dz, stage.camera.td);
+	#endif
+	
+	//Update other camera stuff
+	stage.camera.bzoom = FIXED_MUL(stage.camera.zoom, stage.bump);
+}
+
 //normal note x
 static int note_x[8] = {
 	//BF
@@ -117,97 +207,6 @@ void Stage_Load_Notes(void)
 		 note_x[6] = FIXED_DEC(-60,1) - FIXED_DEC(SCREEN_WIDEADD,4);
 		 note_x[7] = FIXED_DEC(-26,1) - FIXED_DEC(SCREEN_WIDEADD,4);
 		}
-}
-
-
-
-//Stage definitions
-boolean noteshake;
-
-static u32 Sounds[4];
-
-#include "character/bf.h"
-#include "character/mario.h"
-#include "character/bowser.h"
-#include "character/blaster.h"
-#include "character/boo.h"
-#include "character/mx.h"
-
-#include "stage/world1/world1_1.h"
-#include "stage/world1/world1_2.h"
-
-#include "stage/world2/world2_2.h"
-#include "stage/world2/world2_3.h"
-
-#include "stage/freeplay2/freeplay2_2.h"
-
-#include "stage/world1/world1_1pc.h"
-
-static const StageDef stage_defs[StageId_Max] = {
-	#include "stagedef_disc1.h"
-};
-
-//Stage state
-Stage stage;
-
-//Stage music functions
-static void Stage_StartVocal(void)
-{
-	if (!(stage.flag & STAGE_FLAG_VOCAL_ACTIVE))
-	{
-		Audio_ChannelXA(stage.stage_def->music_channel);
-		stage.flag |= STAGE_FLAG_VOCAL_ACTIVE;
-	}
-}
-
-static void Stage_CutVocal(void)
-{
-	if (stage.flag & STAGE_FLAG_VOCAL_ACTIVE)
-	{
-		Audio_ChannelXA(stage.stage_def->music_channel + 1);
-		stage.flag &= ~STAGE_FLAG_VOCAL_ACTIVE;
-	}
-}
-
-//Stage camera functions
-static void Stage_FocusCharacter(Character *ch, fixed_t div)
-{
-	//Use character focus settings to update target position and zoom
-	stage.camera.tx = ch->x + ch->focus_x;
-	stage.camera.ty = ch->y + ch->focus_y;
-	stage.camera.tz = ch->focus_zoom;
-	stage.camera.td = div;
-}
-
-static void Stage_ScrollCamera(void)
-{
-	#ifdef STAGE_FREECAM
-		if (pad_state.held & PAD_LEFT)
-			stage.camera.x -= FIXED_DEC(2,1);
-		if (pad_state.held & PAD_UP)
-			stage.camera.y -= FIXED_DEC(2,1);
-		if (pad_state.held & PAD_RIGHT)
-			stage.camera.x += FIXED_DEC(2,1);
-		if (pad_state.held & PAD_DOWN)
-			stage.camera.y += FIXED_DEC(2,1);
-		if (pad_state.held & PAD_TRIANGLE)
-			stage.camera.zoom -= FIXED_DEC(1,100);
-		if (pad_state.held & PAD_CROSS)
-			stage.camera.zoom += FIXED_DEC(1,100);
-	#else
-		//Get delta position
-		fixed_t dx = stage.camera.tx - stage.camera.x;
-		fixed_t dy = stage.camera.ty - stage.camera.y;
-		fixed_t dz = stage.camera.tz - stage.camera.zoom;
-		
-		//Scroll based off current divisor
-		stage.camera.x += FIXED_MUL(dx, stage.camera.td);
-		stage.camera.y += FIXED_MUL(dy, stage.camera.td);
-		stage.camera.zoom += FIXED_MUL(dz, stage.camera.td);
-	#endif
-	
-	//Update other camera stuff
-	stage.camera.bzoom = FIXED_MUL(stage.camera.zoom, stage.bump);
 }
 
 //Character movement debug

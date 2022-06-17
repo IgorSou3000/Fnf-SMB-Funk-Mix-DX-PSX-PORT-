@@ -132,6 +132,9 @@
 				<!-- Mario assets -->
 				<file name = "mario.arc" type = "data" source = "iso/characters/mario/main.arc"/>
 
+				<!-- Bomb assets -->
+				<file name = "bomb.arc" type = "data" source = "iso/characters/bomb/main.arc"/>
+
 				<!-- Bowser assets -->
 				<file name = "koopa.arc" type = "data" source = "iso/characters/bowser/main.arc"/>
 

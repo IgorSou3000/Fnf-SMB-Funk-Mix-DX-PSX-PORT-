@@ -28,6 +28,7 @@ SRCS = src/main.c \
        src/character.c \
        src/character/bf.c \
        src/character/mario.c \
+       src/character/bomb.c \
        src/character/gf.c \
        src/character/bowser.c \
        src/character/blaster.c \

@@ -103,7 +103,7 @@ static struct
 	} page_param;
 	
 	//Menu assets
-	Gfx_Tex tex_back, tex_menu0, tex_story, tex_title;
+	Gfx_Tex tex_menu0, tex_story, tex_title, tex_mainbg, tex_main;
 	FontData font_bold, font_arial, font_smb1;
 	
 	Character *gf; //Title Girlfriend
@@ -140,17 +140,6 @@ static const char *Menu_LowerIf(const char *text, boolean lower)
 	//Terminate text
 	*dstp++ = '\0';
 	return menu_text_buffer;
-}
-
-static void Menu_DrawBack(boolean flash, s32 scroll, u8 r0, u8 g0, u8 b0, u8 r1, u8 g1, u8 b1)
-{
-	RECT back_src = {0, 0, 255, 255};
-	RECT back_dst = {0, -scroll - SCREEN_WIDEADD2, SCREEN_WIDTH, SCREEN_WIDTH * 4 / 5};
-	
-	if (flash || (animf_count & 4) == 0)
-		Gfx_DrawTexCol(&menu.tex_back, &back_src, &back_dst, r0, g0, b0);
-	else
-		Gfx_DrawTexCol(&menu.tex_back, &back_src, &back_dst, r1, g1, b1);
 }
 
 static void Menu_DifficultySelector(s32 x, s32 y)
@@ -194,6 +183,36 @@ static void Menu_DifficultySelector(s32 x, s32 y)
 	Gfx_BlitTex(&menu.tex_story, diff_src, x - (diff_src->w >> 1), y - 9 + ((pad_state.press & (PAD_LEFT | PAD_RIGHT)) != 0));
 }
 
+//thumbnail for main menu
+static void Menu_DrawThumbMain(u8 thumb, s16 x, s16 y)
+{
+	//draw picture frame
+	RECT frame_src = {161, 191, 49, 50};
+	RECT frame_dst = {x, y, 99, 101};
+
+	Gfx_DrawTex(&menu.tex_main, &frame_src, &frame_dst);
+
+	//draw thumbnails
+	RECT thumb_src = {
+	 2 + (thumb % 5) * 48,
+	 46 + (thumb  / 5) * 48, 
+	 46, 
+	 46
+  };
+	RECT thumb_dst = {x + 1, y + 2, 93, 93};
+
+	Gfx_DrawTex(&menu.tex_main, &thumb_src, &thumb_dst);
+}
+
+//selectors
+static void Menu_DrawSelector(u8 select, s16 x, s16 y, u8 power)
+{
+ RECT selector_src = {244, 174, 4, 4};
+ RECT selector_dst = {x, y + select* power, 9, 9};
+
+ Gfx_DrawTex(&menu.tex_main, &selector_src, &selector_dst);
+}
+
 static void Menu_DrawWeek(const char *week, s32 x, s32 y)
 {
 	//Draw label
@@ -228,10 +247,11 @@ void Menu_Load(MenuPage page)
 {
 	//Load menu assets
 	IO_Data menu_arc = IO_Read("\\MENU\\MENU.ARC;1");
-	Gfx_LoadTex(&menu.tex_back,  Archive_Find(menu_arc, "back.tim"),  0);
 	Gfx_LoadTex(&menu.tex_menu0,    Archive_Find(menu_arc, "menu0.tim"),    0);
 	Gfx_LoadTex(&menu.tex_story, Archive_Find(menu_arc, "story.tim"), 0);
 	Gfx_LoadTex(&menu.tex_title, Archive_Find(menu_arc, "title.tim"), 0);
+	Gfx_LoadTex(&menu.tex_mainbg, Archive_Find(menu_arc, "mainbg.tim"), 0);
+	Gfx_LoadTex(&menu.tex_main, Archive_Find(menu_arc, "main.tim"), 0);
 	Mem_Free(menu_arc);
 	
 	FontData_Load(&menu.font_bold, Font_Bold);
@@ -333,8 +353,8 @@ void Menu_Tick(void)
 				}
 				
 				//draw warning
-				RECT warning_src = {0, 132, 160, 120};
-				RECT warning_dst = {0,   0, 320, 240};
+				RECT warning_src = {10, 142, 142, 101};
+				RECT warning_dst = {18,  19, 284, 202};
 
 				Gfx_DrawTex(&menu.tex_menu0, &warning_src, &warning_dst);
 				break;
@@ -342,13 +362,13 @@ void Menu_Tick(void)
 	//Fallthrough
 		case MenuPage_Title:
 		{
-			//decrease variable
-			menu.movingbg--;
 			//Set background colour
 			Gfx_SetClear(148,148,255);
+
 			//Initialize page
 			if (menu.page_swap)
 			{
+				menu.movingbg = 0;
 				Audio_PlayXA_Track(XA_Title, 0x40, 0, 0);
 			}
 			//Go to main menu when start is pressed
@@ -363,17 +383,47 @@ void Menu_Tick(void)
 				menu.next_page = MenuPage_Main;
 				menu.next_select = 0;
 			}
+
+			//increase variable
+			menu.movingbg++;
+
+			//making a new variable only for slowdown da speed
+			s16 movingbg = menu.movingbg / 2;
+
+			//start loop
+			if (movingbg >= 513)
+			menu.movingbg = 0;
+
+
+			//forgive me nintendo
+			RECT nintendo_src = {111, 248, 139,  5};
+			RECT nintendo_dst = { 20, 222, 279, 11};
+			Gfx_DrawTex(&menu.tex_menu0, &nintendo_src, &nintendo_dst);
+
+
 			//draw clouds
 			RECT cloud_src = {0, 0, 128, 62};
-			RECT cloud_dst = {0,136, 256, 104};
+			RECT cloud_dst = {0 - movingbg,136, 257, 105};
 
 			Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
 
-			//manipulating da src y and dst x for draw another cloud
-			cloud_src.y = 66;
-			cloud_dst.x += cloud_dst.w - 1;
+				//manipulating da src y and dst x for draw another cloud
+				cloud_src.y = 66;
+				cloud_dst.x += cloud_dst.w - 1;
 
-			Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
+				Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
+
+					//repeating cloud0 but with a different x for a decent loop
+					cloud_src.y = 0;
+					cloud_dst.x += cloud_dst.w - 1;
+
+					Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
+
+						//repeating cloud1 but with a different x for a decent loop
+						cloud_src.y = 66;
+						cloud_dst.x += cloud_dst.w - 1;
+
+						Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
 
 			FntPrint("bg x %d", menu.movingbg);
 			break;
@@ -381,7 +431,7 @@ void Menu_Tick(void)
 		case MenuPage_Main:
 		{
 			static const char *menu_options[] = {
-				"STORY MODE",
+				"STORY      MODE",
 				"FREEPLAY",
 				"CREDITS",
 				"OPTIONS",
@@ -390,19 +440,11 @@ void Menu_Tick(void)
 			//Initialize page
 			if (menu.page_swap)
 			{
+				menu.movingbg = 0;
 				Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 1, 1);
 				menu.scroll = menu.select * FIXED_DEC(12,1);
 			}
-				
-			
-			//Draw version identification
-			menu.font_bold.draw(&menu.font_bold,
-				"PSXFUNKIN BY CUCKYDEV",
-				16,
-				SCREEN_HEIGHT - 32,
-				FontAlign_Left
-			);
-			
+		
 			//Handle option and selection
 			if (menu.trans_time > 0 && (menu.trans_time -= timer_dt) <= 0)
 				Trans_Start();
@@ -502,14 +544,71 @@ void Menu_Tick(void)
 						FontAlign_Left
 					);
 			}
-			
-			//Draw background
-			Menu_DrawBack(
-				menu.next_page == menu.page || menu.next_page == MenuPage_Title,
-				8,
-				253 >> 1, 231 >> 1, 113 >> 1,
-				253 >> 1, 113 >> 1, 155 >> 1
-			);
+
+			//draw selector
+			Menu_DrawSelector(menu.select, 10, 77, 32);
+
+			//draw thumbs
+			Menu_DrawThumbMain(menu.select, 200, 80);
+
+			//draw "main menu"
+			RECT main_menu_src = {161, 172,  71,  7};
+			RECT main_menu_dst = { 90,  10, 143, 15};
+
+			Gfx_DrawTex(&menu.tex_main, &main_menu_src, &main_menu_dst);
+
+			//draw "V2.0"
+			RECT v2_src = {162, 247,  31,  7};
+			RECT v2_dst = {253, 220,  63, 15};
+
+			Gfx_DrawTex(&menu.tex_main, &v2_src, &v2_dst);
+
+			//draw bricks
+			RECT bricks_src = {0, 0, 160, 16};
+			RECT bricks_dst = {0, 0, 321, 33};
+
+			Gfx_DrawTex(&menu.tex_main, &bricks_src, &bricks_dst);
+
+				//geez i using this too much lmfaoo
+				bricks_src.y = 18;
+				bricks_dst.y = 208;
+
+				Gfx_DrawTex(&menu.tex_main, &bricks_src, &bricks_dst);
+
+			//bg animation stuff
+
+			//increase variable
+			menu.movingbg++;
+
+			//making a new variable only for slowdown da speed
+			s16 movingbg = menu.movingbg / 2;
+
+			//start loop
+			if (movingbg >= 897)
+			menu.movingbg = 0;
+
+			RECT bg_anim_src = {0, 0, 224, 120};
+			RECT bg_anim_dst = {0 - movingbg, 0, 449, 241};
+
+			Gfx_DrawTex(&menu.tex_mainbg, &bg_anim_src, &bg_anim_dst);
+
+				//reusing src and dst and only changing src y and dst x to use another image
+				bg_anim_src.y = 123;
+				bg_anim_dst.x += bg_anim_dst.w - 1;
+
+				Gfx_DrawTex(&menu.tex_mainbg, &bg_anim_src, &bg_anim_dst);
+
+					//repeating AGAIN for make a pog loop
+					bg_anim_src.y = 0;
+					bg_anim_dst.x += bg_anim_dst.w - 1;
+
+					Gfx_DrawTex(&menu.tex_mainbg, &bg_anim_src, &bg_anim_dst);
+
+					//debug stuff
+					FntPrint("bg x %d", menu.movingbg);
+
+
+
 			break;
 		}
 		case MenuPage_Story:
@@ -746,15 +845,6 @@ void Menu_Tick(void)
 			menu.page_state.freeplay.back_r += (tgt_r - menu.page_state.freeplay.back_r) >> 4;
 			menu.page_state.freeplay.back_g += (tgt_g - menu.page_state.freeplay.back_g) >> 4;
 			menu.page_state.freeplay.back_b += (tgt_b - menu.page_state.freeplay.back_b) >> 4;
-			
-			Menu_DrawBack(
-				true,
-				8,
-				menu.page_state.freeplay.back_r >> (FIXED_SHIFT + 1),
-				menu.page_state.freeplay.back_g >> (FIXED_SHIFT + 1),
-				menu.page_state.freeplay.back_b >> (FIXED_SHIFT + 1),
-				0, 0, 0
-			);
 			break;
 		}
 		case MenuPage_Credits:
@@ -861,14 +951,6 @@ void Menu_Tick(void)
 					FontAlign_Left
 				);
 			}
-			
-			//Draw background
-			Menu_DrawBack(
-				true,
-				8,
-				197 >> 1, 240 >> 1, 95 >> 1,
-				0, 0, 0
-			);
 			break;
 		}
 		case MenuPage_Options:
@@ -1002,14 +1084,6 @@ void Menu_Tick(void)
 					FontAlign_Left
 				);
 			}
-			
-			//Draw background
-			Menu_DrawBack(
-				true,
-				8,
-				253 >> 1, 113 >> 1, 155 >> 1,
-				0, 0, 0
-			);
 			break;
 		}
 		case MenuPage_Stage:

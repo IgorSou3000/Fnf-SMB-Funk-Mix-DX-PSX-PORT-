@@ -69,7 +69,7 @@
 	{ //StageId_W2_2 (Hop Hop Heights)
 		//Characters
 		{Char_BF_New,    FIXED_DEC(90,1),  FIXED_DEC(76,1)},
-		{Char_Mario_New, FIXED_DEC(-90,1),  FIXED_DEC(12,1)},
+		{Char_Bomb_New, FIXED_DEC(-73,1),  FIXED_DEC(12,1)},
 		{NULL},
 		{NULL},
 		
