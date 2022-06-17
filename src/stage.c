@@ -436,10 +436,8 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 			//Hit the note
 			note->type |= NOTE_FLAG_HIT;
 			
-			if (stage.ignore_note == 0)
-			{
+			if (this->character->ignore_note == false)
 				this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
-			}
 
 			u8 hit_type = Stage_HitNote(this, type, stage.note_scroll - note_fp);
 			this->arrow_hitan[type & 0x3] = stage.step_time;
@@ -505,11 +503,8 @@ static void Stage_SustainCheck(PlayerState *this, u8 type)
 		
 		//Hit the note
 		note->type |= NOTE_FLAG_HIT;
-		if (stage.ignore_note == 0)
-		{
+		if (this->character->ignore_note == false)
 			this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
-			break;
-		}
 		
 		Stage_StartVocal();
 		this->arrow_hitan[type & 0x3] = stage.step_time;
@@ -1329,7 +1324,6 @@ static void Stage_LoadState(void)
 	stage.playedsound = false;
 
 	//reseting this for avoid bugs
-	stage.ignore_note = 0;
 	for (int i = 0; i < 2; i++)
 	{
 		memset(stage.player_state[i].arrow_hitan, 0, sizeof(stage.player_state[i].arrow_hitan));
@@ -1340,6 +1334,7 @@ static void Stage_LoadState(void)
 		stage.player_state[i].accuracy = 0;
 		stage.player_state[i].max_accuracy = 0;
 		stage.player_state[i].min_accuracy = 0;
+		stage.player_state[i].character->ignore_note = false;
 		stage.player_state[i].refresh_score = false;
 		stage.player_state[i].score = 0;
 		strcpy(stage.player_state[i].score_text, "000000");
@@ -1841,7 +1836,7 @@ void Stage_Tick(void)
 							note->type |= NOTE_FLAG_HIT;
 						}
 					}
-					if (stage.ignore_note == 0)
+					if (stage.player_state[1].character->ignore_note == false)
 					{
 						if (opponent_anote != CharAnim_Idle)
 							stage.opponent->set_anim(stage.opponent, opponent_anote);

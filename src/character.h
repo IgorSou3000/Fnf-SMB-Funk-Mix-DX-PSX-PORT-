@@ -56,6 +56,8 @@ typedef struct Character
 	//putting this in character for be more easy to mod
 	s16 powerup;
 	s16 cooldown;
+
+	boolean ignore_note;
 	
 	//Animation state
 	Animatable animatable;

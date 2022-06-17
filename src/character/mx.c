@@ -186,14 +186,14 @@ void Char_MX_Tick(Character *character)
 	{
 		case 507:
 		{
-			stage.ignore_note = 1; //Briefly disable note animations so that the transformation animation can happen during the hold note
+			character->ignore_note = true; //Briefly disable note animations so that the transformation animation can happen during the hold note
 			character->set_anim(character, CharAnim_Special); //Transformation animation
 			break;
 		}
 		case 512:
 		{
 			mx.phase = 2; //start using phase 2 sprites
-			stage.ignore_note = 0; //stop ignoring note animations
+			character->ignore_note = false; //stop ignoring note animations
 			break;
 		}
 		case 751:
