@@ -1,0 +1,34 @@
+This is a list and coordinates of the level loop sprites
+it starts at sprite 0 (below, in level1.png), and ends with sprite 6
+the sprites are supposed to be layed out RIGHT TO LEFT (1 is to the left of 0, for example)
+most of the sprites are of equal size, except for sprite 0, which is 2 pixels less wide.
+
+Also, none of the destructable props are in these sprites (bricks, pipes, ect.)
+the main stage should probably be focused on before adding that.
+
+LASTLY! when the loop first begins (right after MX laughs) start the loop at 1 instead of 0
+but make it loop back to 0 afterwords.
+
+=====level0.png=====
+0:0x0
+size:158x81
+
+(begin loop for first time)
+1:0x81
+size:160x81
+
+2:0x162
+size:160x81
+=====level1.png=====
+3:0x0
+size:160x81
+
+4:0x81
+size:160x81
+
+5:0x162
+size:160x81
+=====level2.png=====
+6:0x0
+size:160x81
+(go back to sprite 0)
