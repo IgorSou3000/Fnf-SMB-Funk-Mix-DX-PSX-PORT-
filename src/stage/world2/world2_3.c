@@ -52,19 +52,22 @@ void Back_World2_3_DrawBG(StageBack *back)
 		FIXED_DEC(cloud_src.w*2 + 1,1),
 		FIXED_DEC(cloud_src.h*2 + 1,1)
 	};
+
+	//i dunno what put in variable of for
+	for (u8 dunno = 0; dunno < 3; dunno++)
+	{
+	//increase dst.x
+	if (dunno != 0)
+	cloud_dst.x += cloud_dst.w - FIXED_DEC(1,1);
+
+	//if be a even number use cloud0,else use cloud 1
+	if ((dunno & 1) == 0)
 	Stage_DrawTex(&this->tex_cloud0, &cloud_src, &cloud_dst, stage.camera.bzoom);
+	else
+	Stage_DrawTex(&this->tex_cloud1, &cloud_src, &cloud_dst, stage.camera.bzoom);
+}
 
 	FntPrint("cloud x %d", this->cloudsmove);
-
-	//since cloud 0 and cloud 1 have da same width height and shit,i just changed da x and which image use
-	cloud_dst.x += cloud_dst.w - FIXED_DEC(1,1);
-
-	Stage_DrawTex(&this->tex_cloud1, &cloud_src, &cloud_dst, stage.camera.bzoom);
-
-	cloud_dst.x += cloud_dst.w - FIXED_DEC(1,1);
-
-	//draw cloud 0 again but with a different x for make a decent loop
-	Stage_DrawTex(&this->tex_cloud0, &cloud_src, &cloud_dst, stage.camera.bzoom);
 }
 
 void Back_World2_3_DrawFG(StageBack *back)
@@ -86,6 +89,8 @@ void Back_World2_3_DrawFG(StageBack *back)
 	};
 	
 	Stage_DrawTex(&this->tex_back0, &back_src, &back_dst, stage.camera.bzoom);
+
+	Gfx_SetClear(0, 13, 15);
 }
 
 void Back_World2_3_Free(StageBack *back)
@@ -115,8 +120,6 @@ StageBack *Back_World2_3_New(void)
 	Gfx_LoadTex(&this->tex_cloud0, Archive_Find(arc_back, "cloud0.tim"), 0);
 	Gfx_LoadTex(&this->tex_cloud1, Archive_Find(arc_back, "cloud1.tim"), 0);
 	Mem_Free(arc_back);
-
-	Gfx_SetClear(0, 13, 15);
 	
 	return (StageBack*)this;
 }

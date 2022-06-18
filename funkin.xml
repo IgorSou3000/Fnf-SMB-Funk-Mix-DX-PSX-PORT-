@@ -33,6 +33,7 @@
 				<file name = "arial.tim" type = "data" source = "iso/font/arial.tim"/>
 				<file name = "cdr.tim" type = "data" source = "iso/font/cdr.tim"/>
 				<file name = "smb1.tim" type = "data" source = "iso/font/smb1.tim"/>
+				<file name = "pixels.tim" type = "data" source = "iso/font/pixels.tim"/>
 			</dir>
 			
 			<!-- Stage assets -->
@@ -80,7 +81,7 @@
 			<!-- Freeplay 1 assets -->
 			<dir name = "free1">
 				<!-- Background art -->
-				<file name = "back.arc" type = "data" source = "iso/backgrounds/world1/back.arc"/>
+				<file name = "sky.arc" type = "data" source = "iso/backgrounds/freeplay1/sky/back.arc"/>
 				
 				<!-- 2 Player Game chart -->
 				<file name = "1.1.cht" type = "data" source = "iso/chart/freeplay1/2-player-game.json.cht"/>
@@ -143,6 +144,9 @@
 
 				<!-- Boo assets -->
 				<file name = "boo.arc" type = "data" source = "iso/characters/boo/main.arc"/>
+
+				<!-- Luigi 2 player game assets -->
+				<file name = "luigi2p.arc" type = "data" source = "iso/characters/luigi2p/main.arc"/>
 
 				<!-- MX assets -->
 				<file name = "mx.arc" type = "data" source = "iso/characters/mx/main.arc"/>

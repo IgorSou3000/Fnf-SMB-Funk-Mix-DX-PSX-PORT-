@@ -104,7 +104,7 @@ static struct
 	
 	//Menu assets
 	Gfx_Tex tex_menu0, tex_story, tex_title, tex_mainbg, tex_main;
-	FontData font_bold, font_arial, font_smb1;
+	FontData font_bold, font_arial, font_smb1, font_pixels;
 	
 	Character *gf; //Title Girlfriend
 } menu;
@@ -256,7 +256,12 @@ void Menu_Load(MenuPage page)
 	
 	FontData_Load(&menu.font_bold, Font_Bold);
 	FontData_Load(&menu.font_arial, Font_Arial);
+
+	//font of main menu
 	FontData_Load(&menu.font_smb1, Font_SMB1);
+
+	//font of freeplay
+	FontData_Load(&menu.font_pixels, Font_Pixel_Small);
 
 	stage.camera.x = stage.camera.y = FIXED_DEC(0,1);
 	stage.camera.bzoom = FIXED_UNIT;
@@ -816,21 +821,21 @@ void Menu_Tick(void)
 			}
 			
 			//Draw options
-			s32 next_scroll = menu.select * FIXED_DEC(24,1);
+			s32 next_scroll = menu.select * FIXED_DEC(8,1);
 			menu.scroll += (next_scroll - menu.scroll) >> 4;
 			
 			for (u8 i = 0; i < COUNT_OF(menu_options); i++)
 			{
 				//Get position on screen
-				s32 y = (i * 24) - 8 - (menu.scroll >> FIXED_SHIFT);
+				s32 y = (i * 11) - 8 - (menu.scroll >> FIXED_SHIFT);
 				if (y <= -SCREEN_HEIGHT2 - 8)
 					continue;
 				if (y >= SCREEN_HEIGHT2 + 8)
 					break;
 				
 				//Draw text
-				menu.font_bold.draw(&menu.font_bold,
-					Menu_LowerIf(menu_options[i].text, menu.select != i),
+				menu.font_pixels.draw(&menu.font_pixels,
+					menu_options[i].text,
 					48,
 					SCREEN_HEIGHT2 + y - 8,
 					FontAlign_Left

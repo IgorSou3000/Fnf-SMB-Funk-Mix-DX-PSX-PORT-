@@ -216,6 +216,9 @@ void Font_SMB1_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, Fo
 	u8 c;
 	while ((c = *text++) != '\0')
 	{
+		//don't draw -
+		if (c == '-')
+		continue;
 		//Shift and validate character
 		if ((c -= 0x20) >= 0x60)
 			continue;
@@ -226,6 +229,60 @@ void Font_SMB1_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, Fo
 		
 		//Increment X
 		x += font_smb1map[c].charW - 1;
+	}
+}
+
+//Pixel_Small by igorsou3000
+s32 Font_Pixel_Small_GetWidth(struct FontData *this, const char *text)
+{
+	(void)this;
+	
+	//Draw string width character by character
+	s32 width = 0;
+	
+	u8 c;
+	while ((c = *text++) != '\0')
+	{
+		//Shift and validate character
+		if ((c -= 0x20) >= 0x60)
+			continue;
+		
+		//Add width
+		width += 9;
+	}
+	
+	return width;
+}
+
+void Font_Pixel_Small_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, FontAlign align, u8 r, u8 g, u8 b)
+{
+	//Offset position based off alignment
+	switch (align)
+	{
+		case FontAlign_Left:
+			break;
+		case FontAlign_Center:
+			x -= Font_Arial_GetWidth(this, text) >> 1;
+			break;
+		case FontAlign_Right:
+			x -= Font_Arial_GetWidth(this, text);
+			break;
+	}
+	
+	//Draw string character by character
+	u8 c;
+	while ((c = *text++) != '\0')
+	{
+		//Shift and validate character
+		if ((c -= 0x20) >= 0x60)
+			continue;
+		
+		//Draw character
+		RECT src = {(c % 18) * 9, (c / 18) * 9, 9, 9};
+		Gfx_BlitTexCol(&this->tex, &src, x, y, r, g, b);
+		
+		//Increment X
+		x += 8;
 	}
 }
 
@@ -264,6 +321,12 @@ void FontData_Load(FontData *this, Font font)
 			Gfx_LoadTex(&this->tex, IO_Read("\\FONT\\SMB1.TIM;1"), GFX_LOADTEX_FREE);
 			this->get_width = Font_SMB1_GetWidth;
 			this->draw_col = Font_SMB1_DrawCol;
+			break;
+		case Font_Pixel_Small:
+			//Load texture and set functions
+			Gfx_LoadTex(&this->tex, IO_Read("\\FONT\\PIXELS.TIM;1"), GFX_LOADTEX_FREE);
+			this->get_width = Font_Pixel_Small_GetWidth;
+			this->draw_col = Font_Pixel_Small_DrawCol;
 			break;
 	}
 	this->draw = Font_Draw;

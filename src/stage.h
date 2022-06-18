@@ -239,6 +239,9 @@ typedef struct
 	
 	s16 noteshakex;
 	s16 noteshakey;
+	
+	//for moving bg stuff
+	fixed_t bgx,bgy;
 
 	s16 song_step;
 
@@ -283,6 +286,7 @@ void Stage_BlendTexArb(Gfx_Tex *tex, const RECT *src, const POINT_FIXED *p0, con
 void Stage_Load(StageId id, StageDiff difficulty, boolean story);
 void Stage_Unload();
 void Stage_Tick();
+void Stage_MoveBG(RECT_FIXED *dst);
 
 #ifdef PSXF_NETWORK
 void Stage_NetHit(Packet *packet);

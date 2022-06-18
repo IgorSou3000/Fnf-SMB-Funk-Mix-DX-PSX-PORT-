@@ -33,27 +33,6 @@ void Back_World2_2_DrawBG(StageBack *back)
 	fx = stage.camera.x;
 	fy = stage.camera.y;
 
-	//Draw Clud
-	RECT clud_src = {0, 114, 32, 24}; //shoutout to UNSTOPP4BLE for pointing out that the src.y isn't 144 lmao
-	RECT_FIXED clud_dst = {
-		FIXED_DEC(-84,1),
-		FIXED_DEC(-62,1),
-		FIXED_DEC(64 + 1,1),
-		FIXED_DEC(48 + 1,1)
-	};
-
-	Stage_DrawTex(&this->tex_back, &clud_src, &clud_dst, stage.camera.bzoom);
-
-	//blue bg
-	Gfx_SetClear(148, 148, 255);
-}
-
-void Back_World2_2_DrawFG(StageBack *back)
-{
-	Back_World2_2 *this = (Back_World2_2*)back;
-
-	fixed_t fx, fy;
-	
 	//Draw background
 	fx = stage.camera.x;
 	fy = stage.camera.y;
@@ -67,6 +46,20 @@ void Back_World2_2_DrawFG(StageBack *back)
 	};
 	
 	Stage_DrawTex(&this->tex_back, &back_src, &back_dst, stage.camera.bzoom);
+
+	//Draw Clud
+	RECT clud_src = {0, 114, 32, 24}; //shoutout to UNSTOPP4BLE for pointing out that the src.y isn't 144 lmao
+	RECT_FIXED clud_dst = {
+		FIXED_DEC(-84,1),
+		FIXED_DEC(-62,1),
+		FIXED_DEC(64 + 1,1),
+		FIXED_DEC(48 + 1,1)
+	};
+
+	Stage_DrawTex(&this->tex_back, &clud_src, &clud_dst, stage.camera.bzoom);
+
+	//blue bg
+	Gfx_SetClear(148, 148, 255);
 }
 
 void Back_World2_2_Free(StageBack *back)
@@ -85,7 +78,7 @@ StageBack *Back_World2_2_New(void)
 		return NULL;
 	
 	//Set background functions
-	this->back.draw_fg = Back_World2_2_DrawFG;
+	this->back.draw_fg = NULL;
 	this->back.draw_md = NULL;
 	this->back.draw_bg = Back_World2_2_DrawBG;
 	this->back.free = Back_World2_2_Free;

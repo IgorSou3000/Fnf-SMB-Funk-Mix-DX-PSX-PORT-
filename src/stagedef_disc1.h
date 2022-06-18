@@ -102,13 +102,13 @@
 	},
 	{ //StageId_F1_1 (2 Player Game)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{Char_BF_New,    FIXED_DEC(87,1),  FIXED_DEC(60,1)},
+		{Char_Luigi2P_New, FIXED_DEC(-66,1),  FIXED_DEC(20,1)},
 		{NULL},
 		{NULL},
 		
 		//Stage background
-		Back_World1_1_New,
+		Back_Freeplay1_1_New,
 		
 		//Song info
 		{FIXED_DEC(295,100)},

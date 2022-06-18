@@ -38,6 +38,7 @@ static u32 Sounds[4];
 #include "character/bomb.h"
 #include "character/bowser.h"
 #include "character/blaster.h"
+#include "character/luigi2p.h"
 #include "character/boo.h"
 #include "character/mx.h"
 
@@ -46,6 +47,8 @@ static u32 Sounds[4];
 
 #include "stage/world2/world2_2.h"
 #include "stage/world2/world2_3.h"
+
+#include "stage/freeplay1/freeplay1_1.h"
 
 #include "stage/freeplay2/freeplay2_2.h"
 
@@ -207,6 +210,24 @@ void Stage_Load_Notes(void)
 		 note_x[6] = FIXED_DEC(-60,1) - FIXED_DEC(SCREEN_WIDEADD,4);
 		 note_x[7] = FIXED_DEC(-26,1) - FIXED_DEC(SCREEN_WIDEADD,4);
 		}
+}
+//Background movement debug
+void Stage_MoveBG(RECT_FIXED *dst)
+{
+	//using a variable to manage move
+	    if (pad_state_2.held & INPUT_LEFT)
+		    stage.bgx -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_DOWN)
+		    stage.bgy += FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_UP)
+		   stage.bgy -= FIXED_DEC(1,1);
+		if (pad_state_2.held & INPUT_RIGHT)
+		    stage.bgx += FIXED_DEC(1,1);
+
+			dst->x += stage.bgx;
+			dst->y += stage.bgy;
+
+			FntPrint("bg x is %d, bg y is %d", dst->x / 1024, dst->y / 1024);
 }
 
 //Character movement debug
@@ -540,14 +561,6 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 				Stage_NoteCheck(this, 2 | i);
 			if (this->pad_press & INPUT_RIGHT)
 				Stage_NoteCheck(this, 3 | i);
-
-			if (this->pad_press & DEBUG_SWITCH)
-			{
-				if (stage.debug < 5)
-				    stage.debug += 1;
-				else 
-				    stage.debug = 0;
-			}
 		}
 		else
 		{
@@ -1322,6 +1335,8 @@ static void Stage_LoadState(void)
 	stage.player_state[1].character = stage.opponent;
 	stage.soundcooldown = 0;
 	stage.playedsound = false;
+	stage.bgx = FIXED_DEC(0,1);
+	stage.bgy = FIXED_DEC(0,1);
 
 	//reseting this for avoid bugs
 	for (int i = 0; i < 2; i++)
@@ -1586,6 +1601,7 @@ void Stage_Tick(void)
 		case StageState_Play:
 		{  
 			Stage_CountDown();
+
 			if (stage.botplay)
 			{
 				//Draw botplay
@@ -1618,7 +1634,14 @@ void Stage_Tick(void)
 			boolean playing;
 			fixed_t next_scroll;
 
-			//Debug shit, press SELECT to go to different modes
+			//Debug shit, press SELECT with a 2 controller to go to different modes
+			if (pad_state_2.press & DEBUG_SWITCH)
+			{
+				if (stage.debug < 5)
+				    stage.debug += 1;
+				else 
+				    stage.debug = 0;
+			}
 			switch (stage.debug)
 			{
 				case 1: //step counter
@@ -1922,11 +1945,14 @@ void Stage_Tick(void)
 				}
 				
 				//Draw text
-				stage.font_smb1.draw(&stage.font_smb1,
+				stage.font_smb1.draw_col(&stage.font_smb1,
 					this->score_text,
 					(stage.mode == StageMode_2P && i == 0) ? 60 : 10, 
 					(stage.downscroll) ? 5 : 216,
-					FontAlign_Left
+					FontAlign_Left,
+					(this->score < 0) ? 255 : 0x80,  //if score be negative draw red, else normal color
+					(this->score < 0) ?   0 : 0x80,
+					(this->score < 0) ?   0 : 0x80
 				);
 			}
 			

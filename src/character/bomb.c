@@ -71,6 +71,9 @@ static const CharFrame char_bomb_frame[] = {
 
 	{Bomb_ArcMain_Mad, { 54,  53,  16,  22}, { 14, 22}}, //22 right 1
 	{Bomb_ArcMain_Mad, { 79,  53,  17,  22}, { 15, 22}}, //23 right 2
+
+	{Bomb_ArcMain_Mad, {  1,  76,  32,  31}, { 23, 27}}, //24 explosion 1
+	{Bomb_ArcMain_Mad, { 39,  76,  32,  31}, { 23, 27}}, //25 explosion 2
 };
 
 //bomb
@@ -84,6 +87,7 @@ static const Animation char_bomb_anim[CharAnim_Max] = {
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
 	{2, (const u8[]){10, 11, ASCR_BACK, 1}},         //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, ASCR_BACK, 1}},    //CharAnim_Special
 };
 //bomb mad
 static const Animation char_bomb_m_anim[CharAnim_Max] = {
@@ -96,6 +100,7 @@ static const Animation char_bomb_m_anim[CharAnim_Max] = {
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
 	{2, (const u8[]){22, 23, ASCR_BACK, 1}},         //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, 24, 25, ASCR_BACK, 1}},    //CharAnim_Special
 };
 
 //Bomb character functions
@@ -122,7 +127,23 @@ void Char_Bomb_Tick(Character *character)
 		Character_PerformIdle(character);
 	
 	//Animate and draw
+	
+	//event stuff
+	//explosion
+	if (stage.song_step == 793)
+	character->set_anim(character, CharAnim_Special);
+
+
+	//bomb mad
+	if ((stage.song_step >= 383 && stage.mode == StageMode_Normal) || (character->powerup -1 == 0 && stage.mode != StageMode_Normal))
+	Animatable_Animate(&character->animatable2, (void*)this, Char_Bomb_SetFrame);
+
+	//normal bomb
+	else
 	Animatable_Animate(&character->animatable, (void*)this, Char_Bomb_SetFrame);
+
+	//stop drawing after explosion
+	if (stage.song_step <= 808)
 	Character_Draw(character, &this->tex, &char_bomb_frame[this->frame]);
 }
 
@@ -130,6 +151,7 @@ void Char_Bomb_SetAnim(Character *character, u8 anim)
 {
 	//Set animation
 	Animatable_SetAnim(&character->animatable, anim);
+	Animatable_SetAnim(&character->animatable2, anim);
 	Character_CheckStartSing(character);
 }
 
@@ -157,7 +179,8 @@ Character *Char_Bomb_New(fixed_t x, fixed_t y)
 	this->character.set_anim = Char_Bomb_SetAnim;
 	this->character.free = Char_Bomb_Free;
 	
-	Animatable_Init(&this->character.animatable, char_bomb_m_anim);
+	Animatable_Init(&this->character.animatable, char_bomb_anim);
+	Animatable_Init(&this->character.animatable2, char_bomb_m_anim);
 	Character_Init((Character*)this, x, y);
 	
 	//Set character information

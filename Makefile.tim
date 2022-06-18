@@ -5,6 +5,7 @@ all: \
 	iso/font/arial.tim \
 	iso/font/cdr.tim \
 	iso/font/smb1.tim \
+	iso/font/pixels.tim \
 	iso/stage/hud0.tim \
 	iso/stage/hud1.tim \
 	iso/stage/hud0maro.tim \
@@ -14,16 +15,19 @@ all: \
 	iso/stage/hud1weeb.tim \
 	iso/characters/bf/main.arc \
 	iso/characters/mario/main.arc \
-	iso/characters/boo/main.arc \
-	iso/backgrounds/world1/back.arc \
-	iso/backgrounds/world2/athletic/back.arc \
-	iso/backgrounds/world2/airship/back.arc \
-	iso/backgrounds/freeplay2/ghost/back.arc \
-	iso/backgrounds/world1/pc/back.arc \
 	iso/characters/bomb/main.arc \
 	iso/characters/blaster/main.arc \
 	iso/characters/bowser/main.arc \
+	iso/characters/luigi2p/main.arc \
+	iso/characters/boo/main.arc \
 	iso/characters/mx/main.arc \
+	iso/characters/luigi2p/main.arc \
+	iso/backgrounds/world1/back.arc \
+	iso/backgrounds/world2/athletic/back.arc \
+	iso/backgrounds/world2/airship/back.arc \
+	iso/backgrounds/freeplay1/sky/back.arc \
+	iso/backgrounds/freeplay2/ghost/back.arc \
+	iso/backgrounds/world1/pc/back.arc \
 
 iso/%.tim: iso/%.png
 	tools/funkintimconv/funkintimconv $@ $<
@@ -46,6 +50,9 @@ iso/characters/bomb/main.arc: iso/characters/bomb/bomb.tim iso/characters/bomb/b
 # Bowser
 iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
 
+# Luigi 2 player game
+iso/characters/luigi2p/main.arc: iso/characters/luigi2p/luigi.tim
+
 # Boo
 iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
 
@@ -63,6 +70,11 @@ iso/backgrounds/world2/athletic/back.arc: iso/backgrounds/world2/athletic/back.t
 # Airship
 iso/backgrounds/world2/airship/back.arc: iso/backgrounds/world2/airship/ship.tim iso/backgrounds/world2/airship/cloud0.tim iso/backgrounds/world2/airship/cloud1.tim
 iso/characters/blaster/main.arc: iso/characters/blaster/blaster.tim
+
+# Freeplay 1
+
+# Sky
+iso/backgrounds/freeplay1/sky/back.arc: iso/backgrounds/freeplay1/sky/coclo.tim iso/backgrounds/freeplay1/sky/stars.tim
 
 # Freeplay 2
 
