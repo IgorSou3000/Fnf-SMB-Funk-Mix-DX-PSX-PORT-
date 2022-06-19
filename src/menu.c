@@ -821,24 +821,27 @@ void Menu_Tick(void)
 			}
 			
 			//Draw options
-			s32 next_scroll = menu.select * FIXED_DEC(8,1);
+			s32 next_scroll = menu.select * FIXED_DEC(17,1);
 			menu.scroll += (next_scroll - menu.scroll) >> 4;
 			
 			for (u8 i = 0; i < COUNT_OF(menu_options); i++)
 			{
 				//Get position on screen
-				s32 y = (i * 11) - 8 - (menu.scroll >> FIXED_SHIFT);
+				s32 y = (i * 17) - 8;
 				if (y <= -SCREEN_HEIGHT2 - 8)
 					continue;
 				if (y >= SCREEN_HEIGHT2 + 8)
 					break;
 				
 				//Draw text
-				menu.font_pixels.draw(&menu.font_pixels,
+				menu.font_pixels.draw_col(&menu.font_pixels,
 					menu_options[i].text,
 					48,
 					SCREEN_HEIGHT2 + y - 8,
-					FontAlign_Left
+					FontAlign_Left,
+					(i == menu.select) ? 229 >> 1 : 0x80,
+					(i == menu.select) ? 156 >> 1 : 0x80,
+					(i == menu.select) ? 32 >> 1  : 0x80
 				);
 			}
 			

@@ -248,7 +248,7 @@ s32 Font_Pixel_Small_GetWidth(struct FontData *this, const char *text)
 			continue;
 		
 		//Add width
-		width += 9;
+		width += 15;
 	}
 	
 	return width;
@@ -262,15 +262,15 @@ void Font_Pixel_Small_DrawCol(struct FontData *this, const char *text, s32 x, s3
 		case FontAlign_Left:
 			break;
 		case FontAlign_Center:
-			x -= Font_Arial_GetWidth(this, text) >> 1;
+			x -= Font_Pixel_Small_GetWidth(this, text) >> 1;
 			break;
 		case FontAlign_Right:
-			x -= Font_Arial_GetWidth(this, text);
+			x -= Font_Pixel_Small_GetWidth(this, text);
 			break;
 	}
 	
 	//Draw string character by character
-	u8 c;
+	s16 c;
 	while ((c = *text++) != '\0')
 	{
 		//Shift and validate character
@@ -278,11 +278,11 @@ void Font_Pixel_Small_DrawCol(struct FontData *this, const char *text, s32 x, s3
 			continue;
 		
 		//Draw character
-		RECT src = {(c % 18) * 9, (c / 18) * 9, 9, 9};
+		RECT src = {(c % 15) * 15, (c / 15) * 15, 15, 15};
 		Gfx_BlitTexCol(&this->tex, &src, x, y, r, g, b);
 		
 		//Increment X
-		x += 8;
+		x += 11;
 	}
 }
 
