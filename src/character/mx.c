@@ -19,6 +19,10 @@ enum
 	MX_ArcMain_Main, //Fake Mario sprites
 	MX_ArcMain_Near, //Phase 2 sprites
 	MX_ArcMain_Run, //Running sprites
+	MX_ArcMain_Big0, //Big sprites
+	MX_ArcMain_Big1,
+	MX_ArcMain_Big2,
+	MX_ArcMain_Big3,
 	
 	MX_Arc_Max,
 };
@@ -92,6 +96,38 @@ static const CharFrame char_mx_frame[] = {
 	{MX_ArcMain_Run, {  0,   0,  34,  42}, {  0, 0}}, //31 run
 	{MX_ArcMain_Run, { 37,   0,  24,  40}, { -2,-2}}, //32 run
 	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //33 run
+
+	//running placholders, don't use these yet
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //34 run
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //35 run
+
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //36 run
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //37 run
+
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //38 run
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //39 run
+
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //40 run
+	{MX_ArcMain_Run, { 64,   0,  40,  41}, {  2,-1}}, //41 run
+
+	//big
+	
+	{MX_ArcMain_Big0, {  0,   0, 140,  78}, {  0, 0}}, //42 idle
+	{MX_ArcMain_Big0, {  0,  81, 142,  78}, {  1, 0}}, //43 idle
+	{MX_ArcMain_Big0, {  0, 162, 139,  78}, { -1, 0}}, //44 idle
+	{MX_ArcMain_Big1, {  0,   0, 140,  78}, {  0, 0}}, //45 idle
+
+	{MX_ArcMain_Big1, {  0,  81, 137,  78}, {  2, 0}}, //46 left
+	{MX_ArcMain_Big1, {  0, 162, 137,  78}, {  1, 0}}, //47 left
+
+	{MX_ArcMain_Big2, {  0,   0, 140,  78}, {  0,-2}}, //48 down
+	{MX_ArcMain_Big2, {  0,  81, 140,  80}, {  0, 0}}, //49 down
+
+	{MX_ArcMain_Big2, {  0, 164, 140,  77}, {  0,-1}}, //50 up
+	{MX_ArcMain_Big3, {  0,   0, 140,  77}, {  0,-1}}, //51 up
+
+	{MX_ArcMain_Big3, {  0,  80, 138,  78}, { -8, 0}}, //52 right
+	{MX_ArcMain_Big3, {  0, 161, 139,  78}, { -7, 0}}, //53 right
 };
 
 //Faker animations
@@ -136,6 +172,21 @@ static const Animation char_run_anim[CharAnim_Max] = {
 	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_Special(jump)
 };
 
+//Big animations
+static const Animation char_big_anim[CharAnim_Max] = {
+	{2, (const u8[]){42, 43, 44, 45, ASCR_BACK, 1}},         //CharAnim_Idle
+	{2, (const u8[]){46, 47, ASCR_BACK, 1}},         //CharAnim_Left
+	{1, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_LeftAlt
+	{2, (const u8[]){48, 49, ASCR_BACK, 1}},         //CharAnim_Down
+	{1, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_DownAlt
+	{2, (const u8[]){50, 51, ASCR_BACK, 1}},         //CharAnim_Up
+	{1, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
+	{2, (const u8[]){52, 53, ASCR_BACK, 1}},         //CharAnim_Right
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_Special(jump)
+};
+
+
 //MX character functions
 void Char_MX_SetFrame(void *user, u8 frame)
 {
@@ -178,6 +229,11 @@ void Char_MX_Tick(Character *character)
 			Animatable_Animate(&character->animatable3, (void*)this, Char_MX_SetFrame);
 			break;
 		}
+		case 4:
+		{
+			Animatable_Animate(&character->animatable4, (void*)this, Char_MX_SetFrame);
+			break;
+		}
 	}
 	Character_Draw(character, &this->tex, &char_mx_frame[this->frame]);
 
@@ -208,6 +264,19 @@ void Char_MX_Tick(Character *character)
 			//reposition mx because the offsets are getting difficult to keep up with
 			stage.opponent->x = FIXED_DEC(72,1);
 			stage.opponent->y = FIXED_DEC(-18,1);
+			break;
+		}
+
+		case 1535: //prepare next phase while luigi is on screen
+		{
+			mx.phase = 4;
+			//reposition bf to be on the ground and middle of wall
+			//also yes I am doing this in mx's code
+			stage.player->x = FIXED_DEC(18,1);
+			stage.player->y = FIXED_DEC(92,1);
+			//reposition mx to be behind the wall
+			stage.opponent->x = FIXED_DEC(-142,1);
+			stage.opponent->y = FIXED_DEC(-67,1);
 		}
 		default: //do nothing otherwise lol
 			break;
@@ -220,6 +289,7 @@ void Char_MX_SetAnim(Character *character, u8 anim)
 	Animatable_SetAnim(&character->animatable, anim);
 	Animatable_SetAnim(&character->animatable2, anim);
 	Animatable_SetAnim(&character->animatable3, anim);
+	Animatable_SetAnim(&character->animatable4, anim); //this is getting absurd
 	Character_CheckStartSing(character);
 }
 
@@ -250,6 +320,7 @@ Character *Char_MX_New(fixed_t x, fixed_t y)
 	Animatable_Init(&this->character.animatable, char_mario_anim);
 	Animatable_Init(&this->character.animatable2, char_near_anim);
 	Animatable_Init(&this->character.animatable3, char_run_anim);
+	Animatable_Init(&this->character.animatable4, char_big_anim);
 
 	Character_Init((Character*)this, x, y);
 	
@@ -271,6 +342,10 @@ Character *Char_MX_New(fixed_t x, fixed_t y)
 		"mario.tim", //MX_ArcMain_Main
 		"near.tim", //MX_ArcMain_Near
 		"run.tim",
+		"big0.tim",
+		"big1.tim",
+		"big2.tim",
+		"big3.tim",
 		NULL
 	};
 	IO_Data *arc_ptr = this->arc_ptr;

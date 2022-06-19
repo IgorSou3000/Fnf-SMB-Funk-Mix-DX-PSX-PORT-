@@ -109,7 +109,7 @@ void Character_PerformIdle(Character *this)
 	Character_CheckEndSing(this);
 	if (stage.flag & STAGE_FLAG_JUST_STEP)
 	{
-		if ((Animatable_Ended(&this->animatable) || Animatable_Ended(&this->animatable2) || Animatable_Ended(&this->animatable3)) &&
+		if ((Animatable_Ended(&this->animatable) || Animatable_Ended(&this->animatable2) || Animatable_Ended(&this->animatable3 || Animatable_Ended(&this->animatable4))) &&
 		    (this->animatable.anim != CharAnim_Left &&
 		     this->animatable.anim != CharAnim_LeftAlt &&
 		     this->animatable.anim != CharAnim_Down &&

@@ -57,7 +57,7 @@ iso/characters/luigi2p/main.arc: iso/characters/luigi2p/luigi.tim
 iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
 
 # MX
-iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim iso/characters/mx/run.tim
+iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim iso/characters/mx/run.tim iso/characters/mx/big0.tim iso/characters/mx/big1.tim iso/characters/mx/big2.tim iso/characters/mx/big3.tim
 
 # World 1
 iso/backgrounds/world1/back.arc: iso/backgrounds/world1/back0.tim iso/backgrounds/world1/back1.tim
@@ -83,4 +83,4 @@ iso/backgrounds/freeplay2/ghost/back.arc: iso/backgrounds/freeplay2/ghost/bg.tim
 
 
 # MX
-iso/backgrounds/world1/pc/back.arc: iso/backgrounds/world1/pc/goal.tim
+iso/backgrounds/world1/pc/back.arc: iso/backgrounds/world1/pc/goal.tim iso/backgrounds/world1/pc/loogi.tim iso/backgrounds/world1/pc/wall.tim iso/backgrounds/world1/pc/level0.tim iso/backgrounds/world1/pc/level1.tim iso/backgrounds/world1/pc/level2.tim

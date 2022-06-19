@@ -16,6 +16,9 @@ Character *Char_MX_New(fixed_t x, fixed_t y);
 typedef struct
 {
   u8 phase; //for... uh... phase stuff
+
+  u8 blackscene; //for the innocence scene, and the luigi scene, or wherever else a black scene would be useful
+  u8 scenetype; //selects the type of scene, 0 for innocence, 1 for luigi
 } MX;
 
 extern MX mx;
