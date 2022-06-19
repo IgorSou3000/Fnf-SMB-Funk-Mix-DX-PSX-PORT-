@@ -55,49 +55,48 @@ void Back_World1_1PC_DrawBG(StageBack *back) // 1-1
 		Stage_DrawTex(&this->tex_goal, &back_src, &back_dst, stage.camera.bzoom);
 
 	//And down-a here, is where the disaster begins! Wahoo!
-	RECT level0_src = {0,   0, 158, 81};
+	RECT level0_src = {0,   0, 160, 81};
 	RECT level1_src = {0,  84, 160, 81}; //reused for level4
 	RECT level2_src = {0, 168, 160, 81}; //reused for level5
 	RECT level3_src = {0,   0, 160, 81}; //reused for level6
 
 	if (mx.phase == 3)
 	{
-		//modified code from the main menu
+		//this shit loop itself, but for avoid problems,i resetting da variable
+		if (this->movingbg >= 2048)
+		this->movingbg = 0;
 
 		//draw the level shit
-		Stage_DrawTex(&this->tex_level0, &level0_src, &back_dst, stage.camera.bzoom);
-		//manipulating da src y and dst x for draw another cloud
+		Stage_DrawTex(&this->tex_level2, &level0_src, &back_dst, stage.camera.bzoom);
+
+		//i just manipulate da dst x for this
 		back_dst.x -= back_dst.w;
 
 			Stage_DrawTex(&this->tex_level0, &level1_src, &back_dst, stage.camera.bzoom);
 
-				//repeating cloud0 but with a different x for a decent loop
 				back_dst.x -= back_dst.w;
 
 				Stage_DrawTex(&this->tex_level0, &level2_src, &back_dst, stage.camera.bzoom);
 
-					//repeating cloud1 but with a different x for a decent loop
 					back_dst.x -= back_dst.w;
 
 					Stage_DrawTex(&this->tex_level1, &level3_src, &back_dst, stage.camera.bzoom);
 
-						//repeating cloud1 but with a different x for a decent loop
 						back_dst.x -= back_dst.w;
 
 						Stage_DrawTex(&this->tex_level1, &level1_src, &back_dst, stage.camera.bzoom); //4
 
-							//repeating cloud1 but with a different x for a decent loop
 							back_dst.x -= back_dst.w;
 
 							Stage_DrawTex(&this->tex_level1, &level2_src, &back_dst, stage.camera.bzoom); //5
 
-								//repeating cloud1 but with a different x for a decent loop
 								back_dst.x -= back_dst.w;
 
 								Stage_DrawTex(&this->tex_level2, &level3_src, &back_dst, stage.camera.bzoom);
 
 								this->movingbg += 8;
-								//it is so big it loops itself lmao
+
+								FntPrint("bg x %d", this->movingbg);
 	}
 
 	switch (stage.song_step)
@@ -135,12 +134,6 @@ void Back_World1_1PC_DrawBG(StageBack *back) // 1-1
 	}
 
 
-
-
-
-
-
-
 	RECT wall_src = {0, 1, 160, 31};
 	RECT_FIXED wall_dst = {
 		FIXED_DEC(-160,1) - fx,
@@ -163,6 +156,9 @@ void Back_World1_1PC_DrawFG(StageBack *back)
 	Back_World1_1PC *this = (Back_World1_1PC*)back;
 	
 	fixed_t fx, fy;
+
+	fx = stage.camera.x;
+	fy = stage.camera.y;
 
 	//just a blank black screen
 	RECT blackscreen = {
@@ -187,7 +183,35 @@ void Back_World1_1PC_DrawFG(StageBack *back)
 		FIXED_DEC(loogi_src.h*2,1)
 	};
 
-	//the text is in stage.c, since for SOME REASON fonts won't work here
+		//Innocence text
+		if (stage.stage_id == StageId_MX && mx.scenetype == 0)
+		{
+			if (mx.blackscene > 1)
+			{
+				stage.font_smb1.draw(&stage.font_smb1, "INNOCENCE", 3, 60, FontAlign_Left);
+			}
+
+			if (mx.blackscene > 2)
+			{
+				stage.font_smb1.draw(&stage.font_smb1, "DOESN'T", 63, 85, FontAlign_Left);
+			}
+				
+			if (mx.blackscene > 3)
+			{
+				stage.font_smb1.draw(&stage.font_smb1, "GET", 66, 110, FontAlign_Left);
+			}
+
+			if (mx.blackscene > 4)
+			{
+				stage.font_smb1.draw(&stage.font_smb1, "YOU", 120, 130, FontAlign_Left);
+			}
+
+			if (mx.blackscene > 5)
+			{
+				stage.font_smb1.draw_col(&stage.font_smb1, "FAR", 180, 155, FontAlign_Left, 216, 0, 1);
+			}
+		}
+
 	if (mx.blackscene > 0 && mx.scenetype == 0)
 	{
 		Gfx_DrawRect(&blackscreen, 0, 0, 0);

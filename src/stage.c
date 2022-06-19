@@ -26,7 +26,7 @@
 //Stage constants
 //#define STAGE_NOHUD //Disable the HUD
 
-#define STAGE_FREECAM //Freecam
+//#define STAGE_FREECAM //Freecam
 
 //Stage definitions
 boolean noteshake;
@@ -1954,35 +1954,6 @@ void Stage_Tick(void)
 					(this->score < 0) ?   0 : 0x80,
 					(this->score < 0) ?   0 : 0x80
 				);
-			}
-
-			//Innocence text
-			if (stage.stage_id == StageId_MX && mx.scenetype == 0)
-			{
-				if (mx.blackscene > 1)
-				{
-					stage.font_smb1.draw(&stage.font_smb1, "INNOCENCE", 3, 60, FontAlign_Left);
-				}
-
-				if (mx.blackscene > 2)
-				{
-					stage.font_smb1.draw(&stage.font_smb1, "DOESN'T", 63, 85, FontAlign_Left);
-				}
-				
-				if (mx.blackscene > 3)
-				{
-					stage.font_smb1.draw(&stage.font_smb1, "GET", 66, 110, FontAlign_Left);
-				}
-
-				if (mx.blackscene > 4)
-				{
-					stage.font_smb1.draw(&stage.font_smb1, "YOU", 120, 130, FontAlign_Left);
-				}
-
-				if (mx.blackscene > 5)
-				{
-					stage.font_smb1.draw_col(&stage.font_smb1, "FAR", 180, 155, FontAlign_Left, 216, 0, 1);
-				}
 			}
 			
 			if (stage.mode < StageMode_2P)
