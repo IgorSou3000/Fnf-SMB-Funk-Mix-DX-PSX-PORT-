@@ -19,7 +19,7 @@ iso/music/%.xa:
 	tools/xainterleave/xainterleave $@
 
 # XA interleaves
-iso/music/menu.xa: iso/music/title.xa iso/music/freaky.xa iso/music/gameover.xa
+iso/music/menu.xa: iso/music/title.xa iso/music/main.xa iso/music/free.xa iso/music/options.xa
 
 iso/music/world1/world1a.xa: iso/music/world1/mushroom-plainsi.xa iso/music/world1/mushroom-plainsv.xa iso/music/world1/bricks-and-liftsi.xa iso/music/world1/bricks-and-liftsv.xa
 iso/music/world1/world1b.xa: iso/music/world1/lethal-lava-lairi.xa iso/music/world1/lethal-lava-lairv.xa

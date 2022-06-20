@@ -170,8 +170,8 @@
 	},
 	{ //StageId_F2_2 (Boo Blitz)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(92,1),  FIXED_DEC(32,1)},
-		{Char_Boo_New, FIXED_DEC(-160,1),  FIXED_DEC(-54,1)},
+		{Char_BF_New,    FIXED_DEC(92,1),  FIXED_DEC(30,1)},
+		{Char_Boo_New, FIXED_DEC(-160,1),  FIXED_DEC(-55,1)},
 		{NULL},
 		{NULL},
 		

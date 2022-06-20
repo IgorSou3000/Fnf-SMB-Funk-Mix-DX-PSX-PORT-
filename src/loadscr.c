@@ -20,14 +20,7 @@ void LoadScr_Start(void)
 	Audio_ClearAlloc();
 	Audio_StopXA();
 	Network_Process();
-	Gfx_Flip();
 	
-	//Load loading screen texture
-	RECT loading_src = {0, 0, 255, 255};
-	RECT loading_dst = {(SCREEN_WIDTH - 300) >> 1, (SCREEN_HEIGHT - 224) >> 1, 300, 224};
-	Gfx_Tex loading_tex;
-	Gfx_SetClear(202, 255, 77);
-	Gfx_LoadTex(&loading_tex, IO_Read("\\MENU\\LOADING.TIM;1"), GFX_LOADTEX_FREE);
 	Timer_Reset();
 	
 	//Draw loading screen and run transition
@@ -38,15 +31,11 @@ void LoadScr_Start(void)
 		//Draw loading screen and end frame
 		Timer_Tick();
 		Trans_Tick();
-		Gfx_DrawTex(&loading_tex, &loading_src, &loading_dst);
 		Network_Process();
-		Gfx_Flip();
 	}
 	
 	//Draw an extra frame to avoid double buffering issues
-	Gfx_DrawTex(&loading_tex, &loading_src, &loading_dst);
 	Network_Process();
-	Gfx_Flip();
 }
 
 void LoadScr_End(void)
@@ -60,7 +49,6 @@ void LoadScr_End(void)
 	{
 		Timer_Tick();
 		Network_Process();
-		Gfx_Flip();
 	}
 	Gfx_EnableClear();
 }

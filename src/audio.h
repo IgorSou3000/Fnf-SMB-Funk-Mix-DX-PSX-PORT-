@@ -32,8 +32,9 @@ typedef enum
 {
 	//MENU.XA
 	XA_Title, //Title
-	XA_GettinFreaky, //Gettin' Freaky
-	XA_GameOver,     //Game Over
+	XA_Main, //Main menu
+	XA_Freeplay,     //Freeplay
+	XA_Options,     //Options
 	//WORLD1A.XA
 	XA_Mushroom_Plains, //Mushroom Plains
 	XA_Bricks_And_Lifts,   //Bricks And Lifts

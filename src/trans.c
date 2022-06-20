@@ -72,7 +72,6 @@ boolean Trans_Tick(void)
 				SCREEN_WIDTH,
 				cover
 			};
-			Gfx_DrawRect(&trans_rect, 0, 0, 0);
 			
 			RECT trans_fade = {
 				0,
@@ -83,7 +82,6 @@ boolean Trans_Tick(void)
 			for (int i = 0; i < TRANS_FADE_LEN; i++)
 			{
 				u8 col = 255 * i / TRANS_FADE_LEN;
-				Gfx_BlendRect(&trans_fade, col, col, col, 2);
 				trans_fade.y++;
 			}
 			return false;
@@ -111,7 +109,6 @@ boolean Trans_Tick(void)
 				SCREEN_WIDTH,
 				cover
 			};
-			Gfx_DrawRect(&trans_rect, 0, 0, 0);
 			
 			RECT trans_fade = {
 				0,
@@ -123,7 +120,6 @@ boolean Trans_Tick(void)
 			{
 				u8 col = 255 * i / TRANS_FADE_LEN;
 				trans_fade.y--;
-				Gfx_BlendRect(&trans_fade, col, col, col, 2);
 			}
 			return result;
 		}

@@ -72,7 +72,8 @@ static struct
 	//Menu state
 	u8 page, next_page;
 	boolean page_swap;
-	u8 select, next_select;
+	//selectalt for freeplay
+	u8 select, next_select, selectalt;
 	
 	//moving bg for title and main menu
 	s16 movingbg;
@@ -103,7 +104,7 @@ static struct
 	} page_param;
 	
 	//Menu assets
-	Gfx_Tex tex_menu0, tex_story, tex_title, tex_mainbg, tex_main;
+	Gfx_Tex tex_menu0, tex_story, tex_title, tex_mainbg, tex_main, tex_free, tex_first;
 	FontData font_bold, font_arial, font_smb1, font_pixels;
 	
 	Character *gf; //Title Girlfriend
@@ -204,15 +205,6 @@ static void Menu_DrawThumbMain(u8 thumb, s16 x, s16 y)
 	Gfx_DrawTex(&menu.tex_main, &thumb_src, &thumb_dst);
 }
 
-//selectors
-static void Menu_DrawSelector(u8 select, s16 x, s16 y, u8 power)
-{
- RECT selector_src = {244, 174, 4, 4};
- RECT selector_dst = {x, y + select* power, 9, 9};
-
- Gfx_DrawTex(&menu.tex_main, &selector_src, &selector_dst);
-}
-
 static void Menu_DrawWeek(const char *week, s32 x, s32 y)
 {
 	//Draw label
@@ -252,6 +244,8 @@ void Menu_Load(MenuPage page)
 	Gfx_LoadTex(&menu.tex_title, Archive_Find(menu_arc, "title.tim"), 0);
 	Gfx_LoadTex(&menu.tex_mainbg, Archive_Find(menu_arc, "mainbg.tim"), 0);
 	Gfx_LoadTex(&menu.tex_main, Archive_Find(menu_arc, "main.tim"), 0);
+	Gfx_LoadTex(&menu.tex_free, Archive_Find(menu_arc, "free.tim"), 0);
+	Gfx_LoadTex(&menu.tex_first, Archive_Find(menu_arc, "first.tim"), 0);
 	Mem_Free(menu_arc);
 	
 	FontData_Load(&menu.font_bold, Font_Bold);
@@ -268,7 +262,7 @@ void Menu_Load(MenuPage page)
 	stage.gf_speed = 4;
 	
 	//Initialize menu state
-	menu.select = menu.next_select = 0;
+	menu.select = menu.selectalt = menu.next_select = 0;
 	
 	switch (menu.page = menu.next_page = page)
 	{
@@ -280,6 +274,7 @@ void Menu_Load(MenuPage page)
 		default:
 			break;
 	}
+
 	menu.page_swap = true;
 	
 	menu.trans_time = 0;
@@ -446,7 +441,7 @@ void Menu_Tick(void)
 			if (menu.page_swap)
 			{
 				menu.movingbg = 0;
-				Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 1, 1);
+				Audio_PlayXA_Track(XA_Main, 0x40, 1, 1);
 				menu.scroll = menu.select * FIXED_DEC(12,1);
 			}
 		
@@ -551,7 +546,10 @@ void Menu_Tick(void)
 			}
 
 			//draw selector
-			Menu_DrawSelector(menu.select, 10, 77, 32);
+			RECT selector_src = {244, 174, 4, 4};
+			RECT selector_dst = {10, 77 + menu.select*32, 9, 9};
+
+			Gfx_DrawTex(&menu.tex_main, &selector_src, &selector_dst);
 
 			//draw thumbs
 			Menu_DrawThumbMain(menu.select, 200, 80);
@@ -611,169 +609,93 @@ void Menu_Tick(void)
 
 					//debug stuff
 					FntPrint("bg x %d", menu.movingbg);
-
-
-
-			break;
-		}
-		case MenuPage_Story:
-		{
-			static const struct
-			{
-				const char *week;
-				StageId stage;
-				const char *name;
-				const char *tracks[3];
-			} menu_options[] = {
-				{"1", StageId_W1_1, "DADDY DEAREST", {"BOPEEBO", "FRESH", "DADBATTLE"}},
-			};
-			
-			//Initialize page
-			if (menu.page_swap)
-			{
-				menu.scroll = 0;
-				menu.page_param.stage.diff = StageDiff_Normal;
-			}
-			
-			//Draw difficulty selector
-			Menu_DifficultySelector(SCREEN_WIDTH - 75, 80);
-			
-			//Handle option and selection
-			if (menu.trans_time > 0 && (menu.trans_time -= timer_dt) <= 0)
-				Trans_Start();
-			
-			if (menu.next_page == menu.page && Trans_Idle())
-			{
-				//Change option
-				if (pad_state.press & PAD_UP)
-				{
-					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
-					if (menu.select > 0)
-						menu.select--;
-					else
-						menu.select = COUNT_OF(menu_options) - 1;
-				}
-				if (pad_state.press & PAD_DOWN)
-				{
-					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
-					if (menu.select < COUNT_OF(menu_options) - 1)
-						menu.select++;
-					else
-						menu.select = 0;
-				}
-				
-				//Select option if cross is pressed
-				if (pad_state.press & (PAD_START | PAD_CROSS))
-				{
-					//play confirm sound
-					Audio_PlaySound(Sounds[1]);
-					menu.next_page = MenuPage_Stage;
-					menu.page_param.stage.id = menu_options[menu.select].stage;
-					menu.page_param.stage.story = true;
-					menu.trans_time = FIXED_UNIT;
-				}
-				
-				//Return to main menu if circle is pressed
-				if (pad_state.press & PAD_CIRCLE)
-				{
-					//play cancel sound
-					Audio_PlaySound(Sounds[2]);
-					menu.next_page = MenuPage_Main;
-					menu.next_select = 0; //Story Mode
-					Trans_Start();
-				}
-			}
-			
-			//Draw week name and tracks
-			menu.font_bold.draw(&menu.font_bold,
-				menu_options[menu.select].name,
-				SCREEN_WIDTH - 16,
-				24,
-				FontAlign_Right
-			);
-			
-			const char * const *trackp = menu_options[menu.select].tracks;
-			for (size_t i = 0; i < COUNT_OF(menu_options[menu.select].tracks); i++, trackp++)
-			{
-				if (*trackp != NULL)
-					menu.font_bold.draw(&menu.font_bold,
-						*trackp,
-						SCREEN_WIDTH - 16,
-						SCREEN_HEIGHT - (4 * 24) + (i * 24),
-						FontAlign_Right
-					);
-			}
-			
-			//Draw upper strip
-			RECT name_bar = {0, 16, SCREEN_WIDTH, 32};
-			Gfx_DrawRect(&name_bar, 249, 207, 81);
-			
-			//Draw options
-			s32 next_scroll = menu.select * FIXED_DEC(48,1);
-			menu.scroll += (next_scroll - menu.scroll) >> 3;
-			
-			if (menu.next_page == menu.page || menu.next_page == MenuPage_Main)
-			{
-				//Draw all options
-				for (u8 i = 0; i < COUNT_OF(menu_options); i++)
-				{
-					s32 y = 64 + (i * 48) - (menu.scroll >> FIXED_SHIFT);
-					if (y <= 16)
-						continue;
-					if (y >= SCREEN_HEIGHT)
-						break;
-					Menu_DrawWeek(menu_options[i].week, 48, y);
-				}
-			}
-			else if (animf_count & 2)
-			{
-				//Draw selected option
-				Menu_DrawWeek(menu_options[menu.select].week, 48, 64 + (menu.select * 48) - (menu.scroll >> FIXED_SHIFT));
-			}
-			
 			break;
 		}
 		case MenuPage_Freeplay:
 		{
-			static const struct
+			Gfx_SetClear(0, 0, 0);
+			typedef struct
 			{
 				StageId stage;
-				u32 col;
-				const char *text;
-			} menu_options[] = {
-				{StageId_W1_1, 0xFF9271FD, "MUSHROOM PLAINS"},
-				{StageId_W1_2, 0xFF9271FD, "BRICKS AND LIFTS"},
-				{StageId_W1_3, 0xFF9271FD, "LETHAL LAVA LAIR"},
-				{StageId_W2_1, 0xFF9271FD, "DEEP DEEP VOYAGE"},
-				{StageId_W2_2, 0xFF9271FD, "HOP-HOP HEIGHTS"},
-				{StageId_W2_3, 0xFF9271FD, "KOOPA ARMADA"},
-				{StageId_F1_1, 0xFF9271FD, "2 PLAYER GAME"},
-				{StageId_F1_2, 0xFF9271FD, "DESTRUCTION DANCE"},
-				{StageId_F1_3, 0xFF9271FD, "PORTAL POWER"},
-				{StageId_F2_1, 0xFF9271FD, "BULLET TIME"},
-				{StageId_F2_2, 0xFF9271FD, "BOO BLITZ"},
-				{StageId_F2_3, 0xFF9271FD, "CROSS CONSOLE CLASH"},
-				{StageId_S_1, 0xFF9271FD, "WRONG WARP"},
-				{StageId_S_2, 0xFF9271FD, "FIRST LEVEL : )"},
-				{StageId_S_3, 0xFF9271FD, "GREEN SCREEN"},
-				{StageId_S_4, 0xFF9271FD, "BALLS"},
-				{StageId_MX, 0xFF9271FD, "GAME OVER"},
+				const char *text; //song name
+				boolean secret; // if it a secret song or not
+			}Songs;
+
+			//story mode songs
+			Songs menustory_options[] = {
+				{StageId_W1_1, "MUSHROOM PLAINS", false},
+				{StageId_W1_2, "BRICKS AND LIFTS", false},
+				{StageId_W1_3, "LETHAL LAVA LAIR", false},
+				{StageId_W2_1, "DEEP DEEP VOYAGE", false},
+				{StageId_W2_2, "HOP-HOP HEIGHTS", false},
+				{StageId_W2_3, "KOOPA ARMADA", false},
 			};
+
+			//challenge songs
+			Songs menuchallenge_options[] = {
+				{StageId_F1_1, "2 PLAYER GAME", false},
+				{StageId_F1_2, "DESTRUCTION DANCE", false},
+				{StageId_F1_3, "PORTAL POWER", false},
+				{StageId_F2_1, "BULLET TIME", false},
+				{StageId_F2_2, "BOO BLITZ", false},
+				{StageId_F2_3, "CROSS CONSOLE CLASH", false},
+				{StageId_S_1, "WRONG WARP", true},
+				{StageId_S_2, "FIRST LEVEL :)", true},
+			};
+
+			//extra songs
+			Songs menuextra_options[] = {
+				{StageId_S_3, "GREEN SCREEN", true},
+				{StageId_S_4, "BALLS", true},
+				{StageId_MX, "GAME OVER", true},
+			};
+
+			static const char * menumode[] = {
+			"???",
+			"STORY      MODE",
+			"CHALLENGES",
+			"EXTRAS"
+			};
+
+			//this variable will pointer da story and challenge songs
+			Songs *menu_options = 0;
+
+			//this will set da lenght of array
+			u8 setsize;
+			switch(menu.selectalt)
+			{
+			//story mode
+			case 1:
+			menu_options = menustory_options;
+			setsize = COUNT_OF(menustory_options);
+			break;
+
+			case 2:
+			//challenge mode
+			menu_options = menuchallenge_options;
+			setsize = COUNT_OF(menuchallenge_options);
+			break;
+
+			case 3:
+			//extra mode
+			menu_options = menuextra_options;
+			setsize = COUNT_OF(menuextra_options);
+			break;
+
+			//nothing lol
+			default:
+			setsize = 0;
+			break;
+			}
 			
 			//Initialize page
 			if (menu.page_swap)
 			{
-				menu.scroll = COUNT_OF(menu_options) * FIXED_DEC(24 + SCREEN_HEIGHT2,1);
+				Audio_PlayXA_Track(XA_Freeplay, 0x40, 2, 1);
+				menu.scroll = setsize * FIXED_DEC(24 + SCREEN_HEIGHT2,1);
 				menu.page_param.stage.diff = StageDiff_Normal;
-				menu.page_state.freeplay.back_r = FIXED_DEC(255,1);
-				menu.page_state.freeplay.back_g = FIXED_DEC(255,1);
-				menu.page_state.freeplay.back_b = FIXED_DEC(255,1);
+				menu.selectalt = 1;
 			}
-			
-			//Draw difficulty selector
-			Menu_DifficultySelector(SCREEN_WIDTH - 100, SCREEN_HEIGHT2 - 48);
 			
 			//Handle option and selection
 			if (menu.next_page == menu.page && Trans_Idle())
@@ -786,17 +708,39 @@ void Menu_Tick(void)
 					if (menu.select > 0)
 						menu.select--;
 					else
-						menu.select = COUNT_OF(menu_options) - 1;
+						menu.select = setsize - 1;
 				}
 				if (pad_state.press & PAD_DOWN)
 				{
 					//play scroll sound
                     Audio_PlaySound(Sounds[0]);
-					if (menu.select < COUNT_OF(menu_options) - 1)
+					if (menu.select < setsize - 1)
 						menu.select++;
 					else
 						menu.select = 0;
 				}
+
+				//change section
+				if (pad_state.press & PAD_LEFT)
+				{
+					//reset menu select for avoid bugs
+					menu.select = 0;
+					//play scroll sound
+                    Audio_PlaySound(Sounds[0]);
+					if (menu.selectalt > 0)
+					menu.selectalt--;
+				}
+				if (pad_state.press & PAD_RIGHT)
+				{
+					//reset menu select for avoid bugs
+					menu.select = 0;
+
+					//play scroll sound
+                    Audio_PlaySound(Sounds[0]);
+					if (menu.selectalt < COUNT_OF(menumode) - 1)
+					menu.selectalt++;
+				}
+			
 				
 				//Select option if cross is pressed
 				if (pad_state.press & (PAD_START | PAD_CROSS))
@@ -824,35 +768,78 @@ void Menu_Tick(void)
 			s32 next_scroll = menu.select * FIXED_DEC(17,1);
 			menu.scroll += (next_scroll - menu.scroll) >> 4;
 			
-			for (u8 i = 0; i < COUNT_OF(menu_options); i++)
+			for (u8 i = 0; i < setsize; i++)
 			{
 				//Get position on screen
 				s32 y = (i * 17) - 8;
-				if (y <= -SCREEN_HEIGHT2 - 8)
-					continue;
-				if (y >= SCREEN_HEIGHT2 + 8)
-					break;
 				
 				//Draw text
 				menu.font_pixels.draw_col(&menu.font_pixels,
-					menu_options[i].text,
-					48,
-					SCREEN_HEIGHT2 + y - 8,
+					(menu_options[i].secret) ? "???" : menu_options[i].text, //if secret be true draw ??? instead song name
+					38,
+					45 + y - 8,
 					FontAlign_Left,
 					(i == menu.select) ? 229 >> 1 : 0x80,
 					(i == menu.select) ? 156 >> 1 : 0x80,
 					(i == menu.select) ? 32 >> 1  : 0x80
 				);
+
+				//this will be for use da correct image if be challenge section
+				static u8 addicon;
+
+				//make icons be challenge only when pointer update da information to challenge songs
+				if (menu.selectalt == 2 && menu_options == menuchallenge_options)
+				addicon = 6;
+				
+				//make icons be story only when pointer update da information to story songs
+				else if (menu.selectalt == 1 && menu_options == menustory_options)
+				addicon = 0;
+
+				//make icons be extra only when pointer update da information to extra songs
+				else if (menu.selectalt == 2 && menu_options == menuextra_options)
+				addicon = 0;
+
+				//draw images
+				RECT thumb_src = {160 + ((i + addicon) % 4) * 10, ((i + addicon) / 4) * 10, 10, 10};
+				RECT thumb_dst = {20, 45 + y - 8, 20, 20};
+
+				//draw ? image if secret be true
+				if (menu_options[i].secret)
+				{
+				thumb_src.x = 190;
+				thumb_src.y = 30;
+				}
+
+				Gfx_DrawTex(&menu.tex_free, &thumb_src, &thumb_dst);
 			}
+
+			//draw which mode it is
+			menu.font_smb1.draw(&menu.font_smb1,
+			menumode[menu.selectalt],
+			70,
+			220,
+			FontAlign_Left
+		);
+
+			//draw arrow
+			RECT arrow_src = {173, 66, 7, 15};
+			RECT arrow_dst = {290, 220, 15, 31};
+
+			//cool effect
+
+			static boolean invisible;
+
+			if ((animf_count >> 1 & 0x7))
+			invisible = (invisible == false) ? true : false;
+
+			if (invisible == false)
+			Gfx_DrawTex(&menu.tex_free, &arrow_src, &arrow_dst);
 			
 			//Draw background
-			fixed_t tgt_r = (fixed_t)((menu_options[menu.select].col >> 16) & 0xFF) << FIXED_SHIFT;
-			fixed_t tgt_g = (fixed_t)((menu_options[menu.select].col >>  8) & 0xFF) << FIXED_SHIFT;
-			fixed_t tgt_b = (fixed_t)((menu_options[menu.select].col >>  0) & 0xFF) << FIXED_SHIFT;
-			
-			menu.page_state.freeplay.back_r += (tgt_r - menu.page_state.freeplay.back_r) >> 4;
-			menu.page_state.freeplay.back_g += (tgt_g - menu.page_state.freeplay.back_g) >> 4;
-			menu.page_state.freeplay.back_b += (tgt_b - menu.page_state.freeplay.back_b) >> 4;
+			RECT bg_src = {0, 0, 151,  95};
+			RECT bg_dst = {0, 20, 303, 191};
+
+			Gfx_DrawTex(&menu.tex_free, &bg_src, &bg_dst);
 			break;
 		}
 		case MenuPage_Credits:
@@ -1000,7 +987,10 @@ void Menu_Tick(void)
 			
 			//Initialize page
 			if (menu.page_swap)
+			{
+				Audio_PlayXA_Track(XA_Options, 0x40, 3, 1);
 				menu.scroll = COUNT_OF(menu_options) * FIXED_DEC(24 + SCREEN_HEIGHT2,1);
+			}
 			
 			//Draw page label
 			menu.font_bold.draw(&menu.font_bold,
