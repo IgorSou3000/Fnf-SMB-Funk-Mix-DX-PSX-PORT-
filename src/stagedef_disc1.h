@@ -102,7 +102,7 @@
 	},
 	{ //StageId_F1_1 (2 Player Game)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(87,1),  FIXED_DEC(60,1)},
+		{Char_BF_New,    FIXED_DEC(87,1),  FIXED_DEC(55,1)},
 		{Char_Luigi2P_New, FIXED_DEC(-66,1),  FIXED_DEC(20,1)},
 		{NULL},
 		{NULL},

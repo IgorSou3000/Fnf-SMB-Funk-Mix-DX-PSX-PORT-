@@ -12,7 +12,7 @@
 
 //Sky
 
-//v background structure
+//sky background structure
 typedef struct
 {
 	//Stage background base structure
@@ -25,7 +25,17 @@ typedef struct
 	//coin 0 state
 	u8 coin0_frame;
 	
-	Animatable coin0_animatable;
+	Animatable coin0_animatable, coin1_animatable;
+
+	//coin 1 state
+	u8 coin1_frame;
+
+	//bg anim for coin
+	s16 coinmovebg;
+
+	//bg anim for stars
+	s16 starsmovebg;
+
 } Back_Freeplay1_1;
 
 //Coin0 animation and rects
@@ -35,7 +45,14 @@ static const CharFrame coin0_frame[] = {
 	{0, {  2,  36,  32,  14}, {  0,   0}}, //2 coinanim 3
 };
 
-static const Animation coin0_anim[] = {
+//Coin1 animation and rects
+static const CharFrame coin1_frame[] = {
+	{0, { 51,   2,  22,  16}, {  0,   0}}, //0 coinanim 1
+	{0, { 51,  20,  22,  16}, {  0,   0}}, //1 coinanim 2
+	{0, { 51,  38,  22,  16}, {  0,   0}}, //2 coinanim 3
+};
+
+static const Animation coins_anim[] = {
 	{2, (const u8[]){0, 1, 2, 1, 0, ASCR_BACK, 1}}, //coinanim
 };
 
@@ -47,15 +64,22 @@ void Freeplay1_1_Coin0_SetFrame(void *user, u8 frame)
 	//Check if this is a new frame
 	if (frame != this->coin0_frame)
 	{
+		const CharFrame *cframe;
 		//Check if new art shall be loaded
-		const CharFrame *cframe = &coin0_frame[this->coin0_frame = frame];
+		cframe = &coin0_frame[this->coin0_frame = frame];
+		cframe = &coin1_frame[this->coin1_frame = frame];
 	}
 }
 
-void Freeplay1_1_Coin0_Draw(Back_Freeplay1_1 *this, fixed_t x, fixed_t y)
+void Freeplay1_1_Coins_Draw(Back_Freeplay1_1 *this, fixed_t x, fixed_t y, char* coin)
 {
 	//Draw character
-	const CharFrame *cframe = &coin0_frame[this->coin0_frame];
+	const CharFrame *cframe;
+	
+	if (strcmp(coin,"coin 0") == 0)
+	cframe = &coin0_frame[this->coin0_frame];
+	else
+	cframe = &coin1_frame[this->coin1_frame];
 	
 	fixed_t ox = x - ((fixed_t)cframe->off[0] << FIXED_SHIFT);
 	fixed_t oy = y - ((fixed_t)cframe->off[1] << FIXED_SHIFT);
@@ -72,6 +96,16 @@ void Back_Freeplay1_1_DrawBG(StageBack *back) //2 Player Game
 	Back_Freeplay1_1 *this = (Back_Freeplay1_1*)back;
 
 	fixed_t fx, fy;
+
+	if (this->coinmovebg <= -640)
+	this->coinmovebg = 0;
+
+	if (this->starsmovebg/24 <= -320)
+	this->starsmovebg = 0;
+
+	//startin move bg
+	this->coinmovebg -= 2;
+	this->starsmovebg--;
 	
 	//Draw background
 	fx = stage.camera.x;
@@ -90,30 +124,45 @@ void Back_Freeplay1_1_DrawBG(StageBack *back) //2 Player Game
 
 	//cloud for bf
 	cloud_dst.x = FIXED_DEC(25,1);
-	cloud_dst.y = FIXED_DEC(59,1);
+	cloud_dst.y = FIXED_DEC(54,1);
 
 	Stage_DrawTex(&this->tex_coclo, &cloud_src, &cloud_dst, stage.camera.bzoom);
 
-	//coin0
+	//coin0 and coin1
 	if (stage.flag & STAGE_FLAG_JUST_STEP)
 	{
 		if ((stage.song_step % 9) == 0)
+		{
 		Animatable_SetAnim(&this->coin0_animatable, 0);
+		Animatable_SetAnim(&this->coin1_animatable, 0);
+		}
 	}
 	Animatable_Animate(&this->coin0_animatable, (void*)this, Freeplay1_1_Coin0_SetFrame);
+	Animatable_Animate(&this->coin1_animatable, (void*)this, Freeplay1_1_Coin0_SetFrame);
+
+	for (u8 i = 0; i <= 2; i++)
+	{
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-138 + (320*i)) + this->coinmovebg,1) - fx, FIXED_DEC(54,1) - fy, "coin 0");
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-12  + (320*i)) + this->coinmovebg,1) - fx, FIXED_DEC(-27,1) - fy, "coin 0");
 	
-	Freeplay1_1_Coin0_Draw(this, FIXED_DEC(-138,1) - fx, FIXED_DEC(54,1) - fy);
-	Freeplay1_1_Coin0_Draw(this, FIXED_DEC(-12,1) - fx, FIXED_DEC(-22,1) - fy);
+
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-142 + (320*i)) + this->coinmovebg/2,1) - fx, FIXED_DEC(-55,1) - fy, "coin 1");
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((100  + (320*i)) + this->coinmovebg/2,1) - fx, FIXED_DEC(16,1) - fy, "coin 1");
+	  }
 
 	//draw stars bg
 	RECT stars_src = {0, 0, 160, 81};
 	RECT_FIXED stars_dst = {
-		FIXED_DEC(-160,1) - fx,
+		FIXED_DEC(-160 + this->starsmovebg/24,1) - fx,
 		FIXED_DEC(-65,1) - fy,
 		FIXED_DEC(stars_src.w*2 + 1,1),
 		FIXED_DEC(stars_src.h*2 + 1,1)
 	};
 	
+	Stage_DrawTex(&this->tex_stars, &stars_src, &stars_dst, stage.camera.bzoom);
+
+	stars_dst.x += stars_dst.w - FIXED_DEC(1,1);
+
 	Stage_DrawTex(&this->tex_stars, &stars_src, &stars_dst, stage.camera.bzoom);
 
 	//made bg blue
@@ -147,8 +196,11 @@ StageBack *Back_Freeplay1_1_New(void)
 	Gfx_LoadTex(&this->tex_stars, Archive_Find(arc_back, "stars.tim"), 0);
 	Mem_Free(arc_back);
 
-	Animatable_Init(&this->coin0_animatable, coin0_anim);
+	Animatable_Init(&this->coin0_animatable, coins_anim);
 	Animatable_SetAnim(&this->coin0_animatable, 0);
+
+	Animatable_Init(&this->coin1_animatable, coins_anim);
+	Animatable_SetAnim(&this->coin1_animatable, 0);
 	
 	return (StageBack*)this;
 }

@@ -23,7 +23,7 @@
 
 #include "stage.h"
 
-static u32 Sounds[3];
+static u32 Menu_Sounds[4];
 
 //Menu messages
 static const char *funny_messages[][2] = {
@@ -184,6 +184,47 @@ static void Menu_DifficultySelector(s32 x, s32 y)
 	Gfx_BlitTex(&menu.tex_story, diff_src, x - (diff_src->w >> 1), y - 9 + ((pad_state.press & (PAD_LEFT | PAD_RIGHT)) != 0));
 }
 
+//this will be da place of secrets
+boolean Secrets(void)
+{
+	//green screen code
+ u32 konami[] = {PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN, PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, PAD_CROSS, PAD_CIRCLE};
+ static s8 konamiselect = 0;
+
+  		//konami code stuff
+		if (konamiselect == 10)
+		 {
+		 //play secret sound
+		 Audio_PlaySound(Menu_Sounds[3]);
+		 menu.next_page = MenuPage_Stage;
+		 menu.page_param.stage.id = StageId_S_3;
+		 menu.page_param.stage.story = false;
+		 Trans_Start();
+		 konamiselect = -1;
+		}
+	
+		if (konamiselect != -1)
+		{
+			if((pad_state.press & (PAD_UP | PAD_DOWN | PAD_LEFT | PAD_RIGHT | PAD_CROSS | PAD_CIRCLE)))
+			{
+				//if u press a wrong input,reset konami select
+				if (pad_state.press & konami[konamiselect])
+				konamiselect++;
+
+				else
+				konamiselect = 0;
+			}
+
+				FntPrint("konami %d", konamiselect);
+		}
+
+		//make sure it not gonna back to other page if u press cross or circle
+		if (konamiselect >= 8)
+			return true;
+
+		return false;
+}
+
 //thumbnail for main menu
 static void Menu_DrawThumbMain(u8 thumb, s16 x, s16 y)
 {
@@ -286,17 +327,17 @@ void Menu_Load(MenuPage page)
 	CdlFILE file;
     IO_FindFile(&file, "\\SOUNDS\\SCROLL.VAG;1");
     u32 *data = IO_ReadFile(&file);
-    Sounds[0] = Audio_LoadVAGData(data, file.size);
+    Menu_Sounds[0] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
 
 	IO_FindFile(&file, "\\SOUNDS\\CONFIRM.VAG;1");
     data = IO_ReadFile(&file);
-    Sounds[1] = Audio_LoadVAGData(data, file.size);
+    Menu_Sounds[1] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
 
 	IO_FindFile(&file, "\\SOUNDS\\CANCEL.VAG;1");
     data = IO_ReadFile(&file);
-    Sounds[2] = Audio_LoadVAGData(data, file.size);
+    Menu_Sounds[2] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
 	
 	//Set background colour
@@ -378,7 +419,7 @@ void Menu_Tick(void)
 			if ((pad_state.press & PAD_START) && menu.next_page == menu.page && Trans_Idle())
 			{
 				//play confirm sound
-				Audio_PlaySound(Sounds[1]);
+				Audio_PlaySound(Menu_Sounds[1]);
 				menu.trans_time = FIXED_UNIT;
 				menu.next_page = MenuPage_Main;
 				menu.next_select = 0;
@@ -387,11 +428,8 @@ void Menu_Tick(void)
 			//increase variable
 			menu.movingbg++;
 
-			//making a new variable only for slowdown da speed
-			s16 movingbg = menu.movingbg / 2;
-
 			//start loop
-			if (movingbg >= 513)
+			if (menu.movingbg/2 >= 513)
 			menu.movingbg = 0;
 
 
@@ -403,7 +441,7 @@ void Menu_Tick(void)
 
 			//draw clouds
 			RECT cloud_src = {0, 0, 128, 62};
-			RECT cloud_dst = {0 - movingbg,136, 257, 105};
+			RECT cloud_dst = {0 - menu.movingbg/2,136, 257, 105};
 
 			Gfx_DrawTex(&menu.tex_menu0, &cloud_src, &cloud_dst);
 
@@ -449,13 +487,13 @@ void Menu_Tick(void)
 			if (menu.trans_time > 0 && (menu.trans_time -= timer_dt) <= 0)
 				Trans_Start();
 			
-			if (menu.next_page == menu.page && Trans_Idle())
+			if (menu.next_page == menu.page && Trans_Idle() && !Secrets())
 			{
 				//Change option
 				if (pad_state.press & PAD_UP)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select > 0)
 						menu.select--;
 					else
@@ -464,7 +502,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_DOWN)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select < COUNT_OF(menu_options) - 1)
 						menu.select++;
 					else
@@ -475,7 +513,7 @@ void Menu_Tick(void)
 				if (pad_state.press & (PAD_START | PAD_CROSS))
 				{
 					//play confirm sound
-					Audio_PlaySound(Sounds[1]);
+					Audio_PlaySound(Menu_Sounds[1]);
 					switch (menu.select)
 					{
 						case 0: //Story Mode
@@ -499,7 +537,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_CIRCLE)
 				{
 					//play cancel sound
-					Audio_PlaySound(Sounds[2]);
+					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Title;
 					Trans_Start();
 				}
@@ -704,7 +742,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_UP)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select > 0)
 						menu.select--;
 					else
@@ -713,7 +751,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_DOWN)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select < setsize - 1)
 						menu.select++;
 					else
@@ -726,7 +764,7 @@ void Menu_Tick(void)
 					//reset menu select for avoid bugs
 					menu.select = 0;
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.selectalt > 0)
 					menu.selectalt--;
 				}
@@ -736,7 +774,7 @@ void Menu_Tick(void)
 					menu.select = 0;
 
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.selectalt < COUNT_OF(menumode) - 1)
 					menu.selectalt++;
 				}
@@ -746,7 +784,7 @@ void Menu_Tick(void)
 				if (pad_state.press & (PAD_START | PAD_CROSS))
 				{
 					//play confirm sound
-					Audio_PlaySound(Sounds[1]);
+					Audio_PlaySound(Menu_Sounds[1]);
 					menu.next_page = MenuPage_Stage;
 					menu.page_param.stage.id = menu_options[menu.select].stage;
 					menu.page_param.stage.story = false;
@@ -757,7 +795,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_CIRCLE)
 				{
 					//play cancel sound
-					Audio_PlaySound(Sounds[2]);
+					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Main;
 					menu.next_select = 1; //Freeplay
 					Trans_Start();
@@ -898,7 +936,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_UP)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select > 0)
 						menu.select--;
 					else
@@ -907,7 +945,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_DOWN)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select < COUNT_OF(menu_options) - 1)
 						menu.select++;
 					else
@@ -918,7 +956,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_CIRCLE)
 				{
 					//play cancel sound
-					Audio_PlaySound(Sounds[2]);
+					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Main;
 					menu.next_select = 2; //Credits
 					Trans_Start();
@@ -1007,7 +1045,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_UP)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select > 0)
 						menu.select--;
 					else
@@ -1016,7 +1054,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_DOWN)
 				{
 					//play scroll sound
-                    Audio_PlaySound(Sounds[0]);
+                    Audio_PlaySound(Menu_Sounds[0]);
 					if (menu.select < COUNT_OF(menu_options) - 1)
 						menu.select++;
 					else
@@ -1044,7 +1082,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_CIRCLE)
 				{
 					//play cancel sound
-					Audio_PlaySound(Sounds[2]);
+					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Main;
 					menu.next_select = 3; //Options
 					Trans_Start();
