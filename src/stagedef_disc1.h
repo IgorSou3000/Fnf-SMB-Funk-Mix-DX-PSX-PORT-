@@ -244,7 +244,7 @@
 		{NULL},
 		
 		//Stage background
-		Back_World1_1_New,
+		Back_GB_New,
 		
 		//Song info
 		{FIXED_DEC(28,10)},

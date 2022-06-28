@@ -6,12 +6,15 @@ all: \
 	iso/font/cdr.tim \
 	iso/font/smb1.tim \
 	iso/font/pixels.tim \
-	iso/stage/hud0.tim \
+	iso/stage/hud0/hud0.tim \
 	iso/stage/hud1.tim \
-	iso/stage/hud0maro.tim \
-	iso/stage/hud0pc.tim \
+	iso/stage/hud0/maro.tim \
+	iso/stage/hud0/mar0.tim \
+	iso/stage/hud0/maker.tim \
+	iso/stage/hud0/gameboy.tim \
+	iso/stage/hud0/pc.tim \
 	iso/stage/bg.tim \
-	iso/stage/hud0weeb.tim \
+	iso/stage/hud0/hud0weeb.tim \
 	iso/stage/hud1weeb.tim \
 	iso/characters/bf/main.arc \
 	iso/characters/mario/main.arc \

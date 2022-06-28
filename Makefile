@@ -18,6 +18,7 @@ SRCS = src/main.c \
        src/psx/timer.c \
        src/psx/movie.c \
        src/stage/dummy.c \
+       src/stage/gb.c \
        src/stage/world1/world1_1.c \
        src/stage/world1/world1_2.c \
        src/stage/world2/world2_2.c \

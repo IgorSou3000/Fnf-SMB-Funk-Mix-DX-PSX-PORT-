@@ -52,6 +52,8 @@ static u32 Sounds[4];
 
 #include "stage/freeplay2/freeplay2_2.h"
 
+#include "stage/gb.h"
+
 #include "stage/world1/world1_1pc.h"
 
 static const StageDef stage_defs[StageId_Max] = {
@@ -1371,10 +1373,24 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 	stage.story = story;
 	
 	//Load HUD textures
-	if (stage.stage_id == StageId_MX)
-		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0PC.TIM;1"), GFX_LOADTEX_FREE);
-	else
-		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0MARO.TIM;1"), GFX_LOADTEX_FREE);
+	switch (stage.stage_id)
+	{
+		case StageId_MX: //PC port arrows
+			Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0PC.TIM;1"), GFX_LOADTEX_FREE);
+			break;
+		case StageId_F1_3: //Portal arrows
+			Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0MAR0.TIM;1"), GFX_LOADTEX_FREE);
+			break;
+		case StageId_S_2: //Super Mario Maker arrows
+			Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0MAKR.TIM;1"), GFX_LOADTEX_FREE);
+			break;
+		case StageId_S_3: //Game Boy arrows
+			Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0GB.TIM;1"), GFX_LOADTEX_FREE);
+			break;
+		default: //Mario arrows
+			Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0MARO.TIM;1"), GFX_LOADTEX_FREE);
+			break;
+	}
 	Gfx_LoadTex(&stage.tex_bg, IO_Read("\\STAGE\\BG.TIM;1"), GFX_LOADTEX_FREE);
 	//Load stage background
 	Stage_LoadStage();
@@ -1989,7 +2005,8 @@ void Stage_Tick(void)
 			bg_dst.y += bg_dst.h;
 			bg_dst.h = -bg_dst.h;
 			}
-			Stage_DrawTex(&stage.tex_bg, &bg_src, &bg_dst, stage.bump);
+			if (stage.stage_id != StageId_S_3)
+				Stage_DrawTex(&stage.tex_bg, &bg_src, &bg_dst, stage.bump);
 			
 			//Draw stage foreground
 			if (stage.back->draw_fg != NULL)

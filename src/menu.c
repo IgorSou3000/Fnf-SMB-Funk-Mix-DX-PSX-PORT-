@@ -65,6 +65,16 @@ static const char *funny_messages[][2] = {
 	{"BALLS FISH", "BALLS FISH"},
 };
 
+//freeplay text
+static const char *freeplay_text[][1] = {
+	{"A CALM, NOSTALGIC\nTUNE TO START OFF\nYOUR ADVENTURE!\n\nSIT BACK AND RELAX\nAS MARIO TEACHES\nYOU THE ROPES."}, //musroom plains
+	{"A FUNKY REMIX OF\nTHE CLASSIC MARIO\nUNDERGROUND THEME!\n\nNOTE:\nWATCH FOR ROLLING\nROCKS"}, //bricks and lifts
+	{"THIS TRACK'S GOT\nSOME FIRE BARS!\n MARIO'S SPITTIN'\n MAD HEAT!\nTHIS SONG WILL\nMAKE YOU FEEL...\nHOT?\nSORRY, I'LL SHOW\nMYSELF OUT."}, //lethal lava lair
+	{"A CALM, YET TENSE\n MELODY BASED OFF\n OF DIRE DIRE DOCKS\n\nTHAT'S ONE TOUGH\nCHEEP CHEEP!\nPOOR LUIGI..."}, //deep deep voyage
+	{"AN UPBEAT, JAZZY\nTRACK AGAINST AN\nEXPLOSIVELY FUNKY\nBOB-OMB!\n\nFUN FACT: THIS\nSONG IS MADE UP\nENTIRELY OF SNES\nINSTRUMENTS."}, //hop-hop heights
+	{"OH NO, BOWSER'S\nCAUSING TROUBLE\nYET AGAIN! CAN YOU\nRAP YOUR WAY OUT\nOF THIS ONE?\n\"BEAT ME, AND\nMAYBE I'LL GIVE\nYOU A BIGGER CAGE!\nBWAHAHA!\""}, //koopa armada
+};
+
 
 //Menu state
 static struct
@@ -325,17 +335,17 @@ void Menu_Load(MenuPage page)
 
 	// to load
 	CdlFILE file;
-    IO_FindFile(&file, "\\SOUNDS\\SCROLL.VAG;1");
+    IO_FindFile(&file, "\\SOUNDS\\MASCROLL.VAG;1");
     u32 *data = IO_ReadFile(&file);
     Menu_Sounds[0] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
 
-	IO_FindFile(&file, "\\SOUNDS\\CONFIRM.VAG;1");
+	IO_FindFile(&file, "\\SOUNDS\\START.VAG;1");
     data = IO_ReadFile(&file);
     Menu_Sounds[1] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
 
-	IO_FindFile(&file, "\\SOUNDS\\CANCEL.VAG;1");
+	IO_FindFile(&file, "\\SOUNDS\\STOMP.VAG;1");
     data = IO_ReadFile(&file);
     Menu_Sounds[2] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
@@ -419,6 +429,7 @@ void Menu_Tick(void)
 			if ((pad_state.press & PAD_START) && menu.next_page == menu.page && Trans_Idle())
 			{
 				//play confirm sound
+				Audio_StopXA();
 				Audio_PlaySound(Menu_Sounds[1]);
 				menu.trans_time = FIXED_UNIT;
 				menu.next_page = MenuPage_Main;
@@ -513,7 +524,7 @@ void Menu_Tick(void)
 				if (pad_state.press & (PAD_START | PAD_CROSS))
 				{
 					//play confirm sound
-					Audio_PlaySound(Menu_Sounds[1]);
+					Audio_PlaySound(Menu_Sounds[2]);
 					switch (menu.select)
 					{
 						case 0: //Story Mode
@@ -536,8 +547,6 @@ void Menu_Tick(void)
 				//Return to title screen if circle is pressed
 				if (pad_state.press & PAD_CIRCLE)
 				{
-					//play cancel sound
-					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Title;
 					Trans_Start();
 				}
@@ -563,7 +572,7 @@ void Menu_Tick(void)
 						//draw one more for effect
 						menu.font_smb1.draw_col(&menu.font_smb1,
 							menu_options[i],
-							21,
+							22,
 							SCREEN_HEIGHT2 + (i << 5) - 46,
 							FontAlign_Left,
 							0,
@@ -784,7 +793,7 @@ void Menu_Tick(void)
 				if (pad_state.press & (PAD_START | PAD_CROSS))
 				{
 					//play confirm sound
-					Audio_PlaySound(Menu_Sounds[1]);
+					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Stage;
 					menu.page_param.stage.id = menu_options[menu.select].stage;
 					menu.page_param.stage.story = false;
@@ -794,8 +803,6 @@ void Menu_Tick(void)
 				//Return to main menu if circle is pressed
 				if (pad_state.press & PAD_CIRCLE)
 				{
-					//play cancel sound
-					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Main;
 					menu.next_select = 1; //Freeplay
 					Trans_Start();
@@ -955,8 +962,6 @@ void Menu_Tick(void)
 				//Return to main menu if circle is pressed
 				if (pad_state.press & PAD_CIRCLE)
 				{
-					//play cancel sound
-					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Main;
 					menu.next_select = 2; //Credits
 					Trans_Start();
@@ -1081,8 +1086,6 @@ void Menu_Tick(void)
 				//Return to main menu if circle is pressed
 				if (pad_state.press & PAD_CIRCLE)
 				{
-					//play cancel sound
-					Audio_PlaySound(Menu_Sounds[2]);
 					menu.next_page = MenuPage_Main;
 					menu.next_select = 3; //Options
 					Trans_Start();

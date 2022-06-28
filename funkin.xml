@@ -38,12 +38,15 @@
 			
 			<!-- Stage assets -->
 			<dir name = "stage">
-				<file name = "hud0.tim" type = "data" source = "iso/stage/hud0.tim"/>
+				<file name = "hud0.tim" type = "data" source = "iso/stage/hud0/hud0.tim"/>
 				<file name = "hud1.tim" type = "data" source = "iso/stage/hud1.tim"/>
-				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0weeb.tim"/>
+				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0/hud0weeb.tim"/>
 				<file name = "hud1weeb.tim" type = "data" source = "iso/stage/hud1weeb.tim"/>
-				<file name = "hud0maro.tim" type = "data" source = "iso/stage/hud0maro.tim"/>
-				<file name = "hud0pc.tim" type = "data" source = "iso/stage/hud0pc.tim"/>
+				<file name = "hud0maro.tim" type = "data" source = "iso/stage/hud0/maro.tim"/>
+				<file name = "hud0mar0.tim" type = "data" source = "iso/stage/hud0/mar0.tim"/>
+				<file name = "hud0makr.tim" type = "data" source = "iso/stage/hud0/maker.tim"/>
+				<file name = "hud0gb.tim" type = "data" source = "iso/stage/hud0/gameboy.tim"/>
+				<file name = "hud0pc.tim" type = "data" source = "iso/stage/hud0/pc.tim"/>
 				<file name = "bg.tim" type = "data" source = "iso/stage/bg.tim"/>
 			</dir>
 			
@@ -158,6 +161,11 @@
 				<file name = "scroll.vag" type = "data" source = "iso/sounds/scroll.vag"/>
 				<file name = "confirm.vag" type = "data" source = "iso/sounds/confirm.vag"/>
 				<file name = "cancel.vag" type = "data" source = "iso/sounds/cancel.vag"/>
+				<!-- Mario Menu sounds -->
+				<file name = "mascroll.vag" type = "data" source = "iso/sounds/menuselect.vag"/>
+				<file name = "coin.vag" type = "data" source = "iso/sounds/coin.vag"/>
+				<file name = "start.vag" type = "data" source = "iso/sounds/start.vag"/>
+				<file name = "stomp.vag" type = "data" source = "iso/sounds/stomp.vag"/>
 				<!-- Stage Sounds -->
 				<file name = "count.vag" type = "data" source = "iso/sounds/countdown.vag"/>
 				<file name = "countend.vag" type = "data" source = "iso/sounds/countdownend.vag"/>
