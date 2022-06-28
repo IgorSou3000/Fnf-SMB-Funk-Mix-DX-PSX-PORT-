@@ -30,6 +30,8 @@ typedef struct
 	
 	Gfx_Tex tex;
 	u8 frame, tex_id;
+
+	boolean spook; //for alt idle
 } Char_Boo;
 
 //Boo character definitions
@@ -38,9 +40,9 @@ static const CharFrame char_boo_frame[] = {
 	{Boo_ArcMain_Boo0, { 71,   0,  65,  49}, {-3, 2}}, //1 idle 2
 	{Boo_ArcMain_Boo0, {139,   0,  66,  49}, {-3, 3}}, //2 idle 3
 
-	{Boo_ArcMain_Boo0, {  0,  52,  68,  50}, { 0, 0}}, //3 spooked 1
-	{Boo_ArcMain_Boo0, { 71,  52,  65,  51}, { 0, 0}}, //4 spooked 2
-	{Boo_ArcMain_Boo0, {139,  52,  66,  49}, { 0, 0}}, //5 spooked 3
+	{Boo_ArcMain_Boo0, {  0,  52,  68,  50}, { 0, 3}}, //3 spooked 1
+	{Boo_ArcMain_Boo0, { 71,  52,  65,  51}, {-3, 4}}, //4 spooked 2
+	{Boo_ArcMain_Boo0, {139,  52,  66,  49}, {-3, 3}}, //5 spooked 3
 
 	{Boo_ArcMain_Boo0, {  0, 106,  67,  47}, {-1, 2}}, //6 left 1
 	{Boo_ArcMain_Boo0, { 70, 106,  67,  49}, {-2, 2}}, //7 left 2
@@ -69,6 +71,7 @@ static const Animation char_boo_anim[CharAnim_Max] = {
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
 	{2, (const u8[]){15, 16, 17, ASCR_BACK, 1}},         //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){ 3, 4, 5, ASCR_BACK, 1}},   //Special
 };
 
 //Boo character functions
@@ -91,12 +94,30 @@ void Char_Boo_Tick(Character *character)
 	Char_Boo *this = (Char_Boo*)character;
 	
 	//Perform idle dance
-	if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0)
-		Character_PerformIdle(character);
+	//if spook is zero, do the normal one
+	//otherwise, do the spooked idle
+	if ((Animatable_Ended(&character->animatable)) && (stage.song_step & 0x7) == 0)
+		{
+			if (this->spook == 0)
+				character->set_anim(character, CharAnim_Idle);
+			else
+				character->set_anim(character, CharAnim_Special);
+		}
 	
 	//Animate and draw
 	Animatable_Animate(&character->animatable, (void*)this, Char_Boo_SetFrame);
 	Character_Draw(character, &this->tex, &char_boo_frame[this->frame]);
+
+	//Spook stuff
+	switch (stage.song_step)
+	{
+		case 192:
+			this->spook = 1;
+			break;
+		case 1022:
+			this->spook = 0;
+			break;
+	}
 }
 
 void Char_Boo_SetAnim(Character *character, u8 anim)
@@ -141,6 +162,8 @@ Character *Char_Boo_New(fixed_t x, fixed_t y)
 	this->character.focus_x = FIXED_DEC(65,1);
 	this->character.focus_y = FIXED_DEC(10,1);
 	this->character.focus_zoom = FIXED_DEC(1,1);
+
+	this->spook = 0;
 	
 	//Load art
 	this->arc_main = IO_Read("\\CHAR\\BOO.ARC;1");
