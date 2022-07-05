@@ -85,6 +85,7 @@
 			<dir name = "free1">
 				<!-- Background art -->
 				<file name = "sky.arc" type = "data" source = "iso/backgrounds/freeplay1/sky/back.arc"/>
+				<file name = "wreck.arc" type = "data" source = "iso/backgrounds/freeplay1/wrecking-crew/back.arc"/>
 				
 				<!-- 2 Player Game chart -->
 				<file name = "1.1.cht" type = "data" source = "iso/chart/freeplay1/2-player-game.json.cht"/>
@@ -150,6 +151,9 @@
 
 				<!-- Luigi 2 player game assets -->
 				<file name = "luigi2p.arc" type = "data" source = "iso/characters/luigi2p/main.arc"/>
+
+				<!-- Spike assets -->
+				<file name = "spike.arc" type = "data" source = "iso/characters/spike/main.arc"/>
 
 				<!-- MX assets -->
 				<file name = "mx.arc" type = "data" source = "iso/characters/mx/main.arc"/>

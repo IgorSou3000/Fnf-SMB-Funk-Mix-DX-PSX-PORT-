@@ -22,6 +22,7 @@ all: \
 	iso/characters/blaster/main.arc \
 	iso/characters/bowser/main.arc \
 	iso/characters/luigi2p/main.arc \
+	iso/characters/spike/main.arc \
 	iso/characters/boo/main.arc \
 	iso/characters/mx/main.arc \
 	iso/characters/luigi2p/main.arc \
@@ -29,6 +30,7 @@ all: \
 	iso/backgrounds/world2/athletic/back.arc \
 	iso/backgrounds/world2/airship/back.arc \
 	iso/backgrounds/freeplay1/sky/back.arc \
+	iso/backgrounds/freeplay1/wrecking-crew/back.arc \
 	iso/backgrounds/freeplay2/ghost/back.arc \
 	iso/backgrounds/world1/pc/back.arc \
 
@@ -56,6 +58,9 @@ iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
 # Luigi 2 player game
 iso/characters/luigi2p/main.arc: iso/characters/luigi2p/luigi.tim
 
+# Spike
+iso/characters/spike/main.arc: iso/characters/spike/spike.tim
+
 # Boo
 iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
 
@@ -78,6 +83,10 @@ iso/characters/blaster/main.arc: iso/characters/blaster/blaster.tim
 
 # Sky
 iso/backgrounds/freeplay1/sky/back.arc: iso/backgrounds/freeplay1/sky/coclo.tim iso/backgrounds/freeplay1/sky/stars.tim
+
+# Wrecking Crew
+iso/backgrounds/freeplay1/wrecking-crew/back.arc: iso/backgrounds/freeplay1/wrecking-crew/bg.tim
+
 
 # Freeplay 2
 

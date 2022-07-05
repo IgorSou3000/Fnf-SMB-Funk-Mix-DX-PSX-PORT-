@@ -39,6 +39,7 @@ static u32 Sounds[4];
 #include "character/bowser.h"
 #include "character/blaster.h"
 #include "character/luigi2p.h"
+#include "character/spike.h"
 #include "character/boo.h"
 #include "character/mx.h"
 
@@ -49,6 +50,7 @@ static u32 Sounds[4];
 #include "stage/world2/world2_3.h"
 
 #include "stage/freeplay1/freeplay1_1.h"
+#include "stage/freeplay1/freeplay1_2.h"
 
 #include "stage/freeplay2/freeplay2_2.h"
 
