@@ -136,13 +136,13 @@
 	},
 	{ //StageId_F1_3 (Portal Power)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{Char_BF_New,    FIXED_DEC(72,1),  FIXED_DEC(50,1)},
+		{Char_Mari0_New, FIXED_DEC(-92,1),  FIXED_DEC(2,1)},
 		{NULL},
 		{NULL},
 		
 		//Stage background
-		Back_World1_1_New,
+		Back_Freeplay1_3_New,
 		
 		//Song info
 		{FIXED_DEC(3,1)},

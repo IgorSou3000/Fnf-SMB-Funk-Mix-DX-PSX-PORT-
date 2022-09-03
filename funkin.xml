@@ -86,6 +86,7 @@
 				<!-- Background art -->
 				<file name = "sky.arc" type = "data" source = "iso/backgrounds/freeplay1/sky/back.arc"/>
 				<file name = "wreck.arc" type = "data" source = "iso/backgrounds/freeplay1/wrecking-crew/back.arc"/>
+				<file name = "portal.arc" type = "data" source = "iso/backgrounds/freeplay1/test-chamber/back.arc"/>
 				
 				<!-- 2 Player Game chart -->
 				<file name = "1.1.cht" type = "data" source = "iso/chart/freeplay1/2-player-game.json.cht"/>
@@ -151,6 +152,9 @@
 
 				<!-- Luigi 2 player game assets -->
 				<file name = "luigi2p.arc" type = "data" source = "iso/characters/luigi2p/main.arc"/>
+
+				<!-- Mari0 assets -->
+				<file name = "mari0.arc" type = "data" source = "iso/characters/mari0/main.arc"/>
 
 				<!-- Spike assets -->
 				<file name = "spike.arc" type = "data" source = "iso/characters/spike/main.arc"/>
