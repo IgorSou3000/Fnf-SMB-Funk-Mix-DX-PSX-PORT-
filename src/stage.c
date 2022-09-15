@@ -699,8 +699,8 @@ void Stage_DrawTexCol(Gfx_Tex *tex, const RECT *src, const RECT_FIXED *dst, fixe
 	RECT sdst = {
 		l,
 		t,
-		r - l,
-		b - t,
+		r - l + 1, //don't even ask why
+		b - t + 1,
 	};
 	Gfx_DrawTexCol(tex, src, &sdst, cr, cg, cb);
 }
@@ -1097,6 +1097,28 @@ static void Stage_DrawNotes(void)
 				
 				if (stage.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
+				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);	
+			}
+			else if (note->type & NOTE_FLAG_MINE)
+			{
+				//Don't draw if already hit
+				if (note->type & NOTE_FLAG_HIT)
+					continue;
+				
+				//Draw note body
+				note_src.x = 192;
+				note_src.y = 192;
+				note_src.w = 32;
+				note_src.h = 32;
+				
+				note_dst.x = stage.noteshakex + note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+				note_dst.y = stage.noteshakey + y - FIXED_DEC(16,1);
+				note_dst.w = note_src.w << FIXED_SHIFT;
+				note_dst.h = note_src.h << FIXED_SHIFT;
+				
+				if (stage.downscroll)
+					note_dst.y = -note_dst.y - note_dst.h;
+
 				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);	
 			}
 			else

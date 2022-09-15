@@ -38,8 +38,8 @@ void Back_Freeplay1_3_DrawBG(StageBack *back)
 	RECT_FIXED chamber_dst = {
 		FIXED_DEC(-160,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(chamber_src.w*2 + 1,1),
-		FIXED_DEC(chamber_src.h*2 + 1,1)
+		FIXED_DEC(chamber_src.w*2,1),
+		FIXED_DEC(chamber_src.h*2,1)
 	};
 	
 	Stage_DrawTex(&this->tex_back, &chamber_src, &chamber_dst, stage.camera.bzoom);
@@ -50,8 +50,8 @@ void Back_Freeplay1_3_DrawBG(StageBack *back)
 	RECT_FIXED wall_dst = {
 		FIXED_DEC(-160,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(wall_src.w*2 + 1,1),
-		FIXED_DEC(wall_src.h*2 + 1,1)
+		FIXED_DEC(wall_src.w*2,1),
+		FIXED_DEC(wall_src.h*2,1)
 	};
 	
 	Stage_DrawTex(&this->tex_back, &wall_src, &wall_dst, stage.camera.bzoom);

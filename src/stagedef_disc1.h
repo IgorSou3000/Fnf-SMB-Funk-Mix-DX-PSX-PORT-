@@ -136,8 +136,8 @@
 	},
 	{ //StageId_F1_3 (Portal Power)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(72,1),  FIXED_DEC(50,1)},
-		{Char_Mari0_New, FIXED_DEC(-92,1),  FIXED_DEC(2,1)},
+		{Char_BF_New,    FIXED_DEC(72,1),  FIXED_DEC(53,1)},
+		{Char_Mari0_New, FIXED_DEC(-92,1),  FIXED_DEC(1,1)},
 		{NULL},
 		{NULL},
 		
