@@ -37,15 +37,18 @@ iso/*/*.tim
 iso/*/*.arc
 iso/*/*.xa
 iso/*/*.cht
+iso/*/*.sfx
 
 iso/*/*/*.tim
 iso/*/*/*.arc
 iso/*/*/*.xa
 iso/*/*/*.cht
+iso/*/*/*.sfx
 
 iso/*/*/*/*.tim
 iso/*/*/*/*.arc
 iso/*/*/*/*.xa
 iso/*/*/*/*.cht
+iso/*/*/*/*.sfx
 
 # Big Chungus

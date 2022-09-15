@@ -27,6 +27,7 @@ SRCS = src/main.c \
        src/stage/freeplay1/freeplay1_2.c \
        src/stage/freeplay1/freeplay1_3.c \
        src/stage/freeplay2/freeplay2_2.c \
+       src/stage/freeplay2/freeplay2_3.c \
        src/stage/world1/world1_1pc.c \
        src/animation.c \
        src/character.c \
@@ -34,12 +35,14 @@ SRCS = src/main.c \
        src/character/mario.c \
        src/character/bomb.c \
        src/character/gf.c \
+       src/character/bfcaptured.c \
        src/character/bowser.c \
        src/character/blaster.c \
        src/character/luigi2p.c \
        src/character/mari0.c \
-       src/character/spike.c \
+       src/character/spiwa.c \
        src/character/boo.c \
+       src/character/marioccc.c \
        src/character/mx.c \
        src/object.c \
        src/object/combo.c \

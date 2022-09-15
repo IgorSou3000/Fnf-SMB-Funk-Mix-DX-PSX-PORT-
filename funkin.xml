@@ -83,7 +83,7 @@
 
 			<!-- Freeplay 1 assets -->
 			<dir name = "free1">
-				<!-- Background art -->
+				<!-- Backgrounds art -->
 				<file name = "sky.arc" type = "data" source = "iso/backgrounds/freeplay1/sky/back.arc"/>
 				<file name = "wreck.arc" type = "data" source = "iso/backgrounds/freeplay1/wrecking-crew/back.arc"/>
 				<file name = "portal.arc" type = "data" source = "iso/backgrounds/freeplay1/test-chamber/back.arc"/>
@@ -100,6 +100,7 @@
 			<dir name = "free2">
 				<!-- Backgrounds art -->
 				<file name = "ghost.arc" type = "data" source = "iso/backgrounds/freeplay2/ghost/back.arc"/>
+				<file name = "sonic.arc" type = "data" source = "iso/backgrounds/freeplay2/sonic/back.arc"/>
 				
 				<!-- Bullet Time chart -->
 				<file name = "2.1.cht" type = "data" source = "iso/chart/freeplay2/bullet-time.json.cht"/>
@@ -141,6 +142,9 @@
 				<!-- Bomb assets -->
 				<file name = "bomb.arc" type = "data" source = "iso/characters/bomb/main.arc"/>
 
+				<!-- Boyfriend Captured assets -->
+				<file name = "bfcapt.arc" type = "data" source = "iso/characters/bfcaptured/main.arc"/>
+
 				<!-- Bowser assets -->
 				<file name = "koopa.arc" type = "data" source = "iso/characters/bowser/main.arc"/>
 
@@ -150,14 +154,17 @@
 				<!-- Boo assets -->
 				<file name = "boo.arc" type = "data" source = "iso/characters/boo/main.arc"/>
 
+				<!-- Mario Cross Console Clash assets -->
+				<file name = "marioccc.arc" type = "data" source = "iso/characters/marioccc/main.arc"/>
+
 				<!-- Luigi 2 player game assets -->
 				<file name = "luigi2p.arc" type = "data" source = "iso/characters/luigi2p/main.arc"/>
 
 				<!-- Mari0 assets -->
 				<file name = "mari0.arc" type = "data" source = "iso/characters/mari0/main.arc"/>
 
-				<!-- Spike assets -->
-				<file name = "spike.arc" type = "data" source = "iso/characters/spike/main.arc"/>
+				<!-- Spike And Waluigi assets -->
+				<file name = "spiwa.arc" type = "data" source = "iso/characters/spiwa/main.arc"/>
 
 				<!-- MX assets -->
 				<file name = "mx.arc" type = "data" source = "iso/characters/mx/main.arc"/>
@@ -166,17 +173,16 @@
 			<!-- Sound effect -->
 			<dir name = "sounds">
 				<!-- Menu Sounds -->
-				<file name = "scroll.vag" type = "data" source = "iso/sounds/scroll.vag"/>
-				<file name = "confirm.vag" type = "data" source = "iso/sounds/confirm.vag"/>
-				<file name = "cancel.vag" type = "data" source = "iso/sounds/cancel.vag"/>
-				<!-- Mario Menu sounds -->
-				<file name = "mascroll.vag" type = "data" source = "iso/sounds/menuselect.vag"/>
-				<file name = "coin.vag" type = "data" source = "iso/sounds/coin.vag"/>
-				<file name = "start.vag" type = "data" source = "iso/sounds/start.vag"/>
-				<file name = "stomp.vag" type = "data" source = "iso/sounds/stomp.vag"/>
+				<file name = "mascroll.sfx" type = "data" source = "iso/sounds/scroll.ogg.sfx"/>
+				<file name = "coin.sfx" type = "data" source = "iso/sounds/coin.ogg.sfx"/>
+				<file name = "start.sfx" type = "data" source = "iso/sounds/start.ogg.sfx"/>
+				<file name = "stomp.sfx" type = "data" source = "iso/sounds/stomp.ogg.sfx"/>
 				<!-- Stage Sounds -->
-				<file name = "count.vag" type = "data" source = "iso/sounds/countdown.vag"/>
-				<file name = "countend.vag" type = "data" source = "iso/sounds/countdownend.vag"/>
+				<file name = "count.sfx" type = "data" source = "iso/sounds/countdown.ogg.sfx"/>
+				<file name = "countend.sfx" type = "data" source = "iso/sounds/countdownend.ogg.sfx"/>
+
+				<file name = "powerd.sfx" type = "data" source = "iso/sounds/powerdown.ogg.sfx"/>
+				<file name = "poweru.sfx" type = "data" source = "iso/sounds/powerup.ogg.sfx"/>
 			</dir>
 			
 			<!-- Music -->

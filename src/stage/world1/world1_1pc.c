@@ -45,10 +45,10 @@ void Back_World1_1PC_DrawBG(StageBack *back) // 1-1
 	//End of level
 	RECT back_src = {0, 0, 160, 81};
 	RECT_FIXED back_dst = {
-		FIXED_DEC(-160 + this->movingbg,1) - fx,
+		FIXED_DEC(-159 + this->movingbg,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(back_src.w*2 + 1,1),
-		FIXED_DEC(back_src.h*2 + 1,1)
+		FIXED_DEC(back_src.w*2,1),
+		FIXED_DEC(back_src.h*2,1)
 	};
 	
 	if (mx.phase != 4 && stage.song_step < 800)
@@ -63,34 +63,34 @@ void Back_World1_1PC_DrawBG(StageBack *back) // 1-1
 	if (mx.phase == 3)
 	{
 		//this shit loop itself, but for avoid problems,i resetting da variable
-		if (this->movingbg >= 2048)
+		if (this->movingbg >= FIXED_UNIT*2)
 		this->movingbg = 0;
 
 		//draw the level shit
 		Stage_DrawTex(&this->tex_level2, &level0_src, &back_dst, stage.camera.bzoom);
 
 		//i just manipulate da dst x for this
-		back_dst.x -= back_dst.w;
+		back_dst.x -= back_dst.w ;
 
 			Stage_DrawTex(&this->tex_level0, &level1_src, &back_dst, stage.camera.bzoom);
 
-				back_dst.x -= back_dst.w;
+				back_dst.x -= back_dst.w ;
 
 				Stage_DrawTex(&this->tex_level0, &level2_src, &back_dst, stage.camera.bzoom);
 
-					back_dst.x -= back_dst.w;
+					back_dst.x -= back_dst.w ;
 
 					Stage_DrawTex(&this->tex_level1, &level3_src, &back_dst, stage.camera.bzoom);
 
-						back_dst.x -= back_dst.w;
+						back_dst.x -= back_dst.w ;
 
 						Stage_DrawTex(&this->tex_level1, &level1_src, &back_dst, stage.camera.bzoom); //4
 
-							back_dst.x -= back_dst.w;
+							back_dst.x -= back_dst.w ;
 
 							Stage_DrawTex(&this->tex_level1, &level2_src, &back_dst, stage.camera.bzoom); //5
 
-								back_dst.x -= back_dst.w;
+								back_dst.x -= back_dst.w ;
 
 								Stage_DrawTex(&this->tex_level2, &level3_src, &back_dst, stage.camera.bzoom);
 

@@ -333,19 +333,19 @@ void Menu_Load(MenuPage page)
 	
 	stage.song_step = 0;
 
-	// to load
-	CdlFILE file;
-    IO_FindFile(&file, "\\SOUNDS\\MASCROLL.VAG;1");
+		// to load
+		CdlFILE file;
+    IO_FindFile(&file, "\\SOUNDS\\MASCROLL.SFX;1");
     u32 *data = IO_ReadFile(&file);
     Menu_Sounds[0] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
 
-	IO_FindFile(&file, "\\SOUNDS\\START.VAG;1");
+	IO_FindFile(&file, "\\SOUNDS\\START.SFX;1");
     data = IO_ReadFile(&file);
     Menu_Sounds[1] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
 
-	IO_FindFile(&file, "\\SOUNDS\\STOMP.VAG;1");
+	IO_FindFile(&file, "\\SOUNDS\\STOMP.SFX;1");
     data = IO_ReadFile(&file);
     Menu_Sounds[2] = Audio_LoadVAGData(data, file.size);
     Mem_Free(data);
@@ -437,7 +437,7 @@ void Menu_Tick(void)
 			}
 
 			//increase variable
-			menu.movingbg++;
+			menu.movingbg += timer_dt/12;
 
 			//start loop
 			if (menu.movingbg/2 >= 513)
@@ -628,7 +628,7 @@ void Menu_Tick(void)
 			//bg animation stuff
 
 			//increase variable
-			menu.movingbg++;
+			menu.movingbg += timer_dt/12;
 
 			//making a new variable only for slowdown da speed
 			s16 movingbg = menu.movingbg / 2;
@@ -871,10 +871,9 @@ void Menu_Tick(void)
 			RECT arrow_dst = {290, 220, 15, 31};
 
 			//cool effect
+			static boolean invisible = false;
 
-			static boolean invisible;
-
-			if ((animf_count >> 1 & 0x7))
+			if (stage.flag & STAGE_FLAG_JUST_STEP && (stage.song_step & 0x1) == 0)
 			invisible = (invisible == false) ? true : false;
 
 			if (invisible == false)

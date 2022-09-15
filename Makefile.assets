@@ -1,4 +1,5 @@
 all:
 	@ $(MAKE) -f Makefile.tim
 	@ $(MAKE) -f Makefile.cht
+	@ $(MAKE) -f Makefile.sfx
 	@ $(MAKE) -f Makefile.xa

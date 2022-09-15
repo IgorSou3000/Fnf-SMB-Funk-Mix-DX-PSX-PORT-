@@ -19,12 +19,14 @@ all: \
 	iso/characters/bf/main.arc \
 	iso/characters/mario/main.arc \
 	iso/characters/bomb/main.arc \
+	iso/characters/bfcaptured/main.arc \
 	iso/characters/blaster/main.arc \
 	iso/characters/bowser/main.arc \
 	iso/characters/luigi2p/main.arc \
 	iso/characters/mari0/main.arc \
-	iso/characters/spike/main.arc \
+	iso/characters/spiwa/main.arc \
 	iso/characters/boo/main.arc \
+	iso/characters/marioccc/main.arc \
 	iso/characters/mx/main.arc \
 	iso/characters/luigi2p/main.arc \
 	iso/backgrounds/world1/back.arc \
@@ -34,6 +36,7 @@ all: \
 	iso/backgrounds/freeplay1/wrecking-crew/back.arc \
 	iso/backgrounds/freeplay1/test-chamber/back.arc \
 	iso/backgrounds/freeplay2/ghost/back.arc \
+	iso/backgrounds/freeplay2/sonic/back.arc \
 	iso/backgrounds/world1/pc/back.arc \
 
 iso/%.tim: iso/%.png
@@ -54,6 +57,10 @@ iso/characters/mario/main.arc: iso/characters/mario/mario-s.tim iso/characters/m
 # Bomb
 iso/characters/bomb/main.arc: iso/characters/bomb/bomb.tim iso/characters/bomb/bomb-m.tim
 
+# BF Captured
+iso/characters/bfcaptured/main.arc: iso/characters/bfcaptured/bf-small.tim iso/characters/bfcaptured/bf.tim iso/characters/bfcaptured/bf-fire.tim
+
+
 # Bowser
 iso/characters/bowser/main.arc: iso/characters/bowser/bowser.tim
 
@@ -63,11 +70,15 @@ iso/characters/luigi2p/main.arc: iso/characters/luigi2p/luigi.tim
 # Mario with a Portal Gun
 iso/characters/mari0/main.arc: iso/characters/mari0/portal.tim
 
-# Spike
-iso/characters/spike/main.arc: iso/characters/spike/spike.tim
+# Spike And Waluigi
+iso/characters/spiwa/main.arc: iso/characters/spiwa/spike.tim iso/characters/spiwa/waluigi.tim
 
 # Boo
 iso/characters/boo/main.arc: iso/characters/boo/boo0.tim iso/characters/boo/boo1.tim
+
+# Mario Cross Console Crash
+iso/characters/marioccc/main.arc: iso/characters/marioccc/mario-s.tim iso/characters/marioccc/mario.tim iso/characters/marioccc/mario-f.tim
+
 
 # MX
 iso/characters/mx/main.arc: iso/characters/mx/mario.tim iso/characters/mx/near.tim iso/characters/mx/run.tim iso/characters/mx/big0.tim iso/characters/mx/big1.tim iso/characters/mx/big2.tim iso/characters/mx/big3.tim
@@ -100,6 +111,9 @@ iso/backgrounds/freeplay1/test-chamber/back.arc: iso/backgrounds/freeplay1/test-
 
 # Ghost
 iso/backgrounds/freeplay2/ghost/back.arc: iso/backgrounds/freeplay2/ghost/bg.tim
+
+# Sonic
+iso/backgrounds/freeplay2/sonic/back.arc: iso/backgrounds/freeplay2/sonic/bg.tim
 
 
 # MX

@@ -135,7 +135,7 @@ void Char_Bomb_Tick(Character *character)
 
 
 	//bomb mad
-	if ((stage.song_step >= 383 && stage.mode == StageMode_Normal) || (character->powerup -1 == 0 && stage.mode != StageMode_Normal))
+	if ((stage.song_step >= 384 && stage.mode == StageMode_Normal) || (character->powerup -1 == 0 && stage.mode != StageMode_Normal))
 	Animatable_Animate(&character->animatable2, (void*)this, Char_Bomb_SetFrame);
 
 	//normal bomb

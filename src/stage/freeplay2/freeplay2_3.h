@@ -4,12 +4,12 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-#ifndef PSXF_GUARD_SPIKE_H
-#define PSXF_GUARD_SPIKE_H
+#ifndef PSXF_GUARD_FREEPLAY2_3_H
+#define PSXF_GUARD_FREEPLAY2_3_H
 
-#include "../character.h"
+#include "../../stage.h"
 
-//Spike character functions
-Character *Char_Spike_New(fixed_t x, fixed_t y);
+//Freeplay2_3 functions
+StageBack *Back_Freeplay2_3_New();
 
 #endif

@@ -53,7 +53,7 @@ static const CharFrame coin1_frame[] = {
 };
 
 static const Animation coins_anim[] = {
-	{2, (const u8[]){0, 1, 2, 1, 0, ASCR_BACK, 1}}, //coinanim
+	{3, (const u8[]){0, 1, 2, 1, 0,  0,  0, ASCR_BACK, 1}}, //coinanim
 };
 
 //Coin0 functions
@@ -97,10 +97,10 @@ void Back_Freeplay1_1_DrawBG(StageBack *back) //2 Player Game
 
 	fixed_t fx, fy;
 
-	if (this->coinmovebg <= -640)
+	if (this->coinmovebg <= -SCREEN_WIDTH*2)
 	this->coinmovebg = 0;
 
-	if (this->starsmovebg/24 <= -320)
+	if (this->starsmovebg/24 <= -SCREEN_WIDTH)
 	this->starsmovebg = 0;
 
 	//startin move bg
@@ -113,10 +113,10 @@ void Back_Freeplay1_1_DrawBG(StageBack *back) //2 Player Game
 	
 	RECT cloud_src = {3, 63, 48, 16};
 	RECT_FIXED cloud_dst = {
-	    FIXED_DEC(-131,1),
-		FIXED_DEC( 19,1),
-		FIXED_DEC(cloud_src.w*2 + 1,1) - fx,  
-		FIXED_DEC(cloud_src.h*2 + 1,1) - fy
+	    FIXED_DEC(-131,1) - fx,
+		FIXED_DEC( 19,1) - fy,
+		FIXED_DEC(cloud_src.w*2,1),  
+		FIXED_DEC(cloud_src.h*2,1)
 		};
 
 	//cloud for luigi
@@ -131,7 +131,7 @@ void Back_Freeplay1_1_DrawBG(StageBack *back) //2 Player Game
 	//coin0 and coin1
 	if (stage.flag & STAGE_FLAG_JUST_STEP)
 	{
-		if ((stage.song_step % 9) == 0)
+		if (Animatable_Ended(&this->coin0_animatable) && Animatable_Ended(&this->coin1_animatable))
 		{
 		Animatable_SetAnim(&this->coin0_animatable, 0);
 		Animatable_SetAnim(&this->coin1_animatable, 0);
@@ -142,12 +142,13 @@ void Back_Freeplay1_1_DrawBG(StageBack *back) //2 Player Game
 
 	for (u8 i = 0; i <= 2; i++)
 	{
-	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-138 + (320*i)) + this->coinmovebg,1) - fx, FIXED_DEC(54,1) - fy, "coin 0");
-	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-12  + (320*i)) + this->coinmovebg,1) - fx, FIXED_DEC(-27,1) - fy, "coin 0");
+	u16 screenposx = i*SCREEN_WIDTH;
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-138 + screenposx) + this->coinmovebg,1) - fx, FIXED_DEC(54,1) - fy, "coin 0");
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-12  + screenposx) + this->coinmovebg,1) - fx, FIXED_DEC(-27,1) - fy, "coin 0");
 	
 
-	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-142 + (320*i)) + this->coinmovebg/2,1) - fx, FIXED_DEC(-55,1) - fy, "coin 1");
-	Freeplay1_1_Coins_Draw(this, FIXED_DEC((100  + (320*i)) + this->coinmovebg/2,1) - fx, FIXED_DEC(16,1) - fy, "coin 1");
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((-142 + screenposx) + this->coinmovebg/2,1) - fx, FIXED_DEC(-55,1) - fy, "coin 1");
+	Freeplay1_1_Coins_Draw(this, FIXED_DEC((100  + screenposx) + this->coinmovebg/2,1) - fx, FIXED_DEC(16,1) - fy, "coin 1");
 	  }
 
 	//draw stars bg
@@ -155,8 +156,8 @@ void Back_Freeplay1_1_DrawBG(StageBack *back) //2 Player Game
 	RECT_FIXED stars_dst = {
 		FIXED_DEC(-160 + this->starsmovebg/24,1) - fx,
 		FIXED_DEC(-65,1) - fy,
-		FIXED_DEC(stars_src.w*2 + 1,1),
-		FIXED_DEC(stars_src.h*2 + 1,1)
+		FIXED_DEC(stars_src.w*2,1),
+		FIXED_DEC(stars_src.h*2,1)
 	};
 	
 	Stage_DrawTex(&this->tex_stars, &stars_src, &stars_dst, stage.camera.bzoom);

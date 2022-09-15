@@ -143,6 +143,7 @@ typedef struct
 #define NOTE_FLAG_ALT_ANIM    (1 << 5) //Note plays alt animation
 #define NOTE_FLAG_MINE        (1 << 6) //Note is a mine
 #define NOTE_FLAG_HIT         (1 << 7) //Note has been hit
+#define NOTE_FLAG_POWERUP     (1 << 8) //Note is a power up
 
 typedef struct
 {
@@ -170,7 +171,11 @@ typedef struct
 	s32 min_accuracy;
 	s32 accuracy;
 	s32 max_accuracy;
-	
+
+	//power up stuff
+	u16 spawnpowerup;
+	s16 invincibility;
+
 	u16 pad_held, pad_press;
 } PlayerState;
 
@@ -243,7 +248,7 @@ typedef struct
 	//for moving bg stuff
 	fixed_t bgx,bgy;
 
-	s16 song_step;
+	s16 song_step, song_beat;
 
 	s16 botplay;
 	

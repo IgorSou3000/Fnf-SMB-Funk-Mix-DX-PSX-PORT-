@@ -36,12 +36,14 @@ static u32 Sounds[4];
 #include "character/bf.h"
 #include "character/mario.h"
 #include "character/bomb.h"
+#include "character/bfcaptured.h"
 #include "character/bowser.h"
 #include "character/blaster.h"
 #include "character/luigi2p.h"
 #include "character/mari0.h"
-#include "character/spike.h"
+#include "character/spiwa.h"
 #include "character/boo.h"
+#include "character/marioccc.h"
 #include "character/mx.h"
 
 #include "stage/world1/world1_1.h"
@@ -55,6 +57,7 @@ static u32 Sounds[4];
 #include "stage/freeplay1/freeplay1_3.h"
 
 #include "stage/freeplay2/freeplay2_2.h"
+#include "stage/freeplay2/freeplay2_3.h"
 
 #include "stage/gb.h"
 
@@ -98,6 +101,7 @@ static void Stage_FocusCharacter(Character *ch, fixed_t div)
 
 static void Stage_ScrollCamera(void)
 {
+	/*
 	#ifdef STAGE_FREECAM
 		if (pad_state.held & PAD_LEFT)
 			stage.camera.x -= FIXED_DEC(2,1);
@@ -111,6 +115,7 @@ static void Stage_ScrollCamera(void)
 			stage.camera.zoom -= FIXED_DEC(1,100);
 		if (pad_state.held & PAD_CROSS)
 			stage.camera.zoom += FIXED_DEC(1,100);
+		#endif
 	#else
 		//Get delta position
 		fixed_t dx = stage.camera.tx - stage.camera.x;
@@ -122,7 +127,7 @@ static void Stage_ScrollCamera(void)
 		stage.camera.y += FIXED_MUL(dy, stage.camera.td);
 		stage.camera.zoom += FIXED_MUL(dz, stage.camera.td);
 	#endif
-	
+	*/
 	//Update other camera stuff
 	stage.camera.bzoom = FIXED_MUL(stage.camera.zoom, stage.bump);
 }
@@ -425,6 +430,26 @@ static void Stage_MissNote(PlayerState *this)
 	this->refresh_accuracy = true;
 	this->miss += 1;
 	this->refresh_miss = true;
+
+	if (this->character->missed == false)
+	{
+			switch(this->character->powerup)
+			{
+				case 2: //fire flower
+					this->spawnpowerup = stage.song_beat + 48;
+				break;
+				case 1: //Mushroom
+				this->spawnpowerup = stage.song_beat + 24;
+				break;
+				default:
+				break;
+			}
+
+			this->invincibility = 120;
+			this->character->powerup--;
+			this->character->missed = true;
+	}
+
 	if (this->combo)
 	{
 		//Kill combo
@@ -459,6 +484,13 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 				continue;
 			if ((note->type & NOTE_FLAG_HIT) || (note->type & (NOTE_FLAG_OPPONENT | 0x3)) != type || (note->type & NOTE_FLAG_SUSTAIN))
 				continue;
+
+			//increase power up
+			if (note->type & NOTE_FLAG_POWERUP && this->character->powerup != 2)
+			{
+				this->character->powerup++;
+				note->type &= ~NOTE_FLAG_POWERUP;
+			}
 			
 			//Hit the note
 			note->type |= NOTE_FLAG_HIT;
@@ -507,8 +539,7 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 		else
 			this->character->set_anim(this->character, note_anims[type & 0x3][0]);
 		Stage_MissNote(this);
-		
-		this->character->powerup--;
+
 		this->score -= 1;
 		this->refresh_score = true;
 	}
@@ -967,9 +998,7 @@ static void Stage_DrawNotes(void)
 				{
 					//Missed note
 					Stage_CutVocal();
-					Stage_MissNote(this);
-					this->character->powerup--;
-					
+					Stage_MissNote(this);			
 				}
 			}
 			
@@ -1021,11 +1050,7 @@ static void Stage_DrawNotes(void)
 							note_dst.y = -note_dst.y;
 							note_dst.h = -note_dst.h;
 						}
-						//draw for opponent
-						if (stage.middlescroll && note->type & NOTE_FLAG_OPPONENT)
-							Stage_BlendTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump, 1);
-						else
-							Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+						Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 					}
 				}
 				else
@@ -1049,15 +1074,11 @@ static void Stage_DrawNotes(void)
 						
 						if (stage.downscroll)
 							note_dst.y = -note_dst.y - note_dst.h;
-						//draw for opponent
-						if (stage.middlescroll && note->type & NOTE_FLAG_OPPONENT)
-							Stage_BlendTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump, 1);
-						else
-							Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+						Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 					}
 				}
 			}
-			else if (note->type & NOTE_FLAG_MINE)
+			else if (note->type & NOTE_FLAG_POWERUP)
 			{
 				//Don't draw if already hit
 				if (note->type & NOTE_FLAG_HIT)
@@ -1076,11 +1097,7 @@ static void Stage_DrawNotes(void)
 				
 				if (stage.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
-				//draw for opponent
-				if (stage.middlescroll && note->type & NOTE_FLAG_OPPONENT)
-					Stage_BlendTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump, 1);
-				else
-					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);	
+				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);	
 			}
 			else
 			{
@@ -1093,6 +1110,21 @@ static void Stage_DrawNotes(void)
 				note_src.y = 0;
 				note_src.w = 32;
 				note_src.h = 32;
+
+				//Draw Power Up Instead
+				if (note->type & NOTE_FLAG_POWERUP)
+				{
+					switch(this->character->powerup)
+					{
+						case 1: //Fire Flower
+						note_src.x = 192;
+						break;
+						case 0: //Mushroom
+						note_src.x = 192;
+						note_src.y =  32;
+						break;
+					}
+				}
 				
 				note_dst.x = stage.noteshakex + note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
 				note_dst.y = stage.noteshakey + y - FIXED_DEC(16,1);
@@ -1101,11 +1133,7 @@ static void Stage_DrawNotes(void)
 				
 				if (stage.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
-				//draw for opponent
-				if (stage.middlescroll && note->type & NOTE_FLAG_OPPONENT)
-					Stage_BlendTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump, 1);
-				else
-					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 			}
 		}
 	}
@@ -1288,14 +1316,24 @@ static void Stage_LoadSFX(void)
 {
 		//Load SFX
 	 	CdlFILE file;
-	  	IO_FindFile(&file, "\\SOUNDS\\COUNT.VAG;1");
+	  	IO_FindFile(&file, "\\SOUNDS\\COUNT.SFX;1");
 	    u32 *data = IO_ReadFile(&file);
 	    Sounds[0] = Audio_LoadVAGData(data, file.size);
 	    Mem_Free(data);
 
-		IO_FindFile(&file, "\\SOUNDS\\COUNTEND.VAG;1");
+		IO_FindFile(&file, "\\SOUNDS\\COUNTEND.SFX;1");
 	    data = IO_ReadFile(&file);
 	    Sounds[1] = Audio_LoadVAGData(data, file.size);
+	    Mem_Free(data);
+
+	   IO_FindFile(&file, "\\SOUNDS\\POWERU.SFX;1");
+	    data = IO_ReadFile(&file);
+	    Sounds[2] = Audio_LoadVAGData(data, file.size);
+	    Mem_Free(data);
+
+	   IO_FindFile(&file, "\\SOUNDS\\POWERD.SFX;1");
+	    data = IO_ReadFile(&file);
+	    Sounds[3] = Audio_LoadVAGData(data, file.size);
 	    Mem_Free(data);
 }
 
@@ -1336,6 +1374,9 @@ static void Stage_LoadState(void)
 	stage.gf_speed = 1 << 2;
 	
 	stage.state = StageState_Play;
+
+	//making black for cover any green
+	Gfx_SetClear(0, 0, 0);
 	
 	stage.player_state[0].character = stage.player;
 	stage.player_state[1].character = stage.opponent;
@@ -1349,7 +1390,7 @@ static void Stage_LoadState(void)
 	{
 		memset(stage.player_state[i].arrow_hitan, 0, sizeof(stage.player_state[i].arrow_hitan));
 		
-		stage.player_state[i].character->powerup = 3;
+		stage.player_state[i].character->powerup = 2;
 		stage.player_state[i].combo = 0;
 		stage.player_state[i].miss = 0;
 		stage.player_state[i].accuracy = 0;
@@ -1359,6 +1400,10 @@ static void Stage_LoadState(void)
 		stage.player_state[i].refresh_score = false;
 		stage.player_state[i].score = 0;
 		strcpy(stage.player_state[i].score_text, "000000");
+
+		stage.player_state[i].spawnpowerup = 0;
+		stage.player_state[i].character->missed = false;
+		stage.player_state[i].invincibility = 0;
 		
 		stage.player_state[i].pad_held = stage.player_state[i].pad_press = 0;
 	}
@@ -1429,9 +1474,14 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 		Stage_FocusCharacter(stage.opponent, FIXED_UNIT);
 	else
 		Stage_FocusCharacter(stage.player, FIXED_UNIT);
-	*/
+
 	stage.camera.x = stage.camera.tx;
 	stage.camera.y = stage.camera.ty;
+	stage.camera.zoom = stage.camera.tz = FIXED_DEC(1,1);
+	*/
+
+	stage.camera.x = FIXED_DEC(0,1);
+	stage.camera.y = FIXED_DEC(0,1);
 	stage.camera.zoom = stage.camera.tz = FIXED_DEC(1,1);
 	
 	stage.bump = FIXED_UNIT;
@@ -1666,6 +1716,7 @@ void Stage_Tick(void)
 			{
 				case 1: //step counter
 			        FntPrint("current step is %d\n", stage.song_step);
+			        FntPrint("current beat is %d\n", stage.song_beat);
 					break;
 				case 2: //Player 1 (bf) position
 				    FntPrint("player1 pos X %d Y %d", stage.player->x/1024, stage.player->y/1024);
@@ -1798,6 +1849,7 @@ void Stage_Tick(void)
 				if (stage.note_scroll < 0)
 					stage.song_step -= 11;
 				stage.song_step /= 12;
+				stage.song_beat = stage.song_step / 4;
 			}
 			
 			//Update section
@@ -1833,7 +1885,7 @@ void Stage_Tick(void)
 				
 				//Bump screen
 				if (is_bump_step)
-					stage.bump = FIXED_DEC(100,100);
+					stage.bump = FIXED_DEC(1,1);
 
 				//Bump life every 4 steps
 				if ((stage.song_step & 0x3) == 0)
@@ -1848,6 +1900,26 @@ void Stage_Tick(void)
 				Stage_FocusCharacter(stage.player, FIXED_UNIT / 24);
 			*/
 			Stage_ScrollCamera();
+
+			//power up stuff
+		for (Note *note = stage.cur_note;; note++)
+		{
+			u8 oppo = (note->type & NOTE_FLAG_OPPONENT) != 0;
+			PlayerState* this = &stage.player_state[oppo];
+
+				if (note->pos > (stage.note_scroll >> FIXED_SHIFT))
+						break;
+
+					if ((note->type & (NOTE_FLAG_OPPONENT | 0x3)) != ((note->type & 0x3) | (oppo*NOTE_FLAG_OPPONENT)))
+					continue;
+					
+				if (stage.song_beat >= this->spawnpowerup)
+				{
+					this->spawnpowerup = 0;
+					note->type |= NOTE_FLAG_POWERUP;
+				}
+				FntPrint("powerup %d", this->spawnpowerup);
+			}
 			
 			switch (stage.mode)
 			{
@@ -1940,6 +2012,17 @@ void Stage_Tick(void)
 				PlayerState *this = &stage.player_state[i];
 
 				this->accuracy = (this->min_accuracy * 100) / (this->max_accuracy);
+
+				if (this->invincibility != 0)
+				this->invincibility--;
+
+			//making this for avoid problem
+			if (this->invincibility < 0)
+				this->invincibility--;
+
+			if (this->invincibility == 0)
+				this->character->missed = false;
+
 				
 				//Get string representing number
 				if (this->refresh_score)
@@ -1978,29 +2061,26 @@ void Stage_Tick(void)
 			
 			if (stage.mode < StageMode_2P)
 			{
-				//Perform life checks
-				if (stage.player_state[0].character->powerup <= 0)
+				//Perform power up checks
+				if (stage.player_state[0].character->powerup < 0)
 				{
 					//Player has died
 					stage.player_state[0].character->powerup = 0;
 						
 					stage.state = StageState_Dead;
 				}
-				if (stage.player_state[0].character->powerup > 3)
-					stage.player_state[0].character->powerup = 3;
+				if (stage.player_state[0].character->powerup > 2)
+					stage.player_state[0].character->powerup = 2;
 			}
-			
-			//making black for cover any green
-			Gfx_SetClear(0, 0, 0);
 
 			//draw the black square
 			RECT bg_src = {0, 0, 160, 120};
 
 			RECT_FIXED bg_dst = {
-			FIXED_DEC(-161,1), 
+			FIXED_DEC(-160,1), 
 			FIXED_DEC(-120,1), 
-			FIXED_DEC(321,1),
-			FIXED_DEC(240,1)
+			FIXED_DEC(SCREEN_WIDTH,1),
+			FIXED_DEC(SCREEN_HEIGHT,1)
 		};
 		//inverting square and using camera for move all the sprites/bg
 			if (stage.downscroll)
@@ -2020,9 +2100,12 @@ void Stage_Tick(void)
 			ObjectList_Tick(&stage.objlist_fg);
 			
 			//Tick characters
+			if ((stage.player->missed == false) || (animf_count & 0x2))
 			stage.player->tick(stage.player);
+
 			//just for mx, draw BEHIND the bg if phase 4
 			if (mx.phase != 4)
+					if ((stage.opponent->missed == false) || (animf_count & 0x2))
 				stage.opponent->tick(stage.opponent);
 			
 			//Draw stage middle
@@ -2046,6 +2129,7 @@ void Stage_Tick(void)
 
 			//Draw MX if phase 4
 			if (mx.phase == 4)
+					if ((stage.opponent->missed == false) || (animf_count & 0x2))
 				stage.opponent->tick(stage.opponent);
 			break;
 		}
@@ -2070,7 +2154,7 @@ void Stage_Tick(void)
 			Stage_SwapChars();
 			Character_Free(stage.opponent);
 			stage.opponent = NULL;
-            Character_Free(stage.opponent2);
+      Character_Free(stage.opponent2);
 			stage.opponent2 = NULL;
 			Character_Free(stage.gf);
 			stage.gf = NULL;

@@ -54,8 +54,8 @@ typedef struct Character
 	fixed_t focus_x, focus_y, focus_zoom;
 	
 	//putting this in character for be more easy to mod
-	s16 powerup;
-	s16 cooldown;
+	s8 powerup;
+	boolean missed;
 
 	boolean ignore_note;  //When enabled, characters will not play note animations. This is for doing special animations without notes interrupting them.
 	

@@ -1,7 +1,7 @@
 	{ //StageId_W1_1 (Mushroom Plains)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(69,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(65,1)},
 		{NULL},
 		{NULL},
 		
@@ -17,8 +17,8 @@
 	},
 	{ //StageId_W1_2 (Bricks And Lifts)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(49,1)},
-		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(49,1)},
+		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(52,1)},
+		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(48,1)},
 		{NULL},
 		{NULL},
 		
@@ -85,10 +85,10 @@
 	},
 	{ //StageId_W2_3 (Koopa Armada)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(131,1),  FIXED_DEC(66,1)},
-		{Char_Bowser_New, FIXED_DEC(-95,1),  FIXED_DEC(-24,1)},
+		{Char_BFCaptured_New,    FIXED_DEC(131,1),  FIXED_DEC(73,1)},
+		{Char_Bowser_New, FIXED_DEC(-95,1),  FIXED_DEC(-25,1)},
 		{NULL},
-		{Char_BlasterBro_New, FIXED_DEC(-155,1), FIXED_DEC(-11,1)},
+		{Char_BlasterBro_New, FIXED_DEC(-155,1), FIXED_DEC(-10,1)},
 		
 		//Stage background
 		Back_World2_3_New,
@@ -119,8 +119,8 @@
 	},
 	{ //StageId_F1_2 (Destruction_Dance)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(56,1)},
-		{Char_Spike_New, FIXED_DEC(-85,1),  FIXED_DEC(56,1)},
+		{Char_BF_New,    FIXED_DEC(71,1),  FIXED_DEC(56,1)},
+		{Char_SpiWa_New, FIXED_DEC(-85,1),  FIXED_DEC(56,1)},
 		{NULL},
 		{NULL},
 		
@@ -187,13 +187,13 @@
 	},
 	{ //StageId_F2_3 (Cross Console Clash)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(66,1)},
+		{Char_MarioCCC_New,    FIXED_DEC(58,1),  FIXED_DEC(27,1)},
 		{Char_Mario_New, FIXED_DEC(-85,1),  FIXED_DEC(66,1)},
 		{NULL},
 		{NULL},
 		
 		//Stage background
-		Back_World1_1_New,
+		Back_Freeplay2_3_New,
 		
 		//Song info
 		{FIXED_DEC(28,10)},
@@ -272,8 +272,8 @@
 	},
 	{ //StageId_MX (Game Over)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(-30,1),  FIXED_DEC(66,1)},
-		{Char_MX_New, FIXED_DEC(86,1),  FIXED_DEC(2,1)},
+		{Char_BF_New,    FIXED_DEC(-30,1),  FIXED_DEC(69,1)},
+		{Char_MX_New, FIXED_DEC(86,1),  FIXED_DEC(1,1)},
 		{NULL},
 		{NULL},
 		
